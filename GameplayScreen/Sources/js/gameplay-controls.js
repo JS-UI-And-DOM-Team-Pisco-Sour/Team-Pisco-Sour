@@ -4,12 +4,8 @@ window.onload = function () {
         STAGE_HEIGHT: 600
     };
 
-    var stage, layer
-        player = {
-            image: new Image(),
-            x: 0,
-            y: 0
-        };
+    var stage, layer, backgroundImageObj,
+        player = new Image();
 
     function loadCanvas() {
         stage = new Kinetic.Stage({
@@ -22,11 +18,32 @@ window.onload = function () {
     }
 
     function loadPlayer() {
-        player.image.src = "";
+
+    }
+
+    function loadBackground() {
+        backgroundImageObj = new Image();
+        backgroundImageObj.width = 800;
+        backgroundImageObj.src = "sources/images/canvas-bg.jpg";
+
+        backgroundImageObj.onload = function () {
+            var background = new Kinetic.Image({
+                x: 0,
+                y: 0,
+                image: backgroundImageObj,
+                width: CONSTANTS.STAGE_WIDTH,
+                height: CONSTANTS.STAGE_HEIGHT
+            });
+
+            layer.add(background);
+            stage.add(layer);
+        };
     }
 
     function initialize() {
         loadCanvas();
+
+        loadBackground();
         loadPlayer();
     }
 

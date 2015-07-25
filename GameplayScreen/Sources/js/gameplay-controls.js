@@ -8,10 +8,7 @@ window.onload = function () {
     };
 
     var gameplayContainer, stage, backgroundLayer, actionLayer,
-        backgroundImageObj, playerImageObj,
-        playerDirection = 0,
-
-        player;
+        backgroundImageObj, playerImageObj;
 
     // 0: looking down, 1: looking up, 2: looking left, 3: looking right
 
@@ -35,7 +32,7 @@ window.onload = function () {
         playerImageObj.src = "sources/images/player.png";
 
         playerImageObj.onload = function () {
-            player = new Kinetic.Image({
+            var player = new Kinetic.Image({
                 x: 0,
                 y: 0,
                 image: playerImageObj,
@@ -122,8 +119,6 @@ window.onload = function () {
                 }
             }
         });
-
-        console.log(playerCenterX);
     }
 
     function initialize() {

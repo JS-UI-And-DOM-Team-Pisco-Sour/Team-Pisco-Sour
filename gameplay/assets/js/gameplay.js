@@ -7,7 +7,8 @@ window.onload = function () {
         PLAYER_HEIGHT: 117,
 
         ENEMY_WIDTH: 99.2,
-        ENEMY_HEIGHT: 111
+        ENEMY_HEIGHT: 111,
+        ENEMY_FRAME_COUNT: 10
     };
 
     var gameplayContainer, stage, backgroundLayer, actionLayer,
@@ -151,7 +152,7 @@ window.onload = function () {
 
                     currentFrame += 1;
 
-                    if(enemyFrame < 9) {
+                    if(enemyFrame < CONSTANTS.ENEMY_FRAME_COUNT - 1) {
                         enemyFrame += 1;
                     }
 

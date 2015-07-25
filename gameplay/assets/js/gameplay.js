@@ -11,7 +11,8 @@ window.onload = function () {
     };
 
     var gameplayContainer, stage, backgroundLayer, actionLayer,
-        backgroundImageObj, playerImageObj, enemyImageObj, enemyFrame = 0;
+        backgroundImageObj, playerImageObj, enemyImageObj,
+        currentFrame = 0,enemyFrame = 0;
 
     // 0: looking down, 1: looking up, 2: looking left, 3: looking right
 
@@ -84,8 +85,6 @@ window.onload = function () {
                         x: 0, y: 2 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
-
-                    actionLayer.draw();
                 }
             }
 
@@ -95,8 +94,6 @@ window.onload = function () {
                         x: 0, y: 3 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
-
-                    actionLayer.draw();
                 }
             }
 
@@ -106,8 +103,6 @@ window.onload = function () {
                         x: 0, y: 1 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
-
-                    actionLayer.draw();
                 }
             }
 
@@ -117,8 +112,6 @@ window.onload = function () {
                         x: 0, y: 0 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
-
-                    actionLayer.draw();
                 }
             }
         });
@@ -145,7 +138,13 @@ window.onload = function () {
 
             actionLayer.add(enemy);
             stage.add(actionLayer);
-            
+
+            // Note: this IIFE will always be invoked every 100ms
+            // We can use it to store the current frame of the game
+            // and any change to a game object will be automatically
+            // affected onto the action layer, i.e each frame we redraw
+            // This behaviour can be easily manipulated
+
             (function spawnEnemy(){
                 setTimeout(function () {
                     requestAnimationFrame(spawnEnemy);

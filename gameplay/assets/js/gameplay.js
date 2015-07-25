@@ -4,11 +4,14 @@ window.onload = function () {
         STAGE_HEIGHT: 600,
 
         PLAYER_WIDTH: 150,
-        PLAYER_HEIGHT: 117
+        PLAYER_HEIGHT: 117,
+
+        ENEMY_WIDTH: 99.2,
+        ENEMY_HEIGHT: 111
     };
 
     var gameplayContainer, stage, backgroundLayer, actionLayer,
-        backgroundImageObj, playerImageObj;
+        backgroundImageObj, playerImageObj, enemyImageObj, enemyFrame = 0;
 
     // 0: looking down, 1: looking up, 2: looking left, 3: looking right
 
@@ -121,15 +124,57 @@ window.onload = function () {
         });
     }
 
-    function spawnEnemy() {
+    function loadEnemy() {
+        enemyImageObj = new Image();
+        enemyImageObj.src = "assets/images/enemy.png";
 
+        enemyImageObj.onload = function () {
+            var enemy = new Kinetic.Image({
+                x: (CONSTANTS.STAGE_WIDTH - CONSTANTS.ENEMY_WIDTH) / 2,
+                y: (CONSTANTS.STAGE_HEIGHT - CONSTANTS.ENEMY_HEIGHT) / 2,
+                image: enemyImageObj,
+                width: CONSTANTS.ENEMY_WIDTH,
+                height: CONSTANTS.ENEMY_HEIGHT,
+                crop: {
+                    x: enemyFrame * CONSTANTS.ENEMY_WIDTH,
+                    y: 0,
+                    width: CONSTANTS.ENEMY_WIDTH,
+                    height: CONSTANTS.ENEMY_HEIGHT
+                }
+            });
+
+            actionLayer.add(enemy);
+            stage.add(actionLayer);
+            
+            (function spawnEnemy(){
+                setTimeout(function () {
+                    requestAnimationFrame(spawnEnemy);
+
+                    enemyFrame += 1;
+                    if(enemyFrame === 10) {
+                        enemyFrame = 9;
+                    }
+
+                    enemy.setCrop({
+                        x: enemyFrame * CONSTANTS.ENEMY_WIDTH,
+                        y: 0,
+                        width: CONSTANTS.ENEMY_WIDTH,
+                        height: CONSTANTS.ENEMY_HEIGHT
+                    });
+
+                    actionLayer.draw();
+                }, 100)
+            }());
+        };
     }
+
 
     function initialize() {
         loadCanvas();
 
         loadBackground();
         loadPlayer();
+        loadEnemy();
     }
 
     function run() {

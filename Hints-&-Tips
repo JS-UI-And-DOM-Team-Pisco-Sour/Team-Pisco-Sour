@@ -1,0 +1,17 @@
+Relative file paths:
+    Starting with "/" returns to the root directory and starts there
+    Starting with "../" moves one directory backwards and starts there
+    Starting with "../../" moves two directories backwards and starts there (and so on...)
+    To move forward, just start with the first subdirectory and keep moving forward
+
+Sprites:
+    http://www.spriters-resource.com/
+
+    Potentially usable:
+    http://www.spriters-resource.com/3ds/projectxzone/sheet/67405/
+    http://www.spriters-resource.com/3ds/projectxzone/sheet/67416/
+    http://www.spriters-resource.com/3ds/projectxzone/sheet/67452/
+
+How to create Sprite Animation with HTML5 Canvas:
+    http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
+

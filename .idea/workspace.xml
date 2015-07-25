@@ -34,7 +34,7 @@
       <file leaf-file-name="gameplay-controls.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GameplayScreen/sources/js/gameplay-controls.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5">
+            <state vertical-scroll-proportion="0.4117647">
               <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
               <folding />
             </state>
@@ -373,7 +373,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GameplayScreen/sources/js/gameplay-controls.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5">
+        <state vertical-scroll-proportion="0.4117647">
           <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
           <folding />
         </state>

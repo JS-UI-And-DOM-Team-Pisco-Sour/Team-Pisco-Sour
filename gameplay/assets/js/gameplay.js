@@ -149,6 +149,8 @@ window.onload = function () {
                 setTimeout(function () {
                     requestAnimationFrame(spawnEnemy);
 
+                    currentFrame += 1;
+                    
                     enemyFrame += 1;
                     if(enemyFrame === 10) {
                         enemyFrame = 9;

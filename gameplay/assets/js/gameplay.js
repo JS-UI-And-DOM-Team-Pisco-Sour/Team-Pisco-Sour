@@ -150,10 +150,9 @@ window.onload = function () {
                     requestAnimationFrame(spawnEnemy);
 
                     currentFrame += 1;
-                    
-                    enemyFrame += 1;
-                    if(enemyFrame === 10) {
-                        enemyFrame = 9;
+
+                    if(enemyFrame < 9) {
+                        enemyFrame += 1;
                     }
 
                     enemy.setCrop({

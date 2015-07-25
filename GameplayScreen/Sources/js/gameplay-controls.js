@@ -4,9 +4,14 @@ window.onload = function () {
         STAGE_HEIGHT: 600
     };
 
-    var stage, layer;
+    var stage, layer
+        player = {
+            image: new Image(),
+            x: 0,
+            y: 0
+        };
 
-    function initialize() {
+    function loadCanvas() {
         stage = new Kinetic.Stage({
             container: 'gameplay-container',
             width: CONSTANTS.STAGE_WIDTH,
@@ -14,6 +19,15 @@ window.onload = function () {
         });
 
         layer = new Kinetic.Layer();
+    }
+
+    function loadPlayer() {
+        player.image.src = "";
+    }
+
+    function initialize() {
+        loadCanvas();
+        loadPlayer();
     }
 
     function run() {

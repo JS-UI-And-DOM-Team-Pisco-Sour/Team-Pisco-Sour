@@ -4,10 +4,11 @@ window.onload = function () {
         STAGE_HEIGHT: 600
     };
 
-    var stage, layer, backgroundImageObj,
-        player = new Image();
+    var stage, layer, backgroundImageObj, playerImageObj;
 
     function loadCanvas() {
+        var container = document.getElementById('gameplay-container');
+        container.position =
         stage = new Kinetic.Stage({
             container: 'gameplay-container',
             width: CONSTANTS.STAGE_WIDTH,
@@ -23,7 +24,6 @@ window.onload = function () {
 
     function loadBackground() {
         backgroundImageObj = new Image();
-        backgroundImageObj.width = 800;
         backgroundImageObj.src = "sources/images/canvas-bg.jpg";
 
         backgroundImageObj.onload = function () {

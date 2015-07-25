@@ -29,7 +29,7 @@ window.onload = function () {
 
     function loadPlayer() {
         playerImageObj = new Image();
-        playerImageObj.src = "sources/images/player.png";
+        playerImageObj.src = "assets/images/player.png";
 
         playerImageObj.onload = function () {
             var player = new Kinetic.Image({
@@ -54,7 +54,7 @@ window.onload = function () {
 
     function loadBackground() {
         backgroundImageObj = new Image();
-        backgroundImageObj.src = "sources/images/canvas-bg.jpg";
+        backgroundImageObj.src = "assets/images/canvas-bg.jpg";
 
         backgroundImageObj.onload = function () {
             var background = new Kinetic.Image({

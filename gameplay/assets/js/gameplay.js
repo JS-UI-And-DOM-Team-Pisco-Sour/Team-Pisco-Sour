@@ -121,6 +121,10 @@ window.onload = function () {
         });
     }
 
+    function spawnEnemy() {
+
+    }
+
     function initialize() {
         loadCanvas();
 

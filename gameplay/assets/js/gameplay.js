@@ -5,7 +5,6 @@ window.onload = function () {
 
         SCALE_HEIGHT: (1/21),
         SCALE_WIDTH: (1/4.5),
-        STAGE_HEIGHT: 600,
 
         PLAYER_WIDTH: 155,
         PLAYER_HEIGHT: 160,
@@ -408,8 +407,8 @@ window.onload = function () {
                     }
 
                     backgroundLayer.setZIndex(1);
-                    playerLayer.setZIndex(3);
                     enemiesLayer.setZIndex(2);
+                    playerLayer.setZIndex(3);
 
                     enemiesLayer.draw();
                 }, 100)

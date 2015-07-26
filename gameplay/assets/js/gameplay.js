@@ -38,17 +38,24 @@ window.onload = function () {
 
     var gameplayContainer,
         wholeDoc,
+
         stage,
         backgroundLayer,
         playerLayer,
         enemiesLayer,
+
         backgroundImageObj,
-        player,
         playerImageObj,
+        enemyImageObj,
+
+        player,
         playerCenterX,
         playerCenterY,
-        enemyImageObj,
+
+        enemies = {},
+
         keyPressed,
+
         currentFrame = 0,
         enemyFrame = 0;
 
@@ -338,9 +345,15 @@ window.onload = function () {
                     y: 0,
                     width: CONSTANTS.ENEMY_WIDTH,
                     height: CONSTANTS.ENEMY_HEIGHT
+                },
+
+                scale: {
+                    x: 0.6,
+                    y: 0.6
                 }
             });
 
+            enemies[0] = enemy;
             enemiesLayer.add(enemy);
             stage.add(enemiesLayer);
 
@@ -350,22 +363,49 @@ window.onload = function () {
             // affected onto the action layer, i.e each frame we redraw
             // This behaviour can be easily manipulated
 
-            (function spawnEnemy() {
+            (function runFrame() {
                 setTimeout(function () {
-                    requestAnimationFrame(spawnEnemy);
+                    requestAnimationFrame(runFrame);
 
                     currentFrame += 1;
 
-                    if (enemyFrame < CONSTANTS.ENEMY_FRAME_COUNT - 1) {
-                        enemyFrame += 1;
+                    // Spawning a new Enemy
+                    if(currentFrame % 20 === 0) {
+                        var newEnemy = new Kinetic.Image({
+                            x: getRandomCoordinate(100, 500),
+                            y: getRandomCoordinate(100, 500),
+                            image: enemyImageObj,
+                            width: CONSTANTS.ENEMY_WIDTH,
+                            height: CONSTANTS.ENEMY_HEIGHT,
+                            crop: {
+                                x: 0,
+                                y: 0,
+                                width: CONSTANTS.ENEMY_WIDTH,
+                                height: CONSTANTS.ENEMY_HEIGHT
+                            },
+
+                            scale: {
+                                x: 0.6,
+                                y: 0.6
+                            }
+                        });
+
+                        enemies[currentFrame] = newEnemy;
+                        enemiesLayer.add(newEnemy);
                     }
 
-                    enemy.setCrop({
-                        x: enemyFrame * CONSTANTS.ENEMY_WIDTH,
-                        y: 0,
-                        width: CONSTANTS.ENEMY_WIDTH,
-                        height: CONSTANTS.ENEMY_HEIGHT
-                    });
+                    // Updating each Enemy separately
+                    for(var enemyId in enemies) {
+                        var currentEnemyFrame = currentFrame - enemyId;
+                        if(currentEnemyFrame < CONSTANTS.ENEMY_FRAME_COUNT - 1) {
+                            enemies[enemyId].setCrop({
+                                x: currentEnemyFrame * CONSTANTS.ENEMY_WIDTH,
+                                y: 0,
+                                width: CONSTANTS.ENEMY_WIDTH,
+                                height: CONSTANTS.ENEMY_HEIGHT
+                            });
+                        }
+                    }
 
                     backgroundLayer.setZIndex(1);
                     playerLayer.setZIndex(3);

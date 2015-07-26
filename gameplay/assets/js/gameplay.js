@@ -59,7 +59,7 @@ window.onload = function () {
 
     function loadBackground() {
         backgroundImageObj = new Image();
-        backgroundImageObj.src = "assets/images/canvas-bg.jpg";
+        backgroundImageObj.src = "assets/images/canvas-bckg.jpg";
 
         backgroundImageObj.onload = function () {
             var background = new Kinetic.Image({

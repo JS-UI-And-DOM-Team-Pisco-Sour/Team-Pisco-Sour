@@ -367,6 +367,10 @@ window.onload = function () {
                         height: CONSTANTS.ENEMY_HEIGHT
                     });
 
+                    backgroundLayer.setZIndex(1);
+                    playerLayer.setZIndex(3);
+                    enemiesLayer.setZIndex(2);
+
                     enemiesLayer.draw();
                 }, 100)
             }());

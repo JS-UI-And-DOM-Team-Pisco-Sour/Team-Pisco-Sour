@@ -24,9 +24,18 @@ window.onload = function () {
         ENEMY_FRAME_COUNT: 10
     };
 
-    var gameplayContainer, stage, backgroundLayer, actionLayer,
-        backgroundImageObj, playerImageObj, enemyImageObj,
-        currentFrame = 0,enemyFrame = 0;
+    var gameplayContainer,
+        stage,
+        backgroundLayer,
+        actionLayer,
+        backgroundImageObj,
+        player,
+        playerCenterX,
+        playerCenterY,
+        playerImageObj,
+        enemyImageObj,
+        currentFrame = 0,
+        enemyFrame = 0;
 
 
     function loadCanvas() {
@@ -49,7 +58,7 @@ window.onload = function () {
         playerImageObj.src = "assets/images/player.png";
 
         playerImageObj.onload = function () {
-            var player = new Kinetic.Image({
+            var playerKineticImage = new Kinetic.Image({
                 x: 0,
                 y: 0,
                 image: playerImageObj,
@@ -63,8 +72,13 @@ window.onload = function () {
                 }
             });
 
-            addMouseEventListener(player);
-            actionLayer.add(player);
+            player = {
+                facingDirection: CONSTANTS.FACING_DIRECTION.RIGHT,
+                kineticImage: playerKineticImage
+            };
+
+            addMouseEventListener(player.kineticImage);
+            actionLayer.add(player.kineticImage);
             stage.add(actionLayer);
         };
     }
@@ -89,14 +103,14 @@ window.onload = function () {
 
     // 0: looking down, 1: looking up, 2: looking left, 3: looking right
 
-    function addMouseEventListener(player) {
-        var playerCenterX = player.getX() + CONSTANTS.PLAYER_WIDTH / 2,
-            playerCenterY = player.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
+    function addMouseEventListener(playerKineticImage) {
+        playerCenterX = playerKineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
+        playerCenterY = playerKineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
 
         gameplayContainer.addEventListener('mousemove', function (e) {
             if (e.clientX < playerCenterX) {
                 if (Math.abs(e.clientY - playerCenterY) < playerCenterX - e.clientX) {
-                    player.setCrop({
+                    playerKineticImage.setCrop({
                         x: 0,
                         y: CONSTANTS.FACING_DIRECTION.LEFT * CONSTANTS.PLAYER_HEIGHT,
                         width: CONSTANTS.PLAYER_WIDTH,
@@ -107,7 +121,7 @@ window.onload = function () {
 
             if (e.clientX > playerCenterX) {
                 if (Math.abs(e.clientY - playerCenterY) < e.clientX - playerCenterX) {
-                    player.setCrop({
+                    playerKineticImage.setCrop({
                         x: 0,
                         y: CONSTANTS.FACING_DIRECTION.RIGHT * CONSTANTS.PLAYER_HEIGHT,
                         width: CONSTANTS.PLAYER_WIDTH,
@@ -118,7 +132,7 @@ window.onload = function () {
 
             if (e.clientY < playerCenterY) {
                 if (Math.abs(e.clientX - playerCenterX) < playerCenterY - e.clientY) {
-                    player.setCrop({
+                    playerKineticImage.setCrop({
                         x: 0,
                         y: CONSTANTS.FACING_DIRECTION.UP * CONSTANTS.PLAYER_HEIGHT,
                         width: CONSTANTS.PLAYER_WIDTH,
@@ -129,7 +143,7 @@ window.onload = function () {
 
             if (e.clientY > playerCenterY) {
                 if (Math.abs(e.clientX - playerCenterX) < e.clientY - playerCenterY) {
-                    player.setCrop({
+                    playerKineticImage.setCrop({
                         x: 0,
                         y: CONSTANTS.FACING_DIRECTION.DOWN * CONSTANTS.PLAYER_HEIGHT,
                         width: CONSTANTS.PLAYER_WIDTH,

@@ -380,10 +380,6 @@ window.onload = function () {
         enemyImageObj.src = "assets/images/enemy.png";
     }
 
-    function loadBombSound() {
-        createjs.Sound.registerSound('assets/sounds/boom.mp3', 'boom');
-    }
-
     function runDeathAnimation(targetX, targetY, scale) {
         var deathObj = new Image();
         deathObj.onload = function () {
@@ -463,6 +459,10 @@ window.onload = function () {
 
             playerLayer.add(deathAnim);
             deathAnim.on('frameIndexChange', function (e) {
+                if(frameCount === 0) {
+                    createjs.Sound.play('boom');
+                }
+
                 if(++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
                     deathAnim.stop();
                     deathAnim.hide();
@@ -470,7 +470,6 @@ window.onload = function () {
                 }
             });
 
-            createjs.Sound.play('boom');
             deathAnim.start();
         };
 
@@ -488,7 +487,6 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
-        loadBombSound();
     }
 
     function run() {
@@ -549,7 +547,7 @@ window.onload = function () {
 
         // some code sets deathModeOn to true
         if(deathModeOn) {
-            runDeathAnimation(playerKineticImage.getX(), playerKineticImage.getY(), 2.5);
+            runDeathAnimation(50, 50, 2.5);
             deathModeOn = false;
         }
     }

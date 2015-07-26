@@ -37,6 +37,7 @@ window.onload = function () {
     };
 
     var gameplayContainer,
+        wholeDoc,
         stage,
         backgroundLayer,
         playerLayer,
@@ -56,6 +57,7 @@ window.onload = function () {
         gameplayContainer = document.getElementById('gameplay-container');
         gameplayContainer.setAttribute('width', CONSTANTS.STAGE_WIDTH);
         gameplayContainer.setAttribute('height', CONSTANTS.STAGE_HEIGHT);
+        wholeDoc = document.getElementById('body');
 
         //Position the action screen
         //gameplayContainer.style.position = 'absolute';
@@ -78,8 +80,8 @@ window.onload = function () {
 
         playerImageObj.onload = function () {
             var playerKineticImage = new Kinetic.Image({
-                x: 0,
-                y: 0,
+                x: 50,
+                y: 50,
                 image: playerImageObj,
                 width: CONSTANTS.PLAYER_WIDTH,
                 height: CONSTANTS.PLAYER_HEIGHT,
@@ -92,13 +94,12 @@ window.onload = function () {
             });
 
             player = {
-                x: 5,
-                y: 5,
                 kineticImage: playerKineticImage,
                 facingDirection: CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT
             };
 
-            addMouseEventListener(player.kineticImage);
+            addKeystrokeListener();
+            addMouseEventListener();
             playerLayer.add(player.kineticImage);
             stage.add(playerLayer);
         };
@@ -126,66 +127,73 @@ window.onload = function () {
     }
 
     function addKeystrokeListener() {
-        gameplayContainer.addEventListener('keyup', function(e) {
-            keyPressed = e.keyCode;
+        wholeDoc.addEventListener('keyup', function(e) {
+            keyPressed = e.keyCode ? e.keyCode : e.which;
 
             if(keyPressed === CONSTANTS.KEYS.Q) {
-
+                checkDirectionAndTeleport(100);
             }
             else if(keyPressed === CONSTANTS.KEYS.W) {
-
+                checkDirectionAndTeleport(200);
             }
             else if(keyPressed === CONSTANTS.KEYS.E) {
-
+                checkDirectionAndTeleport(300);
             }
             else if(keyPressed === CONSTANTS.KEYS.A) {
-
+                // TODO: Raise Hell
             }
         });
     }
 
-    function checkDirectionAndReact() {
+    function checkDirectionAndTeleport(stepsLength) {
         switch(player.facingDirection) {
+            //TODO: Check If Out of Border for each case.
             case CONSTANTS.FACING_DIRECTIONS.UP: {
-
+                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN: {
-
+                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.LEFT: {
-
+                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.RIGHT: {
-
+                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.UP_LEFT: {
-
+                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT: {
-
+                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT: {
-
+                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT: {
-
+                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
                 break;
             }
         }
+
+        playerLayer.draw();
     }
 
     function addMouseEventListener() {
         gameplayContainer.addEventListener('mousemove', function (e) {
 
-            playerCenterX = player.x + CONSTANTS.PLAYER_WIDTH / 2;
-            playerCenterY = player.y + CONSTANTS.PLAYER_HEIGHT / 2;
+            playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
+            playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
 
             // Left
             if (e.clientX < playerCenterX) {

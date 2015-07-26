@@ -51,6 +51,7 @@ window.onload = function () {
         player,
         playerCenterX,
         playerCenterY,
+        playerKineticImage,
 
         enemies = [],
 
@@ -86,7 +87,7 @@ window.onload = function () {
         playerImageObj = new Image();
 
         playerImageObj.onload = function () {
-            var playerKineticImage = new Kinetic.Image({
+            playerKineticImage = new Kinetic.Image({
                 x: 50,
                 y: 50,
                 image: playerImageObj,
@@ -373,6 +374,83 @@ window.onload = function () {
         enemyImageObj.src = "assets/images/enemy.png";
     }
 
+    function runDeathAnimation() {
+        var deathObj = new Image();
+        deathObj.onload = function () {
+            var deathAnim = new Kinetic.Sprite({
+                x: 200,
+                y: 200,
+                image: deathObj,
+                animation: 'death',
+                animations: {
+                    death: [
+                        0, 0, 256, 256,
+                        256, 0, 256, 256,
+                        512, 0, 256, 256,
+                        768, 0, 256, 256,
+                        1024, 0, 256, 256,
+                        1280, 0, 256, 256,
+                        1536, 0, 256, 256,
+                        1792, 0, 256, 256,
+
+                        0, 256, 256, 256,
+                        256, 256, 256, 256,
+                        512, 256, 256, 256,
+                        768, 256, 256, 256,
+                        1024, 256, 256, 256,
+                        1280, 256, 256, 256,
+                        1536, 256, 256, 256,
+                        1792, 256, 256, 256,
+
+                        0, 512, 256, 256,
+                        256, 512, 256, 256,
+                        512, 512, 256, 256,
+                        768, 512, 256, 256,
+                        1024, 512, 256, 256,
+                        1280, 512, 256, 256,
+                        1536, 512, 256, 256,
+                        1792, 512, 256, 256,
+
+                        0, 768, 256, 256,
+                        256, 768, 256, 256,
+                        512, 768, 256, 256,
+                        768, 768, 256, 256,
+                        1024, 768, 256, 256,
+                        1280, 768, 256, 256,
+                        1536, 768, 256, 256,
+                        1792, 768, 256, 256,
+
+                        0, 1024, 256, 256,
+                        256, 1024, 256, 256,
+                        512, 1024, 256, 256,
+                        768, 1024, 256, 256,
+                        1024, 1024, 256, 256,
+                        1280, 1024, 256, 256,
+                        1536, 1024, 256, 256,
+                        1792, 1024, 256, 256,
+
+                        0, 1280, 256, 256,
+                        256, 1280, 256, 256,
+                        512, 1280, 256, 256,
+                        768, 1280, 256, 256,
+                        1024, 1280, 256, 256,
+                        1280, 1280, 256, 256,
+                        1536, 1280, 256, 256,
+                        1792, 1280, 256, 256
+                    ]
+                },
+
+                frameRate: 30,
+                frameIndex: 0
+            });
+
+            playerLayer.add(deathAnim);
+            deathAnim.start();
+        };
+
+        deathObj.src = 'assets/images/explosion.png';
+    }
+
     // Returns a random INTEGER number from the range between MIN and MAX values.
     function getRandomCoordinate(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -384,6 +462,7 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
+        runDeathAnimation();
     }
 
     function run() {

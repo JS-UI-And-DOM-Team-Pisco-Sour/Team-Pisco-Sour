@@ -113,7 +113,7 @@ window.onload = function () {
             };
 
             addKeystrokeListener();
-            addMouseEventListener();
+            addMouseEventListeners();
             playerLayer.add(player.kineticImage);
             stage.add(playerLayer);
         };
@@ -211,8 +211,8 @@ window.onload = function () {
         playerLayer.draw();
     }
 
-    function addMouseEventListener() {
-        gameplayContainer.addEventListener('mousemove', function (e) {
+    function addMouseEventListeners() {
+        stage.addEventListener('mousemove', function (e) {
 
             playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
             playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;

@@ -3,11 +3,12 @@ window.onload = function () {
         STAGE_WIDTH: 1000,
         STAGE_HEIGHT: 800,
 
-        SCALE_HEIGHT: (1/21),
-        SCALE_WIDTH: (1/4.5),
+        SCALE_HEIGHT: (1 / 21),
+        SCALE_WIDTH: (1 / 4.5),
 
         PLAYER_WIDTH: 155,
         PLAYER_HEIGHT: 160,
+        PLAYER_DEATH_ANIMATION_FRAMES_COUNT: 48,
 
         FACING_DIRECTIONS: {
             UP: 2,
@@ -32,7 +33,8 @@ window.onload = function () {
 
         ENEMY_WIDTH: 99.2,
         ENEMY_HEIGHT: 111,
-        ENEMY_FRAME_COUNT: 10
+        ENEMY_FRAME_COUNT: 10,
+        ENEMY_SPAWN_FRAME_INTERVAL: 20
     };
 
     var gameplayContainer,
@@ -50,8 +52,9 @@ window.onload = function () {
         player,
         playerCenterX,
         playerCenterY,
+        playerKineticImage,
 
-        enemies = {},
+        enemies = [],
 
         keyPressed,
 
@@ -85,7 +88,7 @@ window.onload = function () {
         playerImageObj = new Image();
 
         playerImageObj.onload = function () {
-            var playerKineticImage = new Kinetic.Image({
+            playerKineticImage = new Kinetic.Image({
                 x: 50,
                 y: 50,
                 image: playerImageObj,
@@ -110,7 +113,7 @@ window.onload = function () {
             stage.add(playerLayer);
         };
 
-        playerImageObj.src = "assets/images/shooter-sprite.png";
+        playerImageObj.src = "assets/images/player.png";
     }
 
     function loadBackground() {
@@ -129,63 +132,71 @@ window.onload = function () {
             stage.add(backgroundLayer);
         };
 
-        backgroundImageObj.src = "assets/images/canvas-bckg.jpg";
+        backgroundImageObj.src = "assets/images/canvas-bg.jpg";
     }
 
     function addKeystrokeListener() {
-        wholeDoc.addEventListener('keyup', function(e) {
+        wholeDoc.addEventListener('keyup', function (e) {
             keyPressed = e.keyCode ? e.keyCode : e.which;
 
-            if(keyPressed === CONSTANTS.KEYS.Q) {
+            if (keyPressed === CONSTANTS.KEYS.Q) {
                 checkDirectionAndTeleport(100);
             }
-            else if(keyPressed === CONSTANTS.KEYS.W) {
+            else if (keyPressed === CONSTANTS.KEYS.W) {
                 checkDirectionAndTeleport(200);
             }
-            else if(keyPressed === CONSTANTS.KEYS.E) {
+            else if (keyPressed === CONSTANTS.KEYS.E) {
                 checkDirectionAndTeleport(300);
             }
-            else if(keyPressed === CONSTANTS.KEYS.A) {
+            else if (keyPressed === CONSTANTS.KEYS.A) {
                 // TODO: Raise Hell
             }
         });
     }
 
     function checkDirectionAndTeleport(stepsLength) {
-        switch(player.facingDirection) {
+        switch (player.facingDirection) {
             //TODO: Check If Out of Border for each case.
-            case CONSTANTS.FACING_DIRECTIONS.UP: {
+            case CONSTANTS.FACING_DIRECTIONS.UP:
+            {
                 player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
                 break;
             }
-            case CONSTANTS.FACING_DIRECTIONS.DOWN: {
+            case CONSTANTS.FACING_DIRECTIONS.DOWN:
+            {
                 player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
                 break;
             }
-            case CONSTANTS.FACING_DIRECTIONS.LEFT: {
+            case CONSTANTS.FACING_DIRECTIONS.LEFT:
+            {
                 player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
                 break;
             }
-            case CONSTANTS.FACING_DIRECTIONS.RIGHT: {
+            case CONSTANTS.FACING_DIRECTIONS.RIGHT:
+            {
                 player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
                 break;
             }
-            case CONSTANTS.FACING_DIRECTIONS.UP_LEFT: {
+            case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
+            {
                 player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
                 player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
                 break;
             }
-            case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT: {
+            case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
+            {
                 player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
                 player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
                 break;
             }
-            case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT: {
+            case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
+            {
                 player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
                 player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
                 break;
             }
-            case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT: {
+            case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
+            {
                 player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
                 player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
                 break;
@@ -204,7 +215,7 @@ window.onload = function () {
             // Left
             if (e.clientX < playerCenterX) {
                 if (Math.abs(e.clientY - playerCenterY) < Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - e.clientX)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.LEFT) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.LEFT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.LEFT * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -219,7 +230,7 @@ window.onload = function () {
             // Right
             if (e.clientX > playerCenterX) {
                 if (Math.abs(e.clientY - playerCenterY) < Math.tan(22.5 / 180 * Math.PI) * (e.clientX - playerCenterX)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.RIGHT) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.RIGHT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.RIGHT * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -234,7 +245,7 @@ window.onload = function () {
             // Down
             if (e.clientY < playerCenterY) {
                 if (Math.abs(e.clientX - playerCenterX) < Math.tan(22.5 / 180 * Math.PI) * (playerCenterY - e.clientY)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.DOWN * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -249,7 +260,7 @@ window.onload = function () {
             // Up
             if (e.clientY > playerCenterY) {
                 if (Math.abs(e.clientX - playerCenterX) < Math.tan(22.5 / 180 * Math.PI) * (e.clientY - playerCenterY)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.UP * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -265,7 +276,7 @@ window.onload = function () {
             if (e.clientX < playerCenterX) {
                 if (playerCenterY - e.clientY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - e.clientX) &&
                     playerCenterY - e.clientY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - e.clientX)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP_LEFT) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP_LEFT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.UP_LEFT * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -281,7 +292,7 @@ window.onload = function () {
             if (e.clientX < playerCenterX) {
                 if (e.clientY - playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - e.clientX) &&
                     e.clientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - e.clientX)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -297,7 +308,7 @@ window.onload = function () {
             if (e.clientX > playerCenterX) {
                 if (playerCenterY - e.clientY > Math.tan(22.5 / 180 * Math.PI) * (e.clientX - playerCenterX) &&
                     playerCenterY - e.clientY < Math.tan(67.5 / 180 * Math.PI) * (e.clientX - playerCenterX)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP_RIGHT) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP_RIGHT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.UP_RIGHT * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -313,7 +324,7 @@ window.onload = function () {
             if (e.clientX > playerCenterX) {
                 if (e.clientY - playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (e.clientX - playerCenterX) &&
                     e.clientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (e.clientX - playerCenterX)) {
-                    if(player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT) {
+                    if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT * CONSTANTS.PLAYER_WIDTH,
                             y: 0,
@@ -329,7 +340,7 @@ window.onload = function () {
         });
     }
 
-    function loadEnemy() {
+    function loadInitialEnemy() {
         enemyImageObj = new Image();
 
         enemyImageObj.onload = function () {
@@ -352,83 +363,177 @@ window.onload = function () {
                 }
             });
 
-            enemies[0] = enemy;
+            enemies.push({
+                enemy: enemy,
+                frame: currentFrame
+            });
+
             enemiesLayer.add(enemy);
             stage.add(enemiesLayer);
-
-            // Note: this IIFE will always be invoked every 100ms
-            // We can use it to store the current frame of the game
-            // and any change to a game object will be automatically
-            // affected onto the action layer, i.e each frame we redraw
-            // This behaviour can be easily manipulated
-
-            (function runFrame() {
-                setTimeout(function () {
-                    requestAnimationFrame(runFrame);
-
-                    currentFrame += 1;
-
-                    // Spawning a new Enemy
-                    if(currentFrame % 20 === 0) {
-                        var newEnemy = new Kinetic.Image({
-                            x: getRandomCoordinate(100, 500),
-                            y: getRandomCoordinate(100, 500),
-                            image: enemyImageObj,
-                            width: CONSTANTS.ENEMY_WIDTH,
-                            height: CONSTANTS.ENEMY_HEIGHT,
-                            crop: {
-                                x: 0,
-                                y: 0,
-                                width: CONSTANTS.ENEMY_WIDTH,
-                                height: CONSTANTS.ENEMY_HEIGHT
-                            },
-
-                            scale: {
-                                x: 0.6,
-                                y: 0.6
-                            }
-                        });
-
-                        enemies[currentFrame] = newEnemy;
-                        enemiesLayer.add(newEnemy);
-                    }
-
-                    // Updating each Enemy separately
-                    for(var enemyId in enemies) {
-                        var currentEnemyFrame = currentFrame - enemyId;
-                        if(currentEnemyFrame < CONSTANTS.ENEMY_FRAME_COUNT - 1) {
-                            enemies[enemyId].setCrop({
-                                x: currentEnemyFrame * CONSTANTS.ENEMY_WIDTH,
-                                y: 0,
-                                width: CONSTANTS.ENEMY_WIDTH,
-                                height: CONSTANTS.ENEMY_HEIGHT
-                            });
-                        }
-                    }
-
-                    backgroundLayer.setZIndex(1);
-                    enemiesLayer.setZIndex(2);
-                    playerLayer.setZIndex(3);
-
-                    enemiesLayer.draw();
-                }, 100)
-            }());
         };
 
         enemyImageObj.src = "assets/images/enemy.png";
     }
 
+    function runDeathAnimation() {
+        var deathObj = new Image();
+        deathObj.onload = function () {
+            var deathAnim = new Kinetic.Sprite({
+                x: 200,
+                y: 200,
+                image: deathObj,
+                animation: 'death',
+                animations: {
+                    death: [
+                        0, 0, 256, 256,
+                        256, 0, 256, 256,
+                        512, 0, 256, 256,
+                        768, 0, 256, 256,
+                        1024, 0, 256, 256,
+                        1280, 0, 256, 256,
+                        1536, 0, 256, 256,
+                        1792, 0, 256, 256,
+
+                        0, 256, 256, 256,
+                        256, 256, 256, 256,
+                        512, 256, 256, 256,
+                        768, 256, 256, 256,
+                        1024, 256, 256, 256,
+                        1280, 256, 256, 256,
+                        1536, 256, 256, 256,
+                        1792, 256, 256, 256,
+
+                        0, 512, 256, 256,
+                        256, 512, 256, 256,
+                        512, 512, 256, 256,
+                        768, 512, 256, 256,
+                        1024, 512, 256, 256,
+                        1280, 512, 256, 256,
+                        1536, 512, 256, 256,
+                        1792, 512, 256, 256,
+
+                        0, 768, 256, 256,
+                        256, 768, 256, 256,
+                        512, 768, 256, 256,
+                        768, 768, 256, 256,
+                        1024, 768, 256, 256,
+                        1280, 768, 256, 256,
+                        1536, 768, 256, 256,
+                        1792, 768, 256, 256,
+
+                        0, 1024, 256, 256,
+                        256, 1024, 256, 256,
+                        512, 1024, 256, 256,
+                        768, 1024, 256, 256,
+                        1024, 1024, 256, 256,
+                        1280, 1024, 256, 256,
+                        1536, 1024, 256, 256,
+                        1792, 1024, 256, 256,
+
+                        0, 1280, 256, 256,
+                        256, 1280, 256, 256,
+                        512, 1280, 256, 256,
+                        768, 1280, 256, 256,
+                        1024, 1280, 256, 256,
+                        1280, 1280, 256, 256,
+                        1536, 1280, 256, 256,
+                        1792, 1280, 256, 256
+                    ]
+                },
+
+                frameRate: 30,
+                frameIndex: 0
+            });
+
+                    backgroundLayer.setZIndex(1);
+                    enemiesLayer.setZIndex(2);
+                    playerLayer.setZIndex(3);
+
+            var frameCount = 0;
+
+            playerLayer.add(deathAnim);
+            deathAnim.on('frameIndexChange', function (e) {
+                if(++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
+                    deathAnim.stop();
+                    deathAnim.hide();
+                    frameCount = 0;
+                }
+            });
+
+            deathAnim.start();
+        };
+
+        deathObj.src = 'assets/images/explosion.png';
+    }
+
+    // Returns a random INTEGER number from the range between MIN and MAX values.
+    function getRandomCoordinate(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     function initialize() {
         loadCanvas();
 
         loadBackground();
         loadPlayer();
-        loadEnemy();
+        loadInitialEnemy();
+        runDeathAnimation();
     }
 
     function run() {
+        setTimeout(function () {
+            requestAnimationFrame(run);
 
+            currentFrame += 1;
+
+            // Spawning a new Enemy
+            if (currentFrame % CONSTANTS.ENEMY_SPAWN_FRAME_INTERVAL === 0) {
+                var newEnemy = new Kinetic.Image({
+                    x: getRandomCoordinate(100, 800),
+                    y: getRandomCoordinate(100, 800),
+                    image: enemyImageObj,
+                    width: CONSTANTS.ENEMY_WIDTH,
+                    height: CONSTANTS.ENEMY_HEIGHT,
+                    crop: {
+                        x: 0,
+                        y: 0,
+                        width: CONSTANTS.ENEMY_WIDTH,
+                        height: CONSTANTS.ENEMY_HEIGHT
+                    },
+
+                    scale: {
+                        x: 0.6,
+                        y: 0.6
+                    }
+                });
+
+                enemies.push({
+                    enemy: newEnemy,
+                    frame: currentFrame
+                });
+
+                enemiesLayer.add(newEnemy);
+            }
+
+            // Updating each Enemy separately
+            for (var i = 0, len = enemies.length; i < len; i += 1) {
+                var currentEnemyFrame = currentFrame - enemies[i].frame;
+                if (currentEnemyFrame < CONSTANTS.ENEMY_FRAME_COUNT - 1) {
+                    enemies[i].enemy.setCrop({
+                        x: currentEnemyFrame * CONSTANTS.ENEMY_WIDTH,
+                        y: 0,
+                        width: CONSTANTS.ENEMY_WIDTH,
+                        height: CONSTANTS.ENEMY_HEIGHT
+                    });
+                }
+            }
+
+            backgroundLayer.setZIndex(1);
+            playerLayer.setZIndex(3);
+            enemiesLayer.setZIndex(2);
+
+            enemiesLayer.draw();
+        }, 100)
     }
 
     (function () {
@@ -436,9 +541,3 @@ window.onload = function () {
         run();
     }());
 };
-
-
-// Returns a random INTEGER number from the range between MIN and MAX values.
-function getRandomCoordinate(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}

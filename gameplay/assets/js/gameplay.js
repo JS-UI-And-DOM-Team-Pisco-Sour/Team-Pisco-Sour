@@ -34,7 +34,11 @@ window.onload = function () {
         ENEMY_WIDTH: 99.2,
         ENEMY_HEIGHT: 111,
         ENEMY_FRAME_COUNT: 10,
-        ENEMY_SPAWN_FRAME_INTERVAL: 20
+        ENEMY_SPAWN_FRAME_INTERVAL: 20,
+
+        EXPLOSION_WIDTH: 256,
+        EXPLOSION_HEIGHT: 256,
+        EXPLOSION_SCALE: 2.6
     };
 
     var gameplayContainer,
@@ -59,7 +63,9 @@ window.onload = function () {
         keyPressed,
 
         currentFrame = 0,
-        enemyFrame = 0;
+        enemyFrame = 0,
+
+        deathModeOn = true;
 
 
     function loadCanvas() {
@@ -86,7 +92,6 @@ window.onload = function () {
 
     function loadPlayer() {
         playerImageObj = new Image();
-
         playerImageObj.onload = function () {
             playerKineticImage = new Kinetic.Image({
                 x: 50,
@@ -375,13 +380,18 @@ window.onload = function () {
         enemyImageObj.src = "assets/images/enemy.png";
     }
 
-    function runDeathAnimation() {
+    function runDeathAnimation(targetX, targetY, scale) {
         var deathObj = new Image();
         deathObj.onload = function () {
             var deathAnim = new Kinetic.Sprite({
-                x: 200,
-                y: 200,
+                x: targetX + CONSTANTS.PLAYER_WIDTH / 2 - CONSTANTS.EXPLOSION_WIDTH / 2 * CONSTANTS.EXPLOSION_SCALE,
+                y: targetY + CONSTANTS.PLAYER_HEIGHT / 2 - CONSTANTS.EXPLOSION_HEIGHT / 2 * CONSTANTS.EXPLOSION_SCALE,
                 image: deathObj,
+                scale: {
+                    x: scale,
+                    y: scale
+                },
+
                 animation: 'death',
                 animations: {
                     death: [
@@ -473,7 +483,6 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
-        runDeathAnimation();
     }
 
     function run() {
@@ -509,6 +518,7 @@ window.onload = function () {
                 });
 
                 enemiesLayer.add(newEnemy);
+                console.log(playerKineticImage);
             }
 
             // Updating each Enemy separately
@@ -529,7 +539,13 @@ window.onload = function () {
             enemiesLayer.setZIndex(2);
 
             enemiesLayer.draw();
-        }, 100)
+        }, 100);
+
+        // some code sets deathModeOn to true
+        if(deathModeOn) {
+            runDeathAnimation(playerKineticImage.getX(), playerKineticImage.getY(), 2.5);
+            deathModeOn = false;
+        }
     }
 
     (function () {

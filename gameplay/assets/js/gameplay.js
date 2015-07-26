@@ -380,6 +380,10 @@ window.onload = function () {
         enemyImageObj.src = "assets/images/enemy.png";
     }
 
+    function loadBombSound() {
+        createjs.Sound.registerSound('assets/sounds/boom.mp3', 'boom');
+    }
+
     function runDeathAnimation(targetX, targetY, scale) {
         var deathObj = new Image();
         deathObj.onload = function () {
@@ -466,6 +470,7 @@ window.onload = function () {
                 }
             });
 
+            createjs.Sound.play('boom');
             deathAnim.start();
         };
 
@@ -483,6 +488,7 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
+        loadBombSound();
     }
 
     function run() {

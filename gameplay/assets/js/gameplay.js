@@ -343,6 +343,19 @@ window.onload = function () {
 
             playerLayer.draw();
         });
+        stage.addEventListener('click', function (e) {
+            e = e || window.event; // for IE
+            var isRightClick;
+            if('which' in e) {
+                isRightClick = e.which === 3;
+            } else if('button' in e) { // for IE
+                isRightClick = e.button === 2;
+            }
+
+            if(!isRightClick) {
+                createjs.Sound.play('gun');
+            }
+        })
     }
 
     function loadInitialEnemy() {
@@ -460,7 +473,7 @@ window.onload = function () {
             playerLayer.add(deathAnim);
             deathAnim.on('frameIndexChange', function (e) {
                 if(frameCount === 0) {
-                    createjs.Sound.play('boom');
+                    createjs.Sound.play('bomb');
                 }
 
                 if(++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {

@@ -111,7 +111,7 @@ window.onload = function () {
             stage.add(playerLayer);
         };
 
-        playerImageObj.src = "assets/images/shooter-sprite.png";
+        playerImageObj.src = "assets/images/player.png";
     }
 
     function loadBackground() {
@@ -130,7 +130,7 @@ window.onload = function () {
             stage.add(backgroundLayer);
         };
 
-        backgroundImageObj.src = "assets/images/canvas-bckg.jpg";
+        backgroundImageObj.src = "assets/images/canvas-bg.jpg";
     }
 
     function addKeystrokeListener() {

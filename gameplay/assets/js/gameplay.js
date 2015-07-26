@@ -1,14 +1,11 @@
 window.onload = function () {
     var CONSTANTS = {
         STAGE_WIDTH: 1000,
-<<<<<<< HEAD
         STAGE_HEIGHT: 800,
 
         SCALE_HEIGHT: (1/21),
         SCALE_WIDTH: (1/4.5),
-=======
         STAGE_HEIGHT: 600,
->>>>>>> e6d07cc650e52ad9db2a1936821969b67a4edd24
 
         PLAYER_WIDTH: 155,
         PLAYER_HEIGHT: 160,

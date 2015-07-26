@@ -1,4 +1,10 @@
 window.onload = function () {
+    // Immediately load all sounds
+    (function () {
+        createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
+        createjs.Sound.registerSound('assets/sounds/gunfire.mp3', 'gun');
+    }());
+
     var CONSTANTS = {
         STAGE_WIDTH: 1000,
         STAGE_HEIGHT: 600,

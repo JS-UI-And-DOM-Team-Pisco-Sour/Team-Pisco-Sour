@@ -8,6 +8,7 @@ window.onload = function () {
 
         PLAYER_WIDTH: 155,
         PLAYER_HEIGHT: 160,
+        PLAYER_DEATH_ANIMATION_FRAMES_COUNT: 48,
 
         FACING_DIRECTIONS: {
             UP: 2,
@@ -444,7 +445,17 @@ window.onload = function () {
                 frameIndex: 0
             });
 
+            var frameCount = 0;
+
             playerLayer.add(deathAnim);
+            deathAnim.on('frameIndexChange', function (e) {
+                if(++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
+                    deathAnim.stop();
+                    deathAnim.hide();
+                    frameCount = 0;
+                }
+            });
+
             deathAnim.start();
         };
 

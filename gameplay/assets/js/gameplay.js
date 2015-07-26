@@ -1,10 +1,23 @@
 window.onload = function () {
     var CONSTANTS = {
-        STAGE_WIDTH: 800,
-        STAGE_HEIGHT: 600,
+        STAGE_WIDTH: 1100,
+        STAGE_HEIGHT: 860,
 
         PLAYER_WIDTH: 150,
         PLAYER_HEIGHT: 117,
+        FACING_DIRECTION: {
+            DOWN: 0,
+            UP: 1,
+
+            LEFT: 2,
+            RIGHT: 3,
+
+            UP_LEFT: 4,
+            UP_RIGHT: 5,
+
+            DOWN_LEFT: 6,
+            DOWN_RIGHT: 7
+        },
 
         ENEMY_WIDTH: 99.2,
         ENEMY_HEIGHT: 111,
@@ -15,7 +28,6 @@ window.onload = function () {
         backgroundImageObj, playerImageObj, enemyImageObj,
         currentFrame = 0,enemyFrame = 0;
 
-    // 0: looking down, 1: looking up, 2: looking left, 3: looking right
 
     function loadCanvas() {
         gameplayContainer = document.getElementById('gameplay-container');
@@ -75,6 +87,8 @@ window.onload = function () {
         };
     }
 
+    // 0: looking down, 1: looking up, 2: looking left, 3: looking right
+
     function addMouseEventListener(player) {
         var playerCenterX = player.getX() + CONSTANTS.PLAYER_WIDTH / 2,
             playerCenterY = player.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
@@ -83,7 +97,9 @@ window.onload = function () {
             if (e.clientX < playerCenterX) {
                 if (Math.abs(e.clientY - playerCenterY) < playerCenterX - e.clientX) {
                     player.setCrop({
-                        x: 0, y: 2 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
+                        x: 0,
+                        y: CONSTANTS.FACING_DIRECTION.LEFT * CONSTANTS.PLAYER_HEIGHT,
+                        width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
                 }
@@ -92,7 +108,9 @@ window.onload = function () {
             if (e.clientX > playerCenterX) {
                 if (Math.abs(e.clientY - playerCenterY) < e.clientX - playerCenterX) {
                     player.setCrop({
-                        x: 0, y: 3 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
+                        x: 0,
+                        y: CONSTANTS.FACING_DIRECTION.RIGHT * CONSTANTS.PLAYER_HEIGHT,
+                        width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
                 }
@@ -101,7 +119,9 @@ window.onload = function () {
             if (e.clientY < playerCenterY) {
                 if (Math.abs(e.clientX - playerCenterX) < playerCenterY - e.clientY) {
                     player.setCrop({
-                        x: 0, y: 1 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
+                        x: 0,
+                        y: CONSTANTS.FACING_DIRECTION.UP * CONSTANTS.PLAYER_HEIGHT,
+                        width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
                 }
@@ -110,7 +130,9 @@ window.onload = function () {
             if (e.clientY > playerCenterY) {
                 if (Math.abs(e.clientX - playerCenterX) < e.clientY - playerCenterY) {
                     player.setCrop({
-                        x: 0, y: 0 * CONSTANTS.PLAYER_HEIGHT, width: CONSTANTS.PLAYER_WIDTH,
+                        x: 0,
+                        y: CONSTANTS.FACING_DIRECTION.DOWN * CONSTANTS.PLAYER_HEIGHT,
+                        width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT
                     });
                 }

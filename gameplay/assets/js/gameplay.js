@@ -65,8 +65,8 @@ window.onload = function () {
     };
 
     var gameplayContainer,
-        $gameplayContainer,
-        wholeDoc,
+        gameNameContainer,
+        wholeDocContainer,
 
         stage,
         backgroundLayer,
@@ -99,7 +99,8 @@ window.onload = function () {
         gameplayContainer = document.getElementById('gameplay-container');
         gameplayContainer.setAttribute('width', CONSTANTS.STAGE_WIDTH);
         gameplayContainer.setAttribute('height', CONSTANTS.STAGE_HEIGHT);
-        wholeDoc = document.getElementById('body');
+        gameNameContainer = document.getElementById('game-name');
+        wholeDocContainer = document.getElementById('body');
 
         //Position the action screen
         gameplayContainer.style.position = 'absolute';
@@ -168,7 +169,7 @@ window.onload = function () {
     }
 
     function addKeystrokeListener() {
-        wholeDoc.addEventListener('keyup', function (e) {
+        wholeDocContainer.addEventListener('keyup', function (e) {
             keyPressed = e.keyCode ? e.keyCode : e.which;
 
             if (keyPressed === CONSTANTS.KEYS.Q) {

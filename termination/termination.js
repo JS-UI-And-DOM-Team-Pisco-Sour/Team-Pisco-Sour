@@ -10,7 +10,7 @@ window.onload = function () {
         terminationScreenContainer = document.getElementById('terminationScreen-container');
         terminationScreenContainer.setAttribute('width', 1000);
         terminationScreenContainer.setAttribute('height', 600);
-        wholeDoc = document.getElementById('body');
+        wholeDocContainer = document.getElementById('body');
 
         stage = new Kinetic.Stage({
             container: 'terminationScreen-container',

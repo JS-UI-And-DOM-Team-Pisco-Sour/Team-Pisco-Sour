@@ -85,6 +85,7 @@ window.onload = function () {
         enemies = [],
 
         keyPressed,
+        bulletShotAnimationCoords,
 
         //playerAutoPosition,
         //playerLineEquation,
@@ -522,7 +523,7 @@ window.onload = function () {
             }
 
             if (!isRightClick) {
-                var bulletShotAnimationCoords = {};
+                bulletShotAnimationCoords = {};
                 switch (player.facingDirection) {
                     case CONSTANTS.FACING_DIRECTIONS.LEFT:
                     {
@@ -572,8 +573,8 @@ window.onload = function () {
                         bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
                         break;
                     }
-
                 }
+
                 runBulletShotAnimation(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
                 createjs.Sound.play('gun');
             }

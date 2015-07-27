@@ -178,58 +178,6 @@ window.onload = function () {
         });
     }
 
-    //function checkDirectionAndTeleport(stepsLength) {
-    //    switch (player.facingDirection) {
-    //        //TODO: Check If Out of Border for each case.
-    //        case CONSTANTS.FACING_DIRECTIONS.UP:
-    //        {
-    //            player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
-    //            break;
-    //        }
-    //        case CONSTANTS.FACING_DIRECTIONS.DOWN:
-    //        {
-    //            player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
-    //            break;
-    //        }
-    //        case CONSTANTS.FACING_DIRECTIONS.LEFT:
-    //        {
-    //            player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
-    //            break;
-    //        }
-    //        case CONSTANTS.FACING_DIRECTIONS.RIGHT:
-    //        {
-    //            player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
-    //            break;
-    //        }
-    //        case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
-    //        {
-    //            player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
-    //            player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
-    //            break;
-    //        }
-    //        case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
-    //        {
-    //            player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
-    //            player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
-    //            break;
-    //        }
-    //        case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
-    //        {
-    //            player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
-    //            player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
-    //            break;
-    //        }
-    //        case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
-    //        {
-    //            player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
-    //            player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
-    //            break;
-    //        }
-    //    }
-    //
-    //    playerLayer.draw();
-    //}
-
     function checkDirectionAndTeleport(stepsLength) {
         switch (player.facingDirection) {
             //TODO: Check If Out of Border for each case.
@@ -304,7 +252,7 @@ window.onload = function () {
                 if(playerOutOfBorders(
                         player.kineticImage.getX() - getDisplacement(stepsLength),
                         player.kineticImage.getY() + getDisplacement(stepsLength))) {
-                    
+
                 }
                 else {
                     player.kineticImage.setX(player.kineticImage.getX() - getDisplacement(stepsLength));

@@ -74,8 +74,8 @@ p.speech
 {
     position: relative;
     width: 300px;
-    height: 200px;
-    font-family: 'storyFont';
+    height: 310px;
+    font-family: 'Papyrus';
     font-size: 2em;
     color: #94AAD9;
     text-align: center;
@@ -110,7 +110,7 @@ p.speech:before
     width: 0;
     height: 0;
     left: 30px;
-    top: 220px;
+    top: 330px;
     border: 25px solid;
     border-color: #666 transparent transparent #666;
 }
@@ -122,7 +122,7 @@ p.speech:after
     width: 0;
     height: 0;
     left: 38px;
-    top: 220px;
+    top: 330px;
     border: 15px solid;
     border-color: #01081A transparent transparent #01081A;
 }
@@ -162,14 +162,14 @@ p.speech:after
     -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     outline: none;
-    font-family: 'storyFont';
+    font-family: 'Papyrus';
     font-size: 1.8em;
     letter-spacing: 2px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     color: #fff;
     text-align: center;
-    height: 46px;
-    width: 240px;
+    height: 48px;
+    width: 230px;
     display: block;
     margin: 20px;
 }
@@ -188,14 +188,15 @@ p.speech:after
     -ms-border-radius: 15px;
     -o-border-radius: 15px;
     color: #fff;
-    font-family: "storyFont";
+    font-family: "Papyrus";
     font-size: 1.8em;
     font-weight: bold;
     line-height: 48px;
     text-align: center;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     letter-spacing: 2px;
-    width: 240px;
+    height: 48px;
+    width: 230px;
     display: block;
     margin: 20px;
 }
@@ -214,14 +215,15 @@ p.speech:after
     -ms-border-radius: 15px;
     -o-border-radius: 15px;
     color: #fff;
-    font-family: "storyFont";
+    font-family: "Papyrus";
     font-size: 1.8em;
     font-weight: bold;
     line-height: 48px;
     text-align: center;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     letter-spacing: 2px;
-    width: 240px;
+    height: 48px;
+    width: 230px;
     display: block;
     margin: 20px;
 }

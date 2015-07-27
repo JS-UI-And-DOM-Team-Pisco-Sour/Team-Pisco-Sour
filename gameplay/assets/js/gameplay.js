@@ -56,7 +56,11 @@ window.onload = function () {
 
         EXPLOSION_WIDTH: 256,
         EXPLOSION_HEIGHT: 256,
-        EXPLOSION_SCALE: 2.6
+        EXPLOSION_SCALE: 2.6,
+        EXPLOSION_FRAME_RATE: 30,
+
+        BULLET_SHOT_SCALE: 0.2,
+        BULLET_SHOT_FRAMERATE: 10000000
     };
 
     var gameplayContainer,
@@ -509,6 +513,7 @@ window.onload = function () {
             }
 
             if (!isRightClick) {
+                runBulletShotAnimation(200,200,CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
                 createjs.Sound.play('gun');
             }
         });
@@ -549,47 +554,74 @@ window.onload = function () {
         enemyImageObj.src = "assets/images/enemy.png";
     }
 
-    function runDeathAnimation(targetX, targetY, scale) {
+    function runDeathAnimation(targetX, targetY, scale, frameRate) {
         var frameCount = 0;
-        deathAnim.setAnimation('death');
-        deathAnim.setX(targetX - CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
-        deathAnim.setY(targetY - CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
-        deathAnim.setScale({
+        explosionAnimation.setAnimation('explosion');
+        explosionAnimation.setX(targetX - CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
+        explosionAnimation.setY(targetY - CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
+        explosionAnimation.setScale({
             x: scale,
             y: scale
         });
+        explosionAnimation.setFrameRate(frameRate);
 
-        deathAnim.show();
-        deathAnim.on('frameIndexChange', function (e) {
+        explosionAnimation.show();
+        explosionAnimation.on('frameIndexChange', function (e) {
             if (frameCount === 0) {
                 createjs.Sound.play('bomb');
             }
 
             if (++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
-                deathAnim.stop();
-                deathAnim.hide();
+                explosionAnimation.stop();
+                explosionAnimation.hide();
                 frameCount = 0;
             }
         });
-        deathAnim.start();
+        explosionAnimation.start();
     }
 
-    function loadDeathAnimation(targetX, targetY, scale) {
+    function runBulletShotAnimation(targetX, targetY, scale, frameRate) {
+        explosionAnimation.stop();
+        var frameCount = 0;
+        explosionAnimation.setAnimation('explosion');
+        explosionAnimation.setX(targetX - CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
+        explosionAnimation.setY(targetY - CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
+        explosionAnimation.setScale({
+            x: scale,
+            y: scale
+        });
+        explosionAnimation.setFrameRate(frameRate);
 
+        explosionAnimation.show();
+        explosionAnimation.on('frameIndexChange', function (e) {
+            if (frameCount === 0) {
+                //createjs.Sound.play('bomb');
+            }
+
+            if (++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
+                explosionAnimation.stop();
+                explosionAnimation.hide();
+                frameCount = 0;
+            }
+        });
+        explosionAnimation.start();
+    }
+
+    function loadExplosionAnimation() {
         var deathObj = new Image();
         deathObj.onload = function () {
-            deathAnim = new Kinetic.Sprite({
-                x: targetX - CONSTANTS.EXPLOSION_WIDTH / 2 * scale,
-                y: targetY - CONSTANTS.EXPLOSION_HEIGHT / 2 * scale,
+            explosionAnimation = new Kinetic.Sprite({
+                x: 0,
+                y: 0,
                 image: deathObj,
                 scale: {
-                    x: scale,
-                    y: scale
+                    x: 0,
+                    y: 0
                 },
 
-                animation: 'death',
+                animation: 'explosion',
                 animations: {
-                    death: [
+                    explosion: [
                         0, 0, 256, 256,
                         256, 0, 256, 256,
                         512, 0, 256, 256,
@@ -650,8 +682,8 @@ window.onload = function () {
                 frameIndex: 0
             });
 
-            playerLayer.add(deathAnim);
-            deathAnim.hide();
+            playerLayer.add(explosionAnimation);
+            explosionAnimation.hide();
         };
 
         deathObj.src = 'assets/images/explosion.png';
@@ -668,7 +700,7 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
-        loadDeathAnimation();
+        loadExplosionAnimation();
     }
 
     function run() {
@@ -679,7 +711,7 @@ window.onload = function () {
             // some code sets deathModeOn to true, i.e the hero has died
             if (deathModeOn) {
                 runDeathAnimation(playerKineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
-                                   playerKineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, 2);
+                                   playerKineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
                 cancelAnimationFrame(smoothGameLoop);
                 clearTimeout(gameLoop);
                 playerKineticImage.remove();
@@ -730,8 +762,8 @@ window.onload = function () {
             }
 
             backgroundLayer.setZIndex(1);
-            playerLayer.setZIndex(3);
-            enemiesLayer.setZIndex(2);
+            playerLayer.setZIndex(2);
+            enemiesLayer.setZIndex(3);
 
             enemiesLayer.draw();
         }, 100);

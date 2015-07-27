@@ -82,5 +82,19 @@ p#name {
     right: 0;
     height: 10px;
     width: 0px;
+    max-width: 100%;  
     transition: width .3s linear;
+}
+.log{
+  margin: 8px 0 0 0;
+  padding: 0;
+  font-family: 'Consolas';
+  font-size: 1em;
+  font-weight: bold;
+  color: white;
+}
+
+.log > p {
+  margin: 0 0 0 0;
+  padding: 0;
 }

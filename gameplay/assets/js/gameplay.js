@@ -1,4 +1,15 @@
 window.onload = function () {
+    window.Object.defineProperty( Element.prototype, 'documentOffsetTop', {
+        get: function () {
+            return this.offsetTop + ( this.offsetParent ? this.offsetParent.documentOffsetTop : 0 );
+        }
+    } );
+
+    window.Object.defineProperty( Element.prototype, 'documentOffsetLeft', {
+        get: function () {
+            return this.offsetLeft + ( this.offsetParent ? this.offsetParent.documentOffsetLeft : 0 );
+        }
+    } );
     // Immediately load all sounds
     (function () {
         createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
@@ -48,6 +59,7 @@ window.onload = function () {
     };
 
     var gameplayContainer,
+        $gameplayContainer,
         wholeDoc,
 
         stage,
@@ -350,13 +362,18 @@ window.onload = function () {
 
     function addMouseEventListeners() {
         stage.addEventListener('mousemove', function (e) {
+            $gameplayContainer = $('#gameplay-container');
+            var relativeClientX = e.clientX - $gameplayContainer.offset().left;
+            var relativeClientY = e.clientY - $gameplayContainer.offset().top;
+
+            console.log(relativeClientX);
 
             playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
             playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
 
             // Left
-            if (e.clientX < playerCenterX) {
-                if (Math.abs(e.clientY - playerCenterY) < Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - e.clientX)) {
+            if (relativeClientX < playerCenterX) {
+                if (Math.abs(relativeClientY - playerCenterY) < Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - relativeClientX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.LEFT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.LEFT * CONSTANTS.PLAYER_WIDTH,
@@ -370,8 +387,8 @@ window.onload = function () {
             }
 
             // Right
-            if (e.clientX > playerCenterX) {
-                if (Math.abs(e.clientY - playerCenterY) < Math.tan(22.5 / 180 * Math.PI) * (e.clientX - playerCenterX)) {
+            if (relativeClientX > playerCenterX) {
+                if (Math.abs(relativeClientY - playerCenterY) < Math.tan(22.5 / 180 * Math.PI) * (relativeClientX - playerCenterX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.RIGHT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.RIGHT * CONSTANTS.PLAYER_WIDTH,
@@ -385,8 +402,8 @@ window.onload = function () {
             }
 
             // Down
-            if (e.clientY < playerCenterY) {
-                if (Math.abs(e.clientX - playerCenterX) < Math.tan(22.5 / 180 * Math.PI) * (playerCenterY - e.clientY)) {
+            if (relativeClientY < playerCenterY) {
+                if (Math.abs(relativeClientX - playerCenterX) < Math.tan(22.5 / 180 * Math.PI) * (playerCenterY - relativeClientY)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.DOWN * CONSTANTS.PLAYER_WIDTH,
@@ -400,8 +417,8 @@ window.onload = function () {
             }
 
             // Up
-            if (e.clientY > playerCenterY) {
-                if (Math.abs(e.clientX - playerCenterX) < Math.tan(22.5 / 180 * Math.PI) * (e.clientY - playerCenterY)) {
+            if (relativeClientY > playerCenterY) {
+                if (Math.abs(relativeClientX - playerCenterX) < Math.tan(22.5 / 180 * Math.PI) * (relativeClientY - playerCenterY)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.UP * CONSTANTS.PLAYER_WIDTH,
@@ -415,9 +432,10 @@ window.onload = function () {
             }
 
             // Up-Left
-            if (e.clientX < playerCenterX) {
-                if (playerCenterY - e.clientY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - e.clientX) &&
-                    playerCenterY - e.clientY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - e.clientX)) {
+            if (relativeClientX < playerCenterX) {
+
+                if (playerCenterY - relativeClientY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - relativeClientX) &&
+                    playerCenterY - relativeClientY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - relativeClientX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP_LEFT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.UP_LEFT * CONSTANTS.PLAYER_WIDTH,
@@ -431,9 +449,9 @@ window.onload = function () {
             }
 
             // Down-Left
-            if (e.clientX < playerCenterX) {
-                if (e.clientY - playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - e.clientX) &&
-                    e.clientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - e.clientX)) {
+            if (relativeClientX < playerCenterX) {
+                if (relativeClientY- playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - relativeClientX) &&
+                    relativeClientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - relativeClientX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT * CONSTANTS.PLAYER_WIDTH,
@@ -447,9 +465,9 @@ window.onload = function () {
             }
 
             // Up-Right
-            if (e.clientX > playerCenterX) {
-                if (playerCenterY - e.clientY > Math.tan(22.5 / 180 * Math.PI) * (e.clientX - playerCenterX) &&
-                    playerCenterY - e.clientY < Math.tan(67.5 / 180 * Math.PI) * (e.clientX - playerCenterX)) {
+            if (relativeClientX > playerCenterX) {
+                if (playerCenterY - relativeClientY > Math.tan(22.5 / 180 * Math.PI) * (relativeClientX - playerCenterX) &&
+                    playerCenterY - relativeClientY < Math.tan(67.5 / 180 * Math.PI) * (relativeClientX - playerCenterX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.UP_RIGHT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.UP_RIGHT * CONSTANTS.PLAYER_WIDTH,
@@ -463,9 +481,9 @@ window.onload = function () {
             }
 
             // Down-Right
-            if (e.clientX > playerCenterX) {
-                if (e.clientY - playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (e.clientX - playerCenterX) &&
-                    e.clientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (e.clientX - playerCenterX)) {
+            if (relativeClientX> playerCenterX) {
+                if (relativeClientY- playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (relativeClientX - playerCenterX) &&
+                   relativeClientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (relativeClientX - playerCenterX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT * CONSTANTS.PLAYER_WIDTH,

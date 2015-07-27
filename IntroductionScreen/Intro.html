@@ -6,6 +6,28 @@
     <title></title>
 </head>
 <body>
+    <div id="container">
+
+        <div id="title"><p>Snailiens</p></div>
+
+        <div id="game-description">
+            <p class="speech">I'm stuck on a deserted place surrounded by ugly and dangerous creatures. Please, Help me survive!</p>
+            <p id="hero"><img src="images/hero.svg" alt="" width="150" height="200"></p>
+        </div>
+
+        <div id="menu">
+            <form method="post" action="javascript:void(0);">
+                <input type="text" required placeholder="Hero name" autocomplete="off">
+                <input type="button" value="CONTROLS" title="Show game controls" onclick="playButtonSound()">
+                <input type="submit" value="PLAY" title="Play Snailiens"
+                onclick="playButtonSound()">
+            </form>
+        </div>
+
+        <div id="footer">
+            <p><small>Developed by Team "Pisco Sour" @ Telerik Academy, 2015</small></p>
+        </div>
+    </div>
 
     <script src="IntroControls.js"></script>
 </body>

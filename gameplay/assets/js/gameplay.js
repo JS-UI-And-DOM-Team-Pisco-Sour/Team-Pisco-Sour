@@ -1,7 +1,13 @@
 window.onload = function () {
+    // Immediately load all sounds
+    (function () {
+        createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
+        createjs.Sound.registerSound('assets/sounds/gunfire.mp3', 'gun');
+    }());
+
     var CONSTANTS = {
         STAGE_WIDTH: 1000,
-        STAGE_HEIGHT: 800,
+        STAGE_HEIGHT: 600,
 
         SCALE_HEIGHT: (1 / 21),
         SCALE_WIDTH: (1 / 4.5),
@@ -37,7 +43,8 @@ window.onload = function () {
         ENEMY_SPAWN_FRAME_INTERVAL: 20,
 
         EXPLOSION_WIDTH: 256,
-        EXPLOSION_HEIGHT: 256
+        EXPLOSION_HEIGHT: 256,
+        EXPLOSION_SCALE: 2.6
     };
 
     var gameplayContainer,
@@ -70,7 +77,9 @@ window.onload = function () {
         intersectionPoint,
 
         currentFrame = 0,
-        enemyFrame = 0;
+        enemyFrame = 0,
+
+        deathModeOn = true;
 
 
     function loadCanvas() {
@@ -97,7 +106,6 @@ window.onload = function () {
 
     function loadPlayer() {
         playerImageObj = new Image();
-
         playerImageObj.onload = function () {
             playerKineticImage = new Kinetic.Image({
                 x: 50,
@@ -119,7 +127,7 @@ window.onload = function () {
             };
 
             addKeystrokeListener();
-            addMouseEventListener();
+            addMouseEventListeners();
             playerLayer.add(player.kineticImage);
             stage.add(playerLayer);
         };
@@ -163,6 +171,58 @@ window.onload = function () {
                 // TODO: Raise Hell
             }
         });
+    }
+
+    function checkDirectionAndTeleport(stepsLength) {
+        switch (player.facingDirection) {
+            //TODO: Check If Out of Border for each case.
+            case CONSTANTS.FACING_DIRECTIONS.UP:
+            {
+                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.DOWN:
+            {
+                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.LEFT:
+            {
+                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.RIGHT:
+            {
+                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
+            {
+                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
+            {
+                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
+            {
+                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
+            {
+                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                break;
+            }
+        }
+
+        playerLayer.draw();
     }
 
     function checkDirectionAndTeleport(stepsLength) {
@@ -339,43 +399,9 @@ window.onload = function () {
 
         playerLayer.draw();
     }
-
-    function playerOutOfBorders(x, y) {
-        return (
-            x < 0 ||
-            y < 0 ||
-            x > CONSTANTS.STAGE_WIDTH ||
-            y > CONSTANTS.STAGE_HEIGHT);
-    }
-
-    function getDisplacement(stepsLength) {
-        return stepsLength/Math.sqrt(2);
-    }
-
-    function intersectionPointBetweenTwoStraightLines(firstLine, secondLine) {
-        var determinant = (firstLine.A * secondLine.B - secondLine.A * firstLine.B);
-
-        if(determinant !== 0) {
-            // Lines intersect
-            return {
-                x: (secondLine.B * firstLine.C - firstLine.B * secondLine.C) / determinant,
-                y: (firstLine.A * secondLine.C - secondLine.A * firstLine.C) / determinant
-            }
-        }
-        else{
-            // Lines are parallel
-        }
-    }
-
-    function getStraightLineEquation(pointA, pointB) {
-        return {
-            A: (pointB.y - pointA.y),
-            B: (pointB.x - pointA.x),
-            C: ((-pointA.x) * (pointB.y - pointA.y)) - ((-pointA.y) * (pointB.x - pointA.x))
-        };
-    }
-    function addMouseEventListener() {
-        gameplayContainer.addEventListener('mousemove', function (e) {
+    
+    function addMouseEventListeners() {
+        stage.addEventListener('mousemove', function (e) {
 
             playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
             playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
@@ -506,6 +532,19 @@ window.onload = function () {
 
             playerLayer.draw();
         });
+        stage.addEventListener('click', function (e) {
+            e = e || window.event; // for IE
+            var isRightClick;
+            if('which' in e) {
+                isRightClick = e.which === 3;
+            } else if('button' in e) { // for IE
+                isRightClick = e.button === 2;
+            }
+
+            if(!isRightClick) {
+                createjs.Sound.play('gun');
+            }
+        })
     }
 
     function loadInitialEnemy() {
@@ -543,14 +582,18 @@ window.onload = function () {
         enemyImageObj.src = "assets/images/enemy.png";
     }
 
-    function runDeathAnimation() {
+    function runDeathAnimation(targetX, targetY, scale) {
         var deathObj = new Image();
         deathObj.onload = function () {
             var deathAnim = new Kinetic.Sprite({
-                //scale: {x: 0.6, y: 0.6 },
-                x: enemies[0].enemy.getX() + CONSTANTS.ENEMY_WIDTH / 2 - CONSTANTS.EXPLOSION_WIDTH / 2,
-                y: enemies[0].enemy.getY() + CONSTANTS.ENEMY_HEIGHT / 2 - CONSTANTS.EXPLOSION_HEIGHT / 2,
+                x: targetX + CONSTANTS.PLAYER_WIDTH / 2 - CONSTANTS.EXPLOSION_WIDTH / 2 * CONSTANTS.EXPLOSION_SCALE,
+                y: targetY + CONSTANTS.PLAYER_HEIGHT / 2 - CONSTANTS.EXPLOSION_HEIGHT / 2 * CONSTANTS.EXPLOSION_SCALE,
                 image: deathObj,
+                scale: {
+                    x: scale,
+                    y: scale
+                },
+
                 animation: 'death',
                 animations: {
                     death: [
@@ -614,14 +657,14 @@ window.onload = function () {
                 frameIndex: 0
             });
 
-            backgroundLayer.setZIndex(1);
-            enemiesLayer.setZIndex(2);
-            playerLayer.setZIndex(3);
-
             var frameCount = 0;
 
             playerLayer.add(deathAnim);
             deathAnim.on('frameIndexChange', function (e) {
+                if(frameCount === 0) {
+                    createjs.Sound.play('bomb');
+                }
+
                 if(++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
                     deathAnim.stop();
                     deathAnim.hide();
@@ -646,7 +689,6 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
-        runDeathAnimation();
     }
 
     function run() {
@@ -682,6 +724,7 @@ window.onload = function () {
                 });
 
                 enemiesLayer.add(newEnemy);
+                console.log(playerKineticImage);
             }
 
             // Updating each Enemy separately
@@ -702,7 +745,13 @@ window.onload = function () {
             enemiesLayer.setZIndex(2);
 
             enemiesLayer.draw();
-        }, 100)
+        }, 100);
+
+        // some code sets deathModeOn to true
+        if(deathModeOn) {
+            runDeathAnimation(50, 50, 2.5);
+            deathModeOn = false;
+        }
     }
 
     (function () {
@@ -710,19 +759,3 @@ window.onload = function () {
         run();
     }());
 };
-
-
-function appleCollisionDetected() {
-    snakeHeadCenterX = snake[head].x + snakeWidth/2;
-    snakeHeadCenterY = snake[head].y + snakeHeight/2;
-
-    appleCenterX = appleCoordinateX + appleWidth/2;
-    appleCenterY = appleCoordinateY + appleHeight/2;
-
-    distanceBetweenObjects = (Math.sqrt(Math.pow((snakeHeadCenterX - appleCenterX), 2) + Math.pow((snakeHeadCenterY - appleCenterY), 2)));
-
-    if (distanceBetweenObjects < Math.sqrt(2)*(snakeWidth/2 + snakeHeight/2)) {
-        return true;
-    }
-    return false;
-}

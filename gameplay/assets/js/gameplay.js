@@ -1,15 +1,15 @@
 window.onload = function () {
-    window.Object.defineProperty( Element.prototype, 'documentOffsetTop', {
+    window.Object.defineProperty(Element.prototype, 'documentOffsetTop', {
         get: function () {
             return this.offsetTop + ( this.offsetParent ? this.offsetParent.documentOffsetTop : 0 );
         }
-    } );
+    });
 
-    window.Object.defineProperty( Element.prototype, 'documentOffsetLeft', {
+    window.Object.defineProperty(Element.prototype, 'documentOffsetLeft', {
         get: function () {
             return this.offsetLeft + ( this.offsetParent ? this.offsetParent.documentOffsetLeft : 0 );
         }
-    } );
+    });
 
     // Immediately load all sounds
     (function () {
@@ -86,17 +86,17 @@ window.onload = function () {
         keyPressed,
 
         playerAutoPosition,
-        //playerLineEquation,
-        //firstBoundaryLineEquation,
-        //secondBoundaryLineEquation,
-        //teleportationStartPoint,
-        //teleportationEndPoint,
-        //boundaryStartPoint,
-        //boundaryEndPoint,
-        //secondBoundaryStartPoint,
-        //secondBoundaryEndPoint,
-        //firstIntersectionPoint,
-        //secondIntersectionPoint,
+    //playerLineEquation,
+    //firstBoundaryLineEquation,
+    //secondBoundaryLineEquation,
+    //teleportationStartPoint,
+    //teleportationEndPoint,
+    //boundaryStartPoint,
+    //boundaryEndPoint,
+    //secondBoundaryStartPoint,
+    //secondBoundaryEndPoint,
+    //firstIntersectionPoint,
+    //secondIntersectionPoint,
 
         currentFrame = 0,
         enemyFrame = 0,
@@ -200,7 +200,7 @@ window.onload = function () {
             //TODO: Check If Out of Border for each case.
             case CONSTANTS.FACING_DIRECTIONS.UP:
             {
-                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+                if (playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
 
                 }
                 else {
@@ -210,7 +210,7 @@ window.onload = function () {
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN:
             {
-                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() - stepsLength)) {
+                if (playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() - stepsLength)) {
 
                 }
                 else {
@@ -220,7 +220,7 @@ window.onload = function () {
             }
             case CONSTANTS.FACING_DIRECTIONS.LEFT:
             {
-                if(playerOutOfBorders(player.kineticImage.getX() - stepsLength, player.kineticImage.getY())) {
+                if (playerOutOfBorders(player.kineticImage.getX() - stepsLength, player.kineticImage.getY())) {
 
                 }
                 else {
@@ -230,7 +230,7 @@ window.onload = function () {
             }
             case CONSTANTS.FACING_DIRECTIONS.RIGHT:
             {
-                if(playerOutOfBorders(player.kineticImage.getX() + stepsLength, player.kineticImage.getY())) {
+                if (playerOutOfBorders(player.kineticImage.getX() + stepsLength, player.kineticImage.getY())) {
 
                 }
                 else {
@@ -240,7 +240,7 @@ window.onload = function () {
             }
             case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
             {
-                if(playerOutOfBorders(
+                if (playerOutOfBorders(
                         player.kineticImage.getX() - getDisplacement(stepsLength),
                         player.kineticImage.getY() - getDisplacement(stepsLength))) {
 
@@ -253,7 +253,7 @@ window.onload = function () {
             }
             case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
             {
-                if(playerOutOfBorders(
+                if (playerOutOfBorders(
                         player.kineticImage.getX() + getDisplacement(stepsLength),
                         player.kineticImage.getY() - getDisplacement(stepsLength))) {
 
@@ -266,7 +266,7 @@ window.onload = function () {
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
             {
-                if(playerOutOfBorders(
+                if (playerOutOfBorders(
                         player.kineticImage.getX() - getDisplacement(stepsLength),
                         player.kineticImage.getY() + getDisplacement(stepsLength))) {
 
@@ -279,7 +279,7 @@ window.onload = function () {
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
             {
-                if(playerOutOfBorders(
+                if (playerOutOfBorders(
                         player.kineticImage.getX() + getDisplacement(stepsLength),
                         player.kineticImage.getY() + getDisplacement(stepsLength))) {
 
@@ -296,45 +296,29 @@ window.onload = function () {
     }
 
     function playerOutOfBorders(x, y) {
-        if(x <= 0 && y <= 0) {
-            playerAutoPosition = {
-
-            }
+        if (x <= 0 && y <= 0) {
+            playerAutoPosition = {}
         }
-        else if(x <= 0 && y >= CONSTANTS.STAGE_HEIGHT) {
-            playerAutoPosition = {
-
-            }
+        else if (x <= 0 && y >= CONSTANTS.STAGE_HEIGHT) {
+            playerAutoPosition = {}
         }
-        else if(x >= CONSTANTS.STAGE_WIDTH && y <= 0) {
-            playerAutoPosition = {
-
-            }
+        else if (x >= CONSTANTS.STAGE_WIDTH && y <= 0) {
+            playerAutoPosition = {}
         }
-        else if(x >= CONSTANTS.STAGE_WIDTH && y >= CONSTANTS.STAGE_HEIGHT) {
-            playerAutoPosition = {
-
-            }
+        else if (x >= CONSTANTS.STAGE_WIDTH && y >= CONSTANTS.STAGE_HEIGHT) {
+            playerAutoPosition = {}
         }
-        else if(x <= 0) {
-            playerAutoPosition = {
-
-            }
+        else if (x <= 0) {
+            playerAutoPosition = {}
         }
-        else if(x >= (CONSTANTS.STAGE_WIDTH - CONSTANTS.PLAYER_WIDTH)) {
-            playerAutoPosition = {
-
-            }
+        else if (x >= (CONSTANTS.STAGE_WIDTH - CONSTANTS.PLAYER_WIDTH)) {
+            playerAutoPosition = {}
         }
-        else if(y <= 0) {
-            playerAutoPosition = {
-
-            }
+        else if (y <= 0) {
+            playerAutoPosition = {}
         }
-        else if(y >= (CONSTANTS.STAGE_HEIGHT - CONSTANTS.PLAYER_HEIGHT)) {
-            playerAutoPosition = {
-
-            }
+        else if (y >= (CONSTANTS.STAGE_HEIGHT - CONSTANTS.PLAYER_HEIGHT)) {
+            playerAutoPosition = {}
         }
 
         return (
@@ -345,7 +329,7 @@ window.onload = function () {
     }
 
     function getDisplacement(stepsLength) {
-        return stepsLength/Math.sqrt(2);
+        return stepsLength / Math.sqrt(2);
     }
 
     //function getIntersectionPointBetweenTwoLines(firstLine, secondLine) {
@@ -455,7 +439,7 @@ window.onload = function () {
 
             // Down-Left
             if (relativeClientX < playerCenterX) {
-                if (relativeClientY- playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - relativeClientX) &&
+                if (relativeClientY - playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - relativeClientX) &&
                     relativeClientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - relativeClientX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT) {
                         player.kineticImage.setCrop({
@@ -486,9 +470,9 @@ window.onload = function () {
             }
 
             // Down-Right
-            if (relativeClientX> playerCenterX) {
-                if (relativeClientY- playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (relativeClientX - playerCenterX) &&
-                   relativeClientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (relativeClientX - playerCenterX)) {
+            if (relativeClientX > playerCenterX) {
+                if (relativeClientY - playerCenterY > Math.tan(22.5 / 180 * Math.PI) * (relativeClientX - playerCenterX) &&
+                    relativeClientY - playerCenterY < Math.tan(67.5 / 180 * Math.PI) * (relativeClientX - playerCenterX)) {
                     if (player.facingDirection !== CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT) {
                         player.kineticImage.setCrop({
                             x: CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT * CONSTANTS.PLAYER_WIDTH,
@@ -513,7 +497,59 @@ window.onload = function () {
             }
 
             if (!isRightClick) {
-                runBulletShotAnimation(200,200,CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
+                var bulletShotAnimationCoords = {};
+                switch (player.facingDirection) {
+                    case CONSTANTS.FACING_DIRECTIONS.LEFT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.RIGHT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.UP:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.DOWN:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
+                        break;
+                    }
+
+                }
+                runBulletShotAnimation(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
                 createjs.Sound.play('gun');
             }
         });
@@ -711,7 +747,7 @@ window.onload = function () {
             // some code sets deathModeOn to true, i.e the hero has died
             if (deathModeOn) {
                 runDeathAnimation(playerKineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
-                                   playerKineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
+                    playerKineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
                 cancelAnimationFrame(smoothGameLoop);
                 clearTimeout(gameLoop);
                 playerKineticImage.remove();

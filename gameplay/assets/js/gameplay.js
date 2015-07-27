@@ -21,7 +21,7 @@ window.onload = function () {
         STAGE_WIDTH: 1000,
         STAGE_HEIGHT: 600,
 
-        SCALE_HEIGHT: (1 / 21),
+        SCALE_HEIGHT: (1 / 6),
         SCALE_WIDTH: (1 / 4.5),
 
         PLAYER_WIDTH: 155,
@@ -60,7 +60,8 @@ window.onload = function () {
         EXPLOSION_FRAME_RATE: 30,
 
         BULLET_SHOT_SCALE: 0.2,
-        BULLET_SHOT_FRAMERATE: 10000000
+        BULLET_SHOT_FRAMERATE: 10000000,
+        SHIFT: 30
     };
 
     var gameplayContainer,
@@ -85,18 +86,8 @@ window.onload = function () {
 
         keyPressed,
 
-        playerAutoPosition,
+        //playerAutoPosition,
         //playerLineEquation,
-        //firstBoundaryLineEquation,
-        //secondBoundaryLineEquation,
-        //teleportationStartPoint,
-        //teleportationEndPoint,
-        //boundaryStartPoint,
-        //boundaryEndPoint,
-        //secondBoundaryStartPoint,
-        //secondBoundaryEndPoint,
-        //firstIntersectionPoint,
-        //secondIntersectionPoint,
 
         currentFrame = 0,
         enemyFrame = 0,
@@ -111,9 +102,9 @@ window.onload = function () {
         wholeDoc = document.getElementById('body');
 
         //Position the action screen
-        //gameplayContainer.style.position = 'absolute';
-        //gameplayContainer.style.top = (screen.height * CONSTANTS.SCALE_HEIGHT) + 'px';
-        //gameplayContainer.style.left = (screen.width * CONSTANTS.SCALE_WIDTH) + 'px';
+        gameplayContainer.style.position = 'absolute';
+        gameplayContainer.style.top = (screen.height * CONSTANTS.SCALE_HEIGHT) + 'px';
+        gameplayContainer.style.left = (screen.width * CONSTANTS.SCALE_WIDTH) + 'px';
 
         stage = new Kinetic.Stage({
             container: 'gameplay-container',
@@ -295,59 +286,62 @@ window.onload = function () {
         playerLayer.draw();
     }
 
-    function playerOutOfBorders(x, y) {
-        if(x <= 0 && y <= 0) {
-            playerAutoPosition = {
-
-            }
-        }
-        else if(x <= 0 && y >= CONSTANTS.STAGE_HEIGHT) {
-            playerAutoPosition = {
-
-            }
-        }
-        else if(x >= CONSTANTS.STAGE_WIDTH && y <= 0) {
-            playerAutoPosition = {
-
-            }
-        }
-        else if(x >= CONSTANTS.STAGE_WIDTH && y >= CONSTANTS.STAGE_HEIGHT) {
-            playerAutoPosition = {
-
-            }
-        }
-        else if(x <= 0) {
-            playerAutoPosition = {
-
-            }
-        }
-        else if(x >= (CONSTANTS.STAGE_WIDTH - CONSTANTS.PLAYER_WIDTH)) {
-            playerAutoPosition = {
-
-            }
-        }
-        else if(y <= 0) {
-            playerAutoPosition = {
-
-            }
-        }
-        else if(y >= (CONSTANTS.STAGE_HEIGHT - CONSTANTS.PLAYER_HEIGHT)) {
-            playerAutoPosition = {
-
-            }
-        }
-
-        return (
-        x <= 0 ||
-        y <= 0 ||
-        x >= (CONSTANTS.STAGE_WIDTH - CONSTANTS.PLAYER_WIDTH) ||
-        y >= (CONSTANTS.STAGE_HEIGHT - CONSTANTS.PLAYER_HEIGHT));
-    }
-
-    function getDisplacement(stepsLength) {
-        return stepsLength/Math.sqrt(2);
-    }
-
+    //function checkWhereTheBorderIsCrossed() {
+    //    playerLineEquation = getStraightLineEquation({
+    //            x: player.kineticImage.getX(),
+    //            y: player.kineticImage.getY()
+    //        },
+    //        {
+    //            x: x,
+    //            y: y
+    //        });
+    //
+    //    if(x <= 0 && y <= 0) {
+    //        playerAutoPosition = {
+    //
+    //        }
+    //    }
+    //    else if(x <= 0 && y >= CONSTANTS.STAGE_HEIGHT) {
+    //        playerAutoPosition = {
+    //
+    //        }
+    //    }
+    //    else if(x >= CONSTANTS.STAGE_WIDTH && y <= 0) {
+    //        playerAutoPosition = {
+    //
+    //        }
+    //    }
+    //    else if(x >= CONSTANTS.STAGE_WIDTH && y >= CONSTANTS.STAGE_HEIGHT) {
+    //        playerAutoPosition = {
+    //
+    //        }
+    //    }
+    //    else if(x <= 0) {
+    //        playerAutoPosition = {
+    //
+    //        }
+    //    }
+    //    else if(x >= (CONSTANTS.STAGE_WIDTH - CONSTANTS.PLAYER_WIDTH)) {
+    //        playerAutoPosition = {
+    //
+    //        }
+    //    }
+    //    else if(y <= 0) {
+    //        playerAutoPosition = {
+    //            x: (-(playerLineEquation.C/playerLineEquation.A)),
+    //            y: CONSTANTS.PLAYER_HEIGHT/4
+    //        };
+    //
+    //        player.kineticImage.setX(playerAutoPosition.x);
+    //        player.kineticImage.setY(playerAutoPosition.y);
+    //        alert(player.kineticImage.getX() + ' ' + player.kineticImage.getY());
+    //    }
+    //    else if(y >= (CONSTANTS.STAGE_HEIGHT - CONSTANTS.PLAYER_HEIGHT)) {
+    //        playerAutoPosition = {
+    //
+    //        }
+    //    }
+    //}
     //function getIntersectionPointBetweenTwoLines(firstLine, secondLine) {
     //    var delta = (firstLine.A*secondLine.B - secondLine.A*firstLine.B);
     //
@@ -357,13 +351,27 @@ window.onload = function () {
     //    };
     //}
     //
-    //function getStraightLineEquation(pointA, pointB) {
-    //    return {
-    //        A: (pointB.y - pointA.y),
-    //        B: (pointB.x - pointA.x),
-    //        C: ((-pointA.x) * (pointB.y - pointA.y)) - ((-pointA.y) * (pointB.x - pointA.x))
-    //    };
-    //}
+
+    function playerOutOfBorders(x, y) {
+        return (
+        x <= (0 - CONSTANTS.PLAYER_WIDTH/8) ||
+        y <= (0 - CONSTANTS.PLAYER_HEIGHT/8) ||
+        x >= (CONSTANTS.STAGE_WIDTH - CONSTANTS.PLAYER_WIDTH/2 - 30) ||
+        y >= (CONSTANTS.STAGE_HEIGHT - CONSTANTS.PLAYER_HEIGHT/2 - 30));
+    }
+
+    function getDisplacement(stepsLength) {
+        return stepsLength/Math.sqrt(2);
+    }
+
+
+    function getStraightLineEquation(pointA, pointB) {
+        return {
+            A: (pointB.y - pointA.y),
+            B: (pointB.x - pointA.x),
+            C: ((-pointA.x) * (pointB.y - pointA.y)) - ((-pointA.y) * (pointB.x - pointA.x))
+        };
+    }
 
     function addMouseEventListeners() {
         stage.addEventListener('mousemove', function (e) {
@@ -696,7 +704,6 @@ window.onload = function () {
 
     function initialize() {
         loadCanvas();
-
         loadBackground();
         loadPlayer();
         loadInitialEnemy();

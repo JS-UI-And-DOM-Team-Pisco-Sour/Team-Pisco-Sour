@@ -110,6 +110,7 @@
 
         var animatedText = paper.text(0, 0, teamName)
             .attr({
+                'font': '30px Consolas',
                 'textpath': path
             })
             .transform('t200,200');

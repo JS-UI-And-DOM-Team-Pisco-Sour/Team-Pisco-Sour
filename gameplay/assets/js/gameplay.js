@@ -34,7 +34,10 @@ window.onload = function () {
         ENEMY_WIDTH: 99.2,
         ENEMY_HEIGHT: 111,
         ENEMY_FRAME_COUNT: 10,
-        ENEMY_SPAWN_FRAME_INTERVAL: 20
+        ENEMY_SPAWN_FRAME_INTERVAL: 20,
+
+        EXPLOSION_WIDTH: 256,
+        EXPLOSION_HEIGHT: 256
     };
 
     var gameplayContainer,
@@ -57,6 +60,14 @@ window.onload = function () {
         enemies = [],
 
         keyPressed,
+
+        firstLineEquation,
+        secondLineEquation,
+        teleportationStartPoint,
+        teleportationEndPoint,
+        boundaryStartPoint,
+        boundaryEndPoint,
+        intersectionPoint,
 
         currentFrame = 0,
         enemyFrame = 0;
@@ -159,46 +170,169 @@ window.onload = function () {
             //TODO: Check If Out of Border for each case.
             case CONSTANTS.FACING_DIRECTIONS.UP:
             {
-                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                }
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN:
             {
-                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                }
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.LEFT:
             {
-                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                }
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.RIGHT:
             {
-                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                }
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
             {
-                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
-                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() - getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() - getDisplacement(stepsLength));
+                }
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
             {
-                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
-                player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() + getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() - getDisplacement(stepsLength));
+                }
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
             {
-                player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
-                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                if(playerOutOfBorders(
+                        player.kineticImage.getX(),
+                        player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() - getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() + getDisplacement(stepsLength));
+                }
                 break;
             }
             case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
             {
-                player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
-                player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                if (playerOutOfBorders(
+                        player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT
+                    ))
+                {
+                    teleportationStartPoint = {
+                        x: player.kineticImage.getX(),
+                        y: player.kineticImage.getY()
+                    };
+                    teleportationEndPoint = {
+                        x: player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        y: player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT
+                    };
+                    boundaryStartPoint = {
+                        x: 0,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+                    boundaryEndPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+
+                    firstLineEquation = getStraightLineEquation(teleportationStartPoint,teleportationEndPoint);
+                    secondLineEquation = getStraightLineEquation(boundaryStartPoint, boundaryEndPoint);
+                    intersectionPoint = intersectionPointBetweenTwoStraightLines(firstLineEquation, secondLineEquation);
+
+                    player.kineticImage.setX(Math.abs(intersectionPoint.x) - CONSTANTS.PLAYER_WIDTH);
+                    player.kineticImage.setY(Math.abs(intersectionPoint.y) - CONSTANTS.PLAYER_HEIGHT);
+                }
+                else if (playerOutOfBorders(
+                        player.kineticImage.getX() + getDisplacement(stepsLength),
+                        player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT)) {
+                    teleportationStartPoint = {
+                        x: player.kineticImage.getX(),
+                        y: player.kineticImage.getY()
+                    };
+                    teleportationEndPoint = {
+                        x: player.kineticImage.getX() + getDisplacement(stepsLength),
+                        y: player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT
+                    };
+                    boundaryStartPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+                    boundaryEndPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: 0
+                    };
+
+                    firstLineEquation = getStraightLineEquation(teleportationStartPoint,teleportationEndPoint);
+                    secondLineEquation = getStraightLineEquation(boundaryStartPoint, boundaryEndPoint);
+                    intersectionPoint = intersectionPointBetweenTwoStraightLines(firstLineEquation, secondLineEquation);
+
+                    player.kineticImage.setX(Math.abs(intersectionPoint.x) + CONSTANTS.PLAYER_WIDTH / 2);
+                    player.kineticImage.setY(Math.abs(intersectionPoint.y) - CONSTANTS.PLAYER_HEIGHT);
+                }
+                else if(playerOutOfBorders(
+                        player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        player.kineticImage.getY() + getDisplacement(stepsLength)
+                    )) {
+                    teleportationStartPoint = {
+                        x: player.kineticImage.getX(),
+                        y: player.kineticImage.getY()
+                    };
+                    teleportationEndPoint = {
+                        x: player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        y: player.kineticImage.getY() + getDisplacement(stepsLength)
+                    };
+                    boundaryStartPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+                    boundaryEndPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: 0
+                    };
+
+                    firstLineEquation = getStraightLineEquation(teleportationStartPoint, teleportationEndPoint);
+                    secondLineEquation = getStraightLineEquation(boundaryStartPoint, boundaryEndPoint);
+                    intersectionPoint = intersectionPointBetweenTwoStraightLines(firstLineEquation, secondLineEquation);
+
+                    player.kineticImage.setX(Math.abs(intersectionPoint.x) - CONSTANTS.PLAYER_WIDTH);
+                    player.kineticImage.setY(Math.abs(intersectionPoint.y) + CONSTANTS.PLAYER_HEIGHT / 2);
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() + getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() + getDisplacement(stepsLength));
+                }
                 break;
             }
         }
@@ -206,6 +340,40 @@ window.onload = function () {
         playerLayer.draw();
     }
 
+    function playerOutOfBorders(x, y) {
+        return (
+            x < 0 ||
+            y < 0 ||
+            x > CONSTANTS.STAGE_WIDTH ||
+            y > CONSTANTS.STAGE_HEIGHT);
+    }
+
+    function getDisplacement(stepsLength) {
+        return stepsLength/Math.sqrt(2);
+    }
+
+    function intersectionPointBetweenTwoStraightLines(firstLine, secondLine) {
+        var determinant = (firstLine.A * secondLine.B - secondLine.A * firstLine.B);
+
+        if(determinant !== 0) {
+            // Lines intersect
+            return {
+                x: (secondLine.B * firstLine.C - firstLine.B * secondLine.C) / determinant,
+                y: (firstLine.A * secondLine.C - secondLine.A * firstLine.C) / determinant
+            }
+        }
+        else{
+            // Lines are parallel
+        }
+    }
+
+    function getStraightLineEquation(pointA, pointB) {
+        return {
+            A: (pointB.y - pointA.y),
+            B: (pointB.x - pointA.x),
+            C: ((-pointA.x) * (pointB.y - pointA.y)) - ((-pointA.y) * (pointB.x - pointA.x))
+        };
+    }
     function addMouseEventListener() {
         gameplayContainer.addEventListener('mousemove', function (e) {
 
@@ -379,8 +547,9 @@ window.onload = function () {
         var deathObj = new Image();
         deathObj.onload = function () {
             var deathAnim = new Kinetic.Sprite({
-                x: 200,
-                y: 200,
+                //scale: {x: 0.6, y: 0.6 },
+                x: enemies[0].enemy.getX() + CONSTANTS.ENEMY_WIDTH / 2 - CONSTANTS.EXPLOSION_WIDTH / 2,
+                y: enemies[0].enemy.getY() + CONSTANTS.ENEMY_HEIGHT / 2 - CONSTANTS.EXPLOSION_HEIGHT / 2,
                 image: deathObj,
                 animation: 'death',
                 animations: {
@@ -445,9 +614,9 @@ window.onload = function () {
                 frameIndex: 0
             });
 
-                    backgroundLayer.setZIndex(1);
-                    enemiesLayer.setZIndex(2);
-                    playerLayer.setZIndex(3);
+            backgroundLayer.setZIndex(1);
+            enemiesLayer.setZIndex(2);
+            playerLayer.setZIndex(3);
 
             var frameCount = 0;
 
@@ -541,3 +710,19 @@ window.onload = function () {
         run();
     }());
 };
+
+
+function appleCollisionDetected() {
+    snakeHeadCenterX = snake[head].x + snakeWidth/2;
+    snakeHeadCenterY = snake[head].y + snakeHeight/2;
+
+    appleCenterX = appleCoordinateX + appleWidth/2;
+    appleCenterY = appleCoordinateY + appleHeight/2;
+
+    distanceBetweenObjects = (Math.sqrt(Math.pow((snakeHeadCenterX - appleCenterX), 2) + Math.pow((snakeHeadCenterY - appleCenterY), 2)));
+
+    if (distanceBetweenObjects < Math.sqrt(2)*(snakeWidth/2 + snakeHeight/2)) {
+        return true;
+    }
+    return false;
+}

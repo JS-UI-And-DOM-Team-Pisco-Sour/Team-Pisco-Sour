@@ -1,4 +1,4 @@
-(function () {
+window.onload = function () {
     var CONSTANTS = {
         SVG_WIDTH: 400,
         SVG_HEIGHT: 400,
@@ -11,7 +11,6 @@
         SHIP_SCALE: 3,
 
         BEZIER_CIRCLE_CONST: 0.551915,
-        LOOP_RADIUS: 170,
         MAX_NUMBER_OF_LOOPS: 100,
         LOOP_TIME: 10000,
         LOOP_OFFSET: 1000
@@ -95,18 +94,19 @@
     }
 
     function drawTeamName() {
+        var loopRadius = CONSTANTS.SVG_WIDTH / 2 - 2 * CONSTANTS.OUTLINE_STROKE_WIDTH;
         var teamName = 'TEAM PISCO SOUR';
-        var controlPointParameter = Math.floor(CONSTANTS.BEZIER_CIRCLE_CONST * CONSTANTS.LOOP_RADIUS);
-        var path = 'M0 ' + CONSTANTS.LOOP_RADIUS +
+        var controlPointParameter = Math.floor(CONSTANTS.BEZIER_CIRCLE_CONST * loopRadius);
+        var path = 'M0 ' + loopRadius +
             Array.apply(null, new Array(CONSTANTS.MAX_NUMBER_OF_LOOPS))
                 .map(function () {
-                    return 'C' + controlPointParameter + ' ' + CONSTANTS.LOOP_RADIUS + ' ' + CONSTANTS.LOOP_RADIUS + ' ' +
-                        controlPointParameter + ' ' + CONSTANTS.LOOP_RADIUS + ' 0 C' + CONSTANTS.LOOP_RADIUS + ' -' +
-                        controlPointParameter + ' ' + controlPointParameter + ' -' + CONSTANTS.LOOP_RADIUS + ' 0 -' +
-                        CONSTANTS.LOOP_RADIUS + ' C -' + controlPointParameter + ' -' + CONSTANTS.LOOP_RADIUS + ' -' +
-                        CONSTANTS.LOOP_RADIUS + ' -' + controlPointParameter + ' -' + CONSTANTS.LOOP_RADIUS + ' 0 C -' +
-                        CONSTANTS.LOOP_RADIUS + ' ' + controlPointParameter + ' -' + controlPointParameter + ' ' +
-                        CONSTANTS.LOOP_RADIUS + ' 0 ' + CONSTANTS.LOOP_RADIUS + ' ';
+                    return 'C' + controlPointParameter + ' ' + loopRadius + ' ' + loopRadius + ' ' +
+                        controlPointParameter + ' ' + loopRadius + ' 0 C' + loopRadius + ' -' +
+                        controlPointParameter + ' ' + controlPointParameter + ' -' + loopRadius + ' 0 -' +
+                        loopRadius + ' C -' + controlPointParameter + ' -' + loopRadius + ' -' +
+                        loopRadius + ' -' + controlPointParameter + ' -' + loopRadius + ' 0 C -' +
+                        loopRadius + ' ' + controlPointParameter + ' -' + controlPointParameter + ' ' +
+                        loopRadius + ' 0 ' + loopRadius + ' ';
                 })
                 .join('');
 
@@ -131,4 +131,4 @@
         drawSpaceship();
         drawTeamName();
     }())
-}());
+};

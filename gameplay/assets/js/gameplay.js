@@ -71,7 +71,7 @@ window.onload = function () {
         currentFrame = 0,
         enemyFrame = 0,
 
-        deathModeOn = true;
+        deathModeOn = false;
 
 
     function loadCanvas() {
@@ -349,16 +349,16 @@ window.onload = function () {
 
             playerLayer.draw();
         });
-        stage.addEventListener('click', function (e) {
+        stage.addEventListener('mousedown', function (e) {
             e = e || window.event; // for IE
             var isRightClick;
-            if('which' in e) {
+            if ('which' in e) {
                 isRightClick = e.which === 3;
-            } else if('button' in e) { // for IE
+            } else if ('button' in e) { // for IE
                 isRightClick = e.button === 2;
             }
 
-            if(!isRightClick) {
+            if (!isRightClick) {
                 createjs.Sound.play('gun');
             }
         })
@@ -400,15 +400,29 @@ window.onload = function () {
     }
 
     function runDeathAnimation(targetX, targetY, scale) {
+        deathAnim.setAnimation('death');
+        deathAnim.setX(targetX - CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
+        deathAnim.setY(targetY - CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
+        deathAnim.setScale({
+            x: scale,
+            y: scale
+        });
+
+        deathAnim.show();
+        deathAnim.start();
+    }
+
+    function loadDeathAnimation() {
+
         var deathObj = new Image();
         deathObj.onload = function () {
-            var deathAnim = new Kinetic.Sprite({
-                x: targetX + CONSTANTS.PLAYER_WIDTH / 2 - CONSTANTS.EXPLOSION_WIDTH / 2 * CONSTANTS.EXPLOSION_SCALE,
-                y: targetY + CONSTANTS.PLAYER_HEIGHT / 2 - CONSTANTS.EXPLOSION_HEIGHT / 2 * CONSTANTS.EXPLOSION_SCALE,
+            deathAnim = new Kinetic.Sprite({
+                x: 0,
+                y: 0,
                 image: deathObj,
                 scale: {
-                    x: scale,
-                    y: scale
+                    x: 0,
+                    y: 0
                 },
 
                 animation: 'death',
@@ -478,18 +492,18 @@ window.onload = function () {
 
             playerLayer.add(deathAnim);
             deathAnim.on('frameIndexChange', function (e) {
-                if(frameCount === 0) {
+                if (frameCount === 0 && deathModeOn) {
                     createjs.Sound.play('bomb');
                 }
 
-                if(++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
+                if (++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
                     deathAnim.stop();
                     deathAnim.hide();
                     frameCount = 0;
                 }
             });
 
-            deathAnim.start();
+            deathAnim.hide();
         };
 
         deathObj.src = 'assets/images/explosion.png';
@@ -506,6 +520,7 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
+        loadDeathAnimation();
     }
 
     function run() {
@@ -541,7 +556,6 @@ window.onload = function () {
                 });
 
                 enemiesLayer.add(newEnemy);
-                console.log(playerKineticImage);
             }
 
             // Updating each Enemy separately
@@ -564,10 +578,9 @@ window.onload = function () {
             enemiesLayer.draw();
         }, 100);
 
-        // some code sets deathModeOn to true
-        if(deathModeOn) {
-            runDeathAnimation(50, 50, 2.5);
-            deathModeOn = false;
+        // some code sets deathModeOn to true, i.e the hero has died
+        if (deathModeOn) {
+            runDeathAnimation(playerKineticImage.getX(), playerKineticImage.getY(), 2);
         }
     }
 

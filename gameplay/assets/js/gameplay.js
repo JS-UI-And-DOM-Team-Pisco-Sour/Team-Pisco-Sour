@@ -511,7 +511,7 @@ window.onload = function () {
             if (!isRightClick) {
                 createjs.Sound.play('gun');
             }
-        })
+        });
     }
 
     function loadInitialEnemy() {
@@ -550,6 +550,7 @@ window.onload = function () {
     }
 
     function runDeathAnimation(targetX, targetY, scale) {
+        var frameCount = 0;
         deathAnim.setAnimation('death');
         deathAnim.setX(targetX - CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
         deathAnim.setY(targetY - CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
@@ -559,6 +560,17 @@ window.onload = function () {
         });
 
         deathAnim.show();
+        deathAnim.on('frameIndexChange', function (e) {
+            if (frameCount === 0) {
+                createjs.Sound.play('bomb');
+            }
+
+            if (++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
+                deathAnim.stop();
+                deathAnim.hide();
+                frameCount = 0;
+            }
+        });
         deathAnim.start();
     }
 
@@ -638,22 +650,8 @@ window.onload = function () {
                 frameIndex: 0
             });
 
-            var frameCount = 0;
-
             playerLayer.add(deathAnim);
-            deathAnim.on('frameIndexChange', function (e) {
-                if (frameCount === 0) {
-                    createjs.Sound.play('bomb');
-                }
-
-                if (++frameCount > CONSTANTS.PLAYER_DEATH_ANIMATION_FRAMES_COUNT - 1) {
-                    deathAnim.stop();
-                    deathAnim.hide();
-                    frameCount = 0;
-                }
-            });
-
-            deathAnim.start();
+            deathAnim.hide();
         };
 
         deathObj.src = 'assets/images/explosion.png';
@@ -670,7 +668,7 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
-        //loadDeathAnimation();
+        loadDeathAnimation();
     }
 
     function run() {
@@ -680,9 +678,7 @@ window.onload = function () {
 
             // some code sets deathModeOn to true, i.e the hero has died
             if (deathModeOn) {
-
-                console.log(deathModeOn);
-                loadDeathAnimation(playerKineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
+                runDeathAnimation(playerKineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
                                    playerKineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, 2);
                 cancelAnimationFrame(smoothGameLoop);
                 clearTimeout(gameLoop);

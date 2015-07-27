@@ -68,6 +68,14 @@ window.onload = function () {
 
         keyPressed,
 
+        firstLineEquation,
+        secondLineEquation,
+        teleportationStartPoint,
+        teleportationEndPoint,
+        boundaryStartPoint,
+        boundaryEndPoint,
+        intersectionPoint,
+
         currentFrame = 0,
         enemyFrame = 0,
 
@@ -217,6 +225,181 @@ window.onload = function () {
         playerLayer.draw();
     }
 
+    function checkDirectionAndTeleport(stepsLength) {
+        switch (player.facingDirection) {
+            //TODO: Check If Out of Border for each case.
+            case CONSTANTS.FACING_DIRECTIONS.UP:
+            {
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setY(player.kineticImage.getY() + stepsLength);
+                }
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.DOWN:
+            {
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setY(player.kineticImage.getY() - stepsLength);
+                }
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.LEFT:
+            {
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() - stepsLength);
+                }
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.RIGHT:
+            {
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() + stepsLength);
+                }
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
+            {
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() - getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() - getDisplacement(stepsLength));
+                }
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
+            {
+                if(playerOutOfBorders(player.kineticImage.getX(), player.kineticImage.getY() + stepsLength)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() + getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() - getDisplacement(stepsLength));
+                }
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
+            {
+                if(playerOutOfBorders(
+                        player.kineticImage.getX(),
+                        player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT)) {
+
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() - getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() + getDisplacement(stepsLength));
+                }
+                break;
+            }
+            case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
+            {
+                if (playerOutOfBorders(
+                        player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT
+                    ))
+                {
+                    teleportationStartPoint = {
+                        x: player.kineticImage.getX(),
+                        y: player.kineticImage.getY()
+                    };
+                    teleportationEndPoint = {
+                        x: player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        y: player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT
+                    };
+                    boundaryStartPoint = {
+                        x: 0,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+                    boundaryEndPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+
+                    firstLineEquation = getStraightLineEquation(teleportationStartPoint,teleportationEndPoint);
+                    secondLineEquation = getStraightLineEquation(boundaryStartPoint, boundaryEndPoint);
+                    intersectionPoint = intersectionPointBetweenTwoStraightLines(firstLineEquation, secondLineEquation);
+
+                    player.kineticImage.setX(Math.abs(intersectionPoint.x) - CONSTANTS.PLAYER_WIDTH);
+                    player.kineticImage.setY(Math.abs(intersectionPoint.y) - CONSTANTS.PLAYER_HEIGHT);
+                }
+                else if (playerOutOfBorders(
+                        player.kineticImage.getX() + getDisplacement(stepsLength),
+                        player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT)) {
+                    teleportationStartPoint = {
+                        x: player.kineticImage.getX(),
+                        y: player.kineticImage.getY()
+                    };
+                    teleportationEndPoint = {
+                        x: player.kineticImage.getX() + getDisplacement(stepsLength),
+                        y: player.kineticImage.getY() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_HEIGHT
+                    };
+                    boundaryStartPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+                    boundaryEndPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: 0
+                    };
+
+                    firstLineEquation = getStraightLineEquation(teleportationStartPoint,teleportationEndPoint);
+                    secondLineEquation = getStraightLineEquation(boundaryStartPoint, boundaryEndPoint);
+                    intersectionPoint = intersectionPointBetweenTwoStraightLines(firstLineEquation, secondLineEquation);
+
+                    player.kineticImage.setX(Math.abs(intersectionPoint.x) + CONSTANTS.PLAYER_WIDTH / 2);
+                    player.kineticImage.setY(Math.abs(intersectionPoint.y) - CONSTANTS.PLAYER_HEIGHT);
+                }
+                else if(playerOutOfBorders(
+                        player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        player.kineticImage.getY() + getDisplacement(stepsLength)
+                    )) {
+                    teleportationStartPoint = {
+                        x: player.kineticImage.getX(),
+                        y: player.kineticImage.getY()
+                    };
+                    teleportationEndPoint = {
+                        x: player.kineticImage.getX() + getDisplacement(stepsLength) + CONSTANTS.PLAYER_WIDTH,
+                        y: player.kineticImage.getY() + getDisplacement(stepsLength)
+                    };
+                    boundaryStartPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: CONSTANTS.STAGE_HEIGHT
+                    };
+                    boundaryEndPoint = {
+                        x: CONSTANTS.STAGE_WIDTH,
+                        y: 0
+                    };
+
+                    firstLineEquation = getStraightLineEquation(teleportationStartPoint, teleportationEndPoint);
+                    secondLineEquation = getStraightLineEquation(boundaryStartPoint, boundaryEndPoint);
+                    intersectionPoint = intersectionPointBetweenTwoStraightLines(firstLineEquation, secondLineEquation);
+
+                    player.kineticImage.setX(Math.abs(intersectionPoint.x) - CONSTANTS.PLAYER_WIDTH);
+                    player.kineticImage.setY(Math.abs(intersectionPoint.y) + CONSTANTS.PLAYER_HEIGHT / 2);
+                }
+                else {
+                    player.kineticImage.setX(player.kineticImage.getX() + getDisplacement(stepsLength));
+                    player.kineticImage.setY(player.kineticImage.getY() + getDisplacement(stepsLength));
+                }
+                break;
+            }
+        }
+
+        playerLayer.draw();
+    }
+    
     function addMouseEventListeners() {
         stage.addEventListener('mousemove', function (e) {
 

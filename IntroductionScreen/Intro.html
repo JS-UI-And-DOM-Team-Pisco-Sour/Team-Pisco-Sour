@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="IntroStyles.css">
-    <title></title>
+    <title>Snailiens</title>
 </head>
 <body>
     <div id="container">
@@ -11,18 +11,47 @@
         <div id="title"><p>Snailiens</p></div>
 
         <div id="game-description">
-            <p class="speech">I'm stuck on a deserted place surrounded by ugly and dangerous creatures. <br>
-                Ready to survive?!</p>
-            <p id="hero"><img src="images/hero.svg" alt="" width="150" height="200"></p>
+            <p class="speech">I'm stuck on a deserted place surrounded by ugly and dangerous creatures. Please, Help me survive!</p>
+            <p id="hero"><img src="images/hero.png" alt="" width="371" height="480"></p>
+        </div>
+
+        <div id="game-controls">
+            <h2>Controls</h2>
+            <ul>
+                <li>
+                    <span><img src="images/QButton.svg" alt="" width="50" height="50"></span>
+                    <p> - Teleport x2 steps in chosen direction</p>
+                </li>
+                <li>
+                    <span><img src="images/WButton.svg" alt="" width="50" height="50"></span>
+                    <p> - Teleport x4 steps in chosen direction</p>
+                </li>
+                <li>
+                    <span><img src="images/EButton.svg" alt="" width="50" height="50"></span>
+                    <p> - Teleport x6 steps in chosen direction</p>
+                </li>
+                <li>
+                    <span><img src="images/AButton.svg" alt="" width="50" height="50"></span>
+                    <p> - Throw a granade</p>
+                </li>
+                <li>
+                    <span><img src="images/LeftMouseButton.svg" alt="" width="50" height="50"></span>
+                    <p> - Shoot</p>
+                </li>
+                <li>
+                    <span><img src="images/RightMouseButton.svg" alt="" width="50" height="50"></span>
+                    <p> - Laser</p>
+                </li>
+            </ul>
+            <p id="hero"><img src="images/hero.png" alt="" width="371" height="480"></p>
+
         </div>
 
         <div id="menu">
             <form method="post" action="javascript:void(0);">
                 <input type="text" required placeholder="Hero name" autocomplete="off">
-                <input type="button" value="Controls" title="Show game controls" onclick="playButtonSound()">
-                <input type="submit" value="Play" title="Play Snailiens"
-                onclick="playButtonSound()">
-            </form>
+                <input type="button" onclick="togglediv('game-description')" value="CONTROLS" title="Show game controls">
+                <input type="submit" value="PLAY" id="playButton" title="Play Snailiens">
         </div>
 
         <div id="footer">

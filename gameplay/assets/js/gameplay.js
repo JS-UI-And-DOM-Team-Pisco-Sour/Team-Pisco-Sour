@@ -522,7 +522,59 @@ window.onload = function () {
             }
 
             if (!isRightClick) {
-                runBulletShotAnimation(200,200,CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
+                var bulletShotAnimationCoords = {};
+                switch (player.facingDirection) {
+                    case CONSTANTS.FACING_DIRECTIONS.LEFT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.RIGHT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.UP:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.DOWN:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
+                        break;
+                    }
+                    case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
+                    {
+                        bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
+                        bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
+                        break;
+                    }
+
+                }
+                runBulletShotAnimation(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
                 createjs.Sound.play('gun');
             }
         });

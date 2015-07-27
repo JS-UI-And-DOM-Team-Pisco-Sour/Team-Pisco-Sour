@@ -3,9 +3,9 @@ $(document).ready(function() {
         reset = $('button.reset'),
         hBar = $('.health-bar'),
         bar = hBar.find('.bar'),
-        hit = hBar.find('.hit'),
-        decreasedLife = 1000;
+        hit = hBar.find('.hit');
     var damage = 0;
+    decreasedLife = 1000;
 
     hitBtn.on("click", function() {
         var total = hBar.data('total'),

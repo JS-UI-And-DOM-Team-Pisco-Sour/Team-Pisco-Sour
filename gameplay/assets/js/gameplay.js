@@ -10,6 +10,7 @@ window.onload = function () {
             return this.offsetLeft + ( this.offsetParent ? this.offsetParent.documentOffsetLeft : 0 );
         }
     } );
+
     // Immediately load all sounds
     (function () {
         createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
@@ -561,17 +562,17 @@ window.onload = function () {
         deathAnim.start();
     }
 
-    function loadDeathAnimation() {
+    function loadDeathAnimation(targetX, targetY, scale) {
 
         var deathObj = new Image();
         deathObj.onload = function () {
             deathAnim = new Kinetic.Sprite({
-                x: 0,
-                y: 0,
+                x: targetX - CONSTANTS.EXPLOSION_WIDTH / 2 * scale,
+                y: targetY - CONSTANTS.EXPLOSION_HEIGHT / 2 * scale,
                 image: deathObj,
                 scale: {
-                    x: 0,
-                    y: 0
+                    x: scale,
+                    y: scale
                 },
 
                 animation: 'death',
@@ -641,7 +642,7 @@ window.onload = function () {
 
             playerLayer.add(deathAnim);
             deathAnim.on('frameIndexChange', function (e) {
-                if (frameCount === 0 && deathModeOn) {
+                if (frameCount === 0) {
                     createjs.Sound.play('bomb');
                 }
 
@@ -652,7 +653,7 @@ window.onload = function () {
                 }
             });
 
-            deathAnim.hide();
+            deathAnim.start();
         };
 
         deathObj.src = 'assets/images/explosion.png';
@@ -669,12 +670,24 @@ window.onload = function () {
         loadBackground();
         loadPlayer();
         loadInitialEnemy();
-        loadDeathAnimation();
+        //loadDeathAnimation();
     }
 
     function run() {
-        setTimeout(function () {
-            requestAnimationFrame(run);
+        var gameLoop = setTimeout(function () {
+            var smoothGameLoop = requestAnimationFrame(run);
+            deathModeOn = decreasedLife === 0;
+
+            // some code sets deathModeOn to true, i.e the hero has died
+            if (deathModeOn) {
+
+                console.log(deathModeOn);
+                loadDeathAnimation(playerKineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
+                                   playerKineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, 2);
+                cancelAnimationFrame(smoothGameLoop);
+                clearTimeout(gameLoop);
+                playerKineticImage.remove();
+            }
 
             currentFrame += 1;
 
@@ -726,11 +739,6 @@ window.onload = function () {
 
             enemiesLayer.draw();
         }, 100);
-
-        // some code sets deathModeOn to true, i.e the hero has died
-        if (deathModeOn) {
-            runDeathAnimation(playerKineticImage.getX(), playerKineticImage.getY(), 2);
-        }
     }
 
     (function () {

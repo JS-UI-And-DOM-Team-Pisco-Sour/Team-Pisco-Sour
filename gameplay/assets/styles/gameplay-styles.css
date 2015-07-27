@@ -1,16 +1,16 @@
 @font-face {
     font-family: goodDog;
-    src: url("assets/fonts/GoodDog.otf");
+    src: url("/fonts/GoodDog.otf");
 }
 
 @font-face {
     font-family: footerFont;
-    src: url("assets/fonts/ArchitectsDaughter.ttf");
+    src: url("/fonts/ArchitectsDaughter.ttf");
 }
 
 @font-face {
     font-family: headerFontFill;
-    src: url("assets/fonts/AmazDooMLeft.ttf");
+    src: url("/fonts/AmazDooMLeft.ttf");
 }
 
 body {
@@ -18,10 +18,10 @@ body {
     width: 100%;
 }
 
-#gameplay-container {
-    margin: 2% 0 0 13%;
-    float: left;
-}
+/*#gameplay-container {*/
+    /*margin: 2% 0 0 13%;*/
+    /*float: left;*/
+/*}*/
 
 #bg img {
     /* Set rules to fill background */
@@ -55,7 +55,7 @@ p#name {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    width: 150px;
+    width: 240px;
     height: 20px;
     padding: 5px;
     margin-top: 2px;

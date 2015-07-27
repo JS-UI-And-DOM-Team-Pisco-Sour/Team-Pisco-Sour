@@ -5,6 +5,13 @@
     <link rel="stylesheet" type="text/css" href="IntroStyles.css">
     <title></title>
 </head>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="IntroStyles.css">
+    <title></title>
+</head>
 <body>
     <div id="container">
 
@@ -18,8 +25,10 @@
         <div id="menu">
             <form method="post" action="javascript:void(0);">
                 <input type="text" required placeholder="Hero name" autocomplete="off">
-                <input type="button" value="CONTROLS" title="Show game controls">
-                <input type="submit" value="PLAY" title="Play Snailiens">
+                <input type="button" value="CONTROLS" title="Show game controls" onclick="playButtonSound()">
+                <input type="submit" value="PLAY" title="Play Snailiens"
+                onclick="playButtonSound()">
+            </form>
         </div>
 
         <div id="footer">

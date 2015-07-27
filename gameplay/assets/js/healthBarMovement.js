@@ -1,6 +1,5 @@
 $(document).ready(function() {
     var hitBtn = $('button.damage'),
-        reset = $('button.reset'),
         hBar = $('.health-bar'),
         bar = hBar.find('.bar'),
         hit = hBar.find('.hit');
@@ -34,6 +33,6 @@ function log(_damage, _hitWidth, _decreasedLife) {
     var log = $('.log');
     log.empty();
     if (_damage !== undefined && _hitWidth !== undefined) {
-        log.append("<div> (1000 / " + _decreasedLife + " )</div>");
+        log.append("<div> ( " + _decreasedLife + " / 1000 )</div>");
     }
 }

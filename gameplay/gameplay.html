@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="assets/styles/gameplay-styles.css">
@@ -8,8 +9,20 @@
     <script src="assets/js/gameplay.js"></script>
     <title></title>
 </head>
-<body id="body">
-    <div id="gameplay-container"></div>
 
+<body id="body">
+    <div id="bg">
+        <img src="assets/images/background.jpg" alt="">
+    </div>
+    <div id="gameplay-container"></div>
+    <div id="healthLogo">
+        <p id="name">Health</p>
+        <div class="health-bar" data-total="1000" data-value="1000">
+            <div class="bar">
+                <div class="hit"></div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

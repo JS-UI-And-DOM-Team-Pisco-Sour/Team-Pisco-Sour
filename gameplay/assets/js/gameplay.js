@@ -6,10 +6,10 @@ requirejs.config({
 });
 
 window.onload =
-    requirejs(['constants', '../../../lib/jquery-1.11.3.min', '../../lib/kinetic-v5.1.0.min',
+    requirejs(['constants', 'game-objects/hero', '../../../lib/jquery-1.11.3.min', '../../lib/kinetic-v5.1.0.min',
             '../../../lib/createjs-2015.05.21.min',
             'health'],
-        function start(CONSTANTS) {
+        function start(CONSTANTS, hero) {
             function loadSounds() {
                 createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
                 createjs.Sound.registerSound('assets/sounds/gunfire.mp3', 'gun');
@@ -21,7 +21,6 @@ window.onload =
                 enemiesLayer,
 
                 backgroundImageObj,
-                playerImageObj,
                 enemyImageObj,
 
                 player,
@@ -51,12 +50,12 @@ window.onload =
             }
 
             function loadPlayer() {
-                playerImageObj = new Image();
-                playerImageObj.onload = function () {
+                player = Object.create(hero).init('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer);
+                player.image.onload = function () {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
                         y: 50,
-                        image: playerImageObj,
+                        image: player.image,
                         width: CONSTANTS.PLAYER_WIDTH,
                         height: CONSTANTS.PLAYER_HEIGHT,
                         crop: {
@@ -67,18 +66,13 @@ window.onload =
                         }
                     });
 
-                    player = {
-                        kineticImage: playerKineticImage,
-                        facingDirection: CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT
-                    };
+                    player.kineticImage = playerKineticImage;
 
                     addKeystrokeListener();
                     addMouseEventListeners();
                     playerLayer.add(player.kineticImage);
                     stage.add(playerLayer);
                 };
-
-                playerImageObj.src = "assets/images/player.png";
             }
 
             function loadBackground() {
@@ -105,107 +99,15 @@ window.onload =
                     var keyPressed = e.keyCode ? e.keyCode : e.which;
 
                     if (keyPressed === CONSTANTS.KEYS.Q) {
-                        checkDirectionAndTeleport(100);
+                        player.checkDirectionAndTeleport(100);
                     } else if (keyPressed === CONSTANTS.KEYS.W) {
-                        checkDirectionAndTeleport(200);
+                        player.checkDirectionAndTeleport(200);
                     } else if (keyPressed === CONSTANTS.KEYS.E) {
-                        checkDirectionAndTeleport(300);
+                        player.checkDirectionAndTeleport(300);
                     } else if (keyPressed === CONSTANTS.KEYS.A) {
                         // TODO: Raise Hell
                     }
                 });
-            }
-
-            function checkDirectionAndTeleport(stepsLength) {
-                playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
-                playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
-
-                var nextMove = getDisplacement(stepsLength),
-                    newPlayerX = playerCenterX + nextMove.x,
-                    newPlayerY = playerCenterY + nextMove.y,
-
-                    bordersVerdict = isPlayerOutOfBorders(newPlayerX, newPlayerY);
-
-                if(!bordersVerdict.x) {
-                    player.kineticImage.setX(newPlayerX - CONSTANTS.PLAYER_WIDTH / 2);
-                }
-
-                if(!bordersVerdict.y) {
-                    player.kineticImage.setY(newPlayerY - CONSTANTS.PLAYER_HEIGHT / 2);
-                }
-
-                playerLayer.draw();
-            }
-
-            function isPlayerOutOfBorders(x, y) {
-                var isOutOfBorderX = x <= 40 || x >= (CONSTANTS.STAGE_WIDTH - 50),
-                    isOutOfBorderY = y <= 50 || y >= (CONSTANTS.STAGE_HEIGHT - 40);
-
-                return {
-                    x: isOutOfBorderX,
-                    y: isOutOfBorderY
-                };
-            }
-
-            function getDisplacement(stepsLength) {
-                switch (player.facingDirection) {
-                    case CONSTANTS.FACING_DIRECTIONS.UP:
-                    {
-                        return {
-                            x: 0,
-                            y: +stepsLength
-                        }
-                    }
-                    case CONSTANTS.FACING_DIRECTIONS.DOWN:
-                    {
-                        return {
-                            x: 0,
-                            y: -stepsLength
-                        }
-                    }
-                    case CONSTANTS.FACING_DIRECTIONS.LEFT:
-                    {
-                        return {
-                            x: -stepsLength,
-                            y: 0
-                        }
-                    }
-                    case CONSTANTS.FACING_DIRECTIONS.RIGHT:
-                    {
-                        return {
-                            x: +stepsLength,
-                            y: 0
-                        }
-                    }
-                    case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
-                    {
-                        return {
-                            x: -stepsLength * Math.cos(45 / 180 * Math.PI),
-                            y: -stepsLength * Math.sin(45 / 180 * Math.PI)
-                        }
-                    }
-                    case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
-                    {
-                        return {
-                            x: +stepsLength * Math.cos(45 / 180 * Math.PI),
-                            y: -stepsLength * Math.sin(45 / 180 * Math.PI)
-                        }
-                    }
-                    case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
-                    {
-                        return {
-                            x: -stepsLength * Math.cos(45 / 180 * Math.PI),
-                            y: +stepsLength * Math.sin(45 / 180 * Math.PI)
-                        }
-                    }
-                    case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
-                    {
-                        return {
-                            x: +stepsLength * Math.cos(45 / 180 * Math.PI),
-                            y: +stepsLength * Math.sin(45 / 180 * Math.PI)
-                        }
-                    }
-                }
             }
 
             function addMouseEventListeners() {

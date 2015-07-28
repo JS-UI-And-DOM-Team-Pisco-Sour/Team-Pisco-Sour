@@ -9,6 +9,7 @@ define(function () {
         PLAYER_WIDTH: 155,
         PLAYER_HEIGHT: 160,
         PLAYER_DEATH_ANIMATION_FRAMES_COUNT: 48,
+        PLAYER_INITIAL_HEALTH: 1000,
 
         FACING_DIRECTIONS: {
             UP: 2,
@@ -21,7 +22,9 @@ define(function () {
             UP_RIGHT: 5,
 
             DOWN_LEFT: 1,
-            DOWN_RIGHT: 3
+            DOWN_RIGHT: 3,
+
+            DEFAULT: 3
         },
 
         KEYS: {

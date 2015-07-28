@@ -9,7 +9,7 @@ window.onload =
     requirejs(['constants', 'game-objects/hero', 'game-objects/enemy', '../../../lib/jquery-1.11.3.min', '../../lib/kinetic-v5.1.0.min',
             '../../../lib/createjs-2015.05.21.min',
             'health'],
-        function (CONSTANTS, hero, enemy) {
+        function (CONSTANTS, Hero, Enemy) {
             Object.deepExtend = function (destination, source) {
                 for (var property in source) {
                     if (typeof source[property] === "object" &&
@@ -63,7 +63,7 @@ window.onload =
             }
 
             function loadPlayer() {
-                player = Object.create(hero).init('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer);
+                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer);
                 player.image.onload = function () {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
@@ -334,8 +334,7 @@ window.onload =
             }
 
             function spawnEnemy(frame) {
-                var creature = Object.create(enemy).init('assets/images/enemy.png');
-                creature.frame = frame;
+                var creature = new Enemy('assets/images/enemy.png', frame);
                 creature.image.onload = function () {
                     var newEnemy = new Kinetic.Image({
                         x: getRandomCoordinate(50, 950),
@@ -357,8 +356,9 @@ window.onload =
                     });
 
                     enemies.push({
-                        enemyKineticImage: newEnemy,
-                        enemyObj: creature
+                        enemy: newEnemy,
+                        frame: creature.frame,
+                        attackPlayer: creature.attackPlayer
                     });
 
                     enemiesLayer.add(newEnemy);
@@ -366,16 +366,16 @@ window.onload =
                 }
             }
 
-            function attackPlayer(enemy) {
+            function attackPlayer() {
                 playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
                 playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
 
-                var enemyX = enemy.getX(),
-                    enemyY = enemy.getY(),
+                var enemyX = this.enemy.getX(),
+                    enemyY = this.enemy.getY(),
                     rotation = Math.atan2(playerCenterY - enemyY, playerCenterX - enemyX);
 
-                enemy.setX(enemyX + Math.cos(rotation) * CONSTANTS.ENEMY_SPEED);
-                enemy.setY(enemyY + Math.sin(rotation) * CONSTANTS.ENEMY_SPEED);
+                this.enemy.setX(enemyX + Math.cos(rotation) * CONSTANTS.ENEMY_SPEED);
+                this.enemy.setY(enemyY + Math.sin(rotation) * CONSTANTS.ENEMY_SPEED);
             }
 
             function runDeathAnimation(targetX, targetY, scale, frameRate) {
@@ -548,9 +548,9 @@ window.onload =
 
                     // Updating each Enemy separately
                     for (var i = 0, len = enemies.length; i < len; i += 1) {
-                        var currentEnemyFrame = (currentFrame - enemies[i].enemyObj.frame) / 3 | 0;
+                        var currentEnemyFrame = (currentFrame - enemies[i].frame) / 3 | 0;
                         if (currentEnemyFrame < CONSTANTS.ENEMY_FRAME_COUNT - 1) {
-                            enemies[i].enemyKineticImage.setCrop({
+                            enemies[i].enemy.setCrop({
                                 x: currentEnemyFrame * CONSTANTS.ENEMY_WIDTH,
                                 y: 0,
                                 width: CONSTANTS.ENEMY_WIDTH,
@@ -558,7 +558,7 @@ window.onload =
                             });
                         }
 
-                        attackPlayer(enemies[i].enemyKineticImage);
+                        Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
                     }
 
                     backgroundLayer.setZIndex(1);

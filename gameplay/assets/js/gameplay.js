@@ -53,7 +53,7 @@ window.onload =
 
             function loadPlayer() {
 
-                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, CONSTANTS.PLAYER_ATTACK_SPEED);
+                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, 1);
                 player.image.onload = function () {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
@@ -708,14 +708,14 @@ window.onload =
             function checkForAndRemoveDeadEnemies(bullet) {
                 for (var i in enemies) {
                     if (enemies.hasOwnProperty(i)) {
-                        var enemyCenterX = enemies[i].enemy.getX() + CONSTANTS.ENEMY_WIDTH / 2,
-                            enemyCenterY = enemies[i].enemy.getY() + CONSTANTS.ENEMY_HEIGHT / 2,
+                        var enemyCenterX = enemies[i].enemy.getX() + 0.6 * CONSTANTS.ENEMY_WIDTH / 2,// 0.6 is the scale of the image
+                            enemyCenterY = enemies[i].enemy.getY() + 0.6 * CONSTANTS.ENEMY_HEIGHT / 2,
                             bulletCenterX = bullet.getX() + CONSTANTS.BULLET_RADIUS,
                             bulletCenterY = bullet.getY() + CONSTANTS.BULLET_RADIUS;
 
                         if ((enemyCenterX - bulletCenterX) * (enemyCenterX - bulletCenterX) +
                             (enemyCenterY - bulletCenterY) * (enemyCenterY - bulletCenterY) <=
-                            0.3 * (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS) * (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS)) {
+                            (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS) * (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS)) {
                             enemies[i].enemy.remove();
                             enemies.splice(i, 1);
                             bullet.remove();

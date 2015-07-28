@@ -40,7 +40,7 @@ define(function () {
 
         ENEMY_WIDTH: 99.2,
         ENEMY_HEIGHT: 111,
-        ENEMY_RADIUS: 105,
+        ENEMY_RADIUS: 30,
         ENEMY_FRAME_COUNT: 10,
         ENEMY_SPAWN_FRAME_INTERVAL: 60,
         ENEMY_SPEED: 2,
@@ -52,7 +52,7 @@ define(function () {
 
         BULLET_WIDTH: 28,
         BULLET_HEIGHT: 28,
-        BULLET_RADIUS: 14,
+        BULLET_RADIUS: 12,
         BULLET_SHOT_SCALE: 0.2,
         BULLET_SHOT_FRAMERATE: 10000000,
         SHIFT: 30

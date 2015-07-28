@@ -18,8 +18,8 @@ window.onload = function() {
     }());
 
     var CONSTANTS = {
-        STAGE_WIDTH: 1000,
-        STAGE_HEIGHT: 600,
+        STAGE_WIDTH: 0.7 * window.innerWidth,
+        STAGE_HEIGHT: 0.9 * window.innerHeight,
 
         SCALE_HEIGHT: (1 / 6),
         SCALE_WIDTH: (1 / 4.5),
@@ -99,15 +99,8 @@ window.onload = function() {
 
     function loadCanvas() {
         gameplayContainer = document.getElementById('gameplay-container');
-        gameplayContainer.setAttribute('width', CONSTANTS.STAGE_WIDTH);
-        gameplayContainer.setAttribute('height', CONSTANTS.STAGE_HEIGHT);
         gameNameContainer = document.getElementById('game-name');
         wholeDocContainer = document.getElementById('body');
-
-        //Position the action screen
-        gameplayContainer.style.position = 'absolute';
-        gameplayContainer.style.top = (screen.height * CONSTANTS.SCALE_HEIGHT) + 'px';
-        gameplayContainer.style.left = (screen.width * CONSTANTS.SCALE_WIDTH) + 'px';
 
         stage = new Kinetic.Stage({
             container: 'gameplay-container',

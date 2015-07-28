@@ -39,9 +39,10 @@ body {
 
 #healthLogo {
     position: relative;
-    margin: 2% 1% 0 0;
+    margin: 3%;
     float: right;
     padding: 0;
+    width: 15%;
 }
 
 p#name {

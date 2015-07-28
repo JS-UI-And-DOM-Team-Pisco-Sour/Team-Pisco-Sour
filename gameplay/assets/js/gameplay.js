@@ -21,7 +21,6 @@ window.onload =
                 enemiesLayer,
                 ammoLayer,
                 htmlScoreElement,
-
                 backgroundImageObj,
 
                 player,
@@ -31,6 +30,7 @@ window.onload =
                 currentFrame = -1,
                 playerWasHit = true,
                 canRemoveBullet = false,
+                collisionCheckResult,
                 score = 0;
 
             function loadSounds() {
@@ -666,11 +666,13 @@ window.onload =
 
             function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY) {
                 var bullet = createBullet(gunBarrelX, gunBarrelY);
-                var collisionCheckResult = bulletHitsEnemy(this, bullet);
+                collisionCheckResult = bulletHitsEnemy(bullet);
 
                 // CORNER CASE HANDLE: Bullet collides with enemy at his starting point coordinates.
                 if(collisionCheckResult.hasCollision) {
                     bullet.remove();
+                    //ammoLayer.remove(bullet);
+                    //ammoLayer.clear();
                     score += 1;
 
                     if(player.health < 1000) {
@@ -692,7 +694,7 @@ window.onload =
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
-                    collisionCheckResult = bulletHitsEnemy(this, bullet);
+                    collisionCheckResult = bulletHitsEnemy(bullet);
 
                     if(collisionCheckResult.hasCollision) {
                         canRemoveBullet = true;
@@ -726,7 +728,7 @@ window.onload =
                 bulletShotAnimation.start();
             }
 
-            function bulletHitsEnemy(animation, bullet) {
+            function bulletHitsEnemy(bullet) {
                 for (var i in enemies) {
                     if (enemies.hasOwnProperty(i)) {
                         var enemyCenterX = enemies[i].enemy.getX() + 0.6 * CONSTANTS.ENEMY_WIDTH / 2, // 0.6 is the scale of the image

@@ -336,8 +336,8 @@ window.onload =
                 var creature = new Enemy('assets/images/enemy.png', frame);
                 creature.image.onload = function() {
                     var newEnemy = new Kinetic.Image({
-                        x: getRandomCoordinate(50, 950),
-                        y: getRandomCoordinate(50, 600),
+                        x: getRandomCoordinate(50, 950 - CONSTANTS.ENEMY_WIDTH),
+                        y: getRandomCoordinate(50, 600 - CONSTANTS.ENEMY_HEIGHT),
                         image: creature.image,
                         width: CONSTANTS.ENEMY_WIDTH,
                         height: CONSTANTS.ENEMY_HEIGHT,

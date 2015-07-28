@@ -53,7 +53,7 @@ window.onload =
 
             function loadPlayer() {
 
-                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, 1);
+                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, CONSTANTS.PLAYER_ATTACK_SPEED);
                 player.image.onload = function () {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
@@ -687,7 +687,7 @@ window.onload =
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
-                    checkForAndRemoveDeadEnemies(bullet);
+                    checkForAndRemoveDeadEnemies(this, bullet);
 
                     if (bulletLeftField(bullet) == true) {
                         canRemoveBullet = true;
@@ -705,7 +705,7 @@ window.onload =
                 bulletShotAnimation.start();
             }
 
-            function checkForAndRemoveDeadEnemies(bullet) {
+            function checkForAndRemoveDeadEnemies(anim, bullet) {
                 for (var i in enemies) {
                     if (enemies.hasOwnProperty(i)) {
                         var enemyCenterX = enemies[i].enemy.getX() + 0.6 * CONSTANTS.ENEMY_WIDTH / 2,// 0.6 is the scale of the image
@@ -720,7 +720,7 @@ window.onload =
                             enemies.splice(i, 1);
                             bullet.remove();
                             bullets.splice(bullets.indexOf(bullet), 1);
-                            console.log(bullets.indexOf(bullet));
+                            anim.stop();
                         }
                     }
                 }

@@ -20,17 +20,18 @@ window.onload =
                 playerLayer,
                 enemiesLayer,
                 ammoLayer,
+                htmlScoreElement,
 
                 backgroundImageObj,
 
                 player,
-
                 bullets = [],
                 enemies = [],
 
                 currentFrame = -1,
                 playerWasHit = true,
-                canRemoveBullet;
+                canRemoveBullet = false,
+                score = 0;
 
             function loadSounds() {
                 createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
@@ -47,8 +48,8 @@ window.onload =
                 backgroundLayer = new Kinetic.Layer();
                 enemiesLayer = new Kinetic.Layer();
                 playerLayer = new Kinetic.Layer();
-
                 ammoLayer = new Kinetic.Layer();
+
                 stage.add(ammoLayer);
             }
 
@@ -508,7 +509,7 @@ window.onload =
             }
 
             function loadDisappearanceAnimation() {
-                console.log('pesho');
+                //console.log('pesho');
                 var disappearanceObj = new Image();
                 disappearanceObj.onload = function() {
                     disappearanceAnimation = new Kinetic.Sprite({
@@ -575,6 +576,7 @@ window.onload =
                 loadPlayer();
                 loadExplosionAnimation();
                 loadDisappearanceAnimation();
+                htmlScoreElement = $("#scoreSpan");
             }
 
             function run() {
@@ -664,6 +666,20 @@ window.onload =
 
             function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY) {
                 var bullet = createBullet(gunBarrelX, gunBarrelY);
+                var collisionCheckResult = bulletHitsEnemy(this, bullet);
+
+                // CORNER CASE HANDLE: Bullet collides with enemy at his starting point coordinates.
+                if(collisionCheckResult.hasCollision) {
+                    bullet.remove();
+                    score += 1;
+
+                    if(player.health < 1000) {
+                        player.health +=15;
+                    }
+
+                    htmlScoreElement.text(score);
+                    removeEnemy(collisionCheckResult.enemyPosition);
+                }
 
                 var targetX = bulletDestinationX - bullet.getX(),
                     targetY = bulletDestinationY - bullet.getY(),
@@ -676,15 +692,31 @@ window.onload =
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
-                    checkForAndRemoveDeadEnemies(this, bullet);
+                    collisionCheckResult = bulletHitsEnemy(this, bullet);
 
-                    if (bulletLeftField(bullet) == true) {
+                    if(collisionCheckResult.hasCollision) {
+                        canRemoveBullet = true;
+                        score += 1;
+
+                        // Lifesteal ability
+                        if(player.health < 1000) {
+                            player.health +=15;
+                        }
+                        // Update score count
+                        htmlScoreElement.text(score);
+                        removeEnemy(collisionCheckResult.enemyPosition);
+                    }
+
+                    if (bulletLeftField(bullet)) {
                         canRemoveBullet = true;
                     }
 
                     if (canRemoveBullet) {
                         bullets.unshift();
+                        bullet.remove();
+
                         canRemoveBullet = false;
+
                         this.stop();
                     }
 
@@ -694,7 +726,7 @@ window.onload =
                 bulletShotAnimation.start();
             }
 
-            function checkForAndRemoveDeadEnemies(anim, bullet) {
+            function bulletHitsEnemy(animation, bullet) {
                 for (var i in enemies) {
                     if (enemies.hasOwnProperty(i)) {
                         var enemyCenterX = enemies[i].enemy.getX() + 0.6 * CONSTANTS.ENEMY_WIDTH / 2, // 0.6 is the scale of the image
@@ -705,14 +737,22 @@ window.onload =
                         if ((enemyCenterX - bulletCenterX) * (enemyCenterX - bulletCenterX) +
                             (enemyCenterY - bulletCenterY) * (enemyCenterY - bulletCenterY) <=
                             (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS) * (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS)) {
-                            enemies[i].enemy.remove();
-                            enemies.splice(i, 1);
-                            bullet.remove();
-                            bullets.splice(bullets.indexOf(bullet), 1);
-                            anim.stop();
+
+                            return {
+                                hasCollision: true,
+                                enemyPosition: i
+                            };
                         }
                     }
                 }
+                return {
+                    hasCollision: false
+                };
+            }
+
+            function removeEnemy(position) {
+                enemies[position].enemy.remove();
+                enemies.splice(position, 1);
             }
 
             function bulletLeftField(bullet) {

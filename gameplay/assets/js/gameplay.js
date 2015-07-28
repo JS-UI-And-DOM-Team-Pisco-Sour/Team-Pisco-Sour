@@ -28,15 +28,12 @@ window.onload =
                 playerCenterX,
                 playerCenterY,
 
-                bullets,
-                isFiring,
-                timer,
-
+                bullets = [],
                 enemies = [],
 
                 currentFrame = -1,
-                playerWasHit = true;
-
+                playerWasHit = true,
+                canRemoveBullet;
 
             function loadSounds() {
                 createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
@@ -56,10 +53,6 @@ window.onload =
 
                 ammoLayer = new Kinetic.Layer();
                 stage.add(ammoLayer);
-
-                bullets = [];
-                isFiring = false;
-                timer = 0;
 
                 attackSpeed = 20;
             }
@@ -652,17 +645,18 @@ window.onload =
                     bullet.setY(bullet.getY() + velocityY);
 
                     //if(enemyCollision(bullet) == true) {
-                    //    mayDelete = true;
+                    //    canRemoveBullet = true;
                     //}
 
                     if (bulletLeftField(bullet) == true) {
-                        mayDelete = true;
+                        canRemoveBullet = true;
                     }
 
-                    //if (mayDelete == true) {
-                    //    bullets.splice(index, 1);
-                    //    this.stop();
-                    //}
+                    if (canRemoveBullet) {
+                        bullets.unshift();
+                        canRemoveBullet = false;
+                        this.stop();
+                    }
 
                 }, ammoLayer);
 
@@ -671,10 +665,10 @@ window.onload =
             }
 
             function bulletLeftField(bullet) {
-                if (bullet.getX() < 0 ||
-                    bullet.getX() > CONSTANTS.STAGE_WIDTH ||
-                    bullet.getY() < 0 ||
-                    bullet.getY() > CONSTANTS.STAGE_HEIGHT) {
+                if (bullet.getX() < 0 - 30 ||
+                    bullet.getX() > CONSTANTS.STAGE_WIDTH + 30 ||
+                    bullet.getY() < 0 - 30 ||
+                    bullet.getY() > CONSTANTS.STAGE_HEIGHT +30) {
                     return true;
                 }
 

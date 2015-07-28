@@ -25,8 +25,6 @@ window.onload =
 
                 player,
                 attackSpeed,
-                playerCenterX,
-                playerCenterY,
 
                 bullets = [],
                 enemies = [],
@@ -122,12 +120,9 @@ window.onload =
                 stage.addEventListener('mousemove', function (e) {
                     var $gameplayContainer = $('#gameplay-container'),
                         relativeClientX = e.clientX - $gameplayContainer.offset().left,
-                        relativeClientY = e.clientY - $gameplayContainer.offset().top;
-
-                    playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
-                    playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
-                    var playerCenterX = getPlayerCenter().x;
-                    var playerCenterY = getPlayerCenter().y;
+                        relativeClientY = e.clientY - $gameplayContainer.offset().top,
+                     playerCenterX = getPlayerCenter().x,
+                     playerCenterY = getPlayerCenter().y;
 
                     // Left
                     if (relativeClientX < playerCenterX) {
@@ -271,66 +266,61 @@ window.onload =
                             relativeClientX = e.clientX - $gameplayContainer.offset().left,
                             relativeClientY = e.clientY - $gameplayContainer.offset().top;
 
-                        var bulletShotAnimationCoords = {};
+                        var bulletShotAnimationCoords = {},
+                            bulletShotDisplacementX,
+                            bulletShotDisplacementY;
                         switch (player.facingDirection) {
                             case CONSTANTS.FACING_DIRECTIONS.LEFT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
-                                shootBullet(player.kineticImage.getX() + 22, player.kineticImage.getY() + 76, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.RIGHT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
-                                shootBullet(player.kineticImage.getX() + 130, player.kineticImage.getY() + 58, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.UP:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
-                                shootBullet(player.kineticImage.getX() + 83, player.kineticImage.getY() + 115, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
-                                shootBullet(player.kineticImage.getX() + 68, player.kineticImage.getY() + 10, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
-                                shootBullet(player.kineticImage.getX() + 31, player.kineticImage.getY() + 29, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
-                                shootBullet(player.kineticImage.getX() + 115, player.kineticImage.getY() + 36, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
-                                shootBullet(player.kineticImage.getX() + 24, player.kineticImage.getY() + 106, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
-                                shootBullet(player.kineticImage.getX() + 138, player.kineticImage.getY() + 108, relativeClientX, relativeClientY);
                                 break;
                             }
                         }
 
+                        shootBullet(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, relativeClientX, relativeClientY);
                         runBulletShotAnimation(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
                         createjs.Sound.play('gun');
                     }
@@ -338,12 +328,6 @@ window.onload =
                 stage.addEventListener('mouseup', function(e) {
                     isFiring = false;
                 });
-            }
-
-            function loadEnemy() {
-                enemyImageObj = new Image();
-                enemyImageObj.src = "assets/images/enemy.png";
-                enemies = [];
             }
 
             function spawnEnemy(frame) {
@@ -542,7 +526,6 @@ window.onload =
                 loadCanvas();
                 loadBackground();
                 loadPlayer();
-                loadEnemy();
                 loadExplosionAnimation();
             }
 

@@ -1,9 +1,8 @@
 define(['./constants'], function(CONSTANTS) {
-    var hitBtn = $('button.damage'),
-        hBar = $('.health-bar'),
+    var hBar = $('.health-bar'),
         bar = hBar.find('.bar'),
-        hit = hBar.find('.hit');
-    var damage = 0;
+        hit = hBar.find('.hit'),
+        damage = 0;
 
     function registerHealth(inflictedDamage, player) {
         var total = hBar.data('total'),
@@ -28,7 +27,15 @@ define(['./constants'], function(CONSTANTS) {
         var log = $('.log');
         log.empty();
         if (_damage !== undefined && _hitWidth !== undefined) {
-            log.append("<div> (" + _decreasedLife + " / 1000)</div>");
+            if (_decreasedLife === 1000) {
+                log.append("<p> (" + _decreasedLife + " / 1000)</p>");
+            }
+            if (_decreasedLife <= 900 && _decreasedLife >= 100) {
+                log.append("<p> (0" + _decreasedLife + " / 1000)</p>");
+            }
+            if(_decreasedLife === 0){
+            log.append("<p> (000" + _decreasedLife + " / 1000)</p>");
+        }
         }
     }
 

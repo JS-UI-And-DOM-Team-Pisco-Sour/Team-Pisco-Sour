@@ -9,8 +9,20 @@
 
 <body id="body">
     <div id="bg">
-        <img src="assets/images/background.jpg" alt="">
+        <img src="assets/images/background.jpg" alt="background">
     </div>
+    <div id="title"><p>Snailiens</p></div>
+    <div id="controls">
+    <ul>
+        <li><img src="../IntroductionScreen/images/QButton.svg" id="qButton" alt="QButton" /></li>
+        <li><img src="../IntroductionScreen/images/WButton.svg" id="wButton" alt="WButton" /></li>
+        <li><img src="../IntroductionScreen/images/EButton.svg" id="eButton" alt="EButton" /></li>
+    </ul>
+    <div id="timer">
+        
+    </div>
+    </div>
+    
     <div id="gameplay-container"></div>
     <div id="healthLogo">
         <p id="name">Health</p>
@@ -23,6 +35,7 @@
     </div>
     <script data-main="assets/js/gameplay.js" src="lib/require.js"></script>
     <script src="../lib/jquery-1.11.3.min.js"></script>
+    <script src="assets/js/buttonTimer.js"></script>
 </body>
 
 </html>

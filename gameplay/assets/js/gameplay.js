@@ -19,18 +19,21 @@ window.onload =
                 backgroundLayer,
                 playerLayer,
                 enemiesLayer,
+                ammoLayer,
 
                 backgroundImageObj,
                 enemyImageObj,
 
                 player,
+                attackSpeed,
                 playerCenterX,
                 playerCenterY,
 
-                enemies = [],
+                bullets,
+                isFiring,
+                timer,
 
-            //playerAutoPosition,
-            //playerLineEquation,
+                enemies = [],
 
                 currentFrame = -1,
 
@@ -47,10 +50,19 @@ window.onload =
                 backgroundLayer = new Kinetic.Layer();
                 enemiesLayer = new Kinetic.Layer();
                 playerLayer = new Kinetic.Layer();
+
+                ammoLayer = new Kinetic.Layer();
+                stage.add(ammoLayer);
+
+                bullets = [];
+                isFiring = false;
+                timer = 0;
+
+                attackSpeed = 20;
             }
 
             function loadPlayer() {
-                player = Object.create(hero).init('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer);
+                player = Object.create(hero).init('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, attackSpeed);
                 player.image.onload = function () {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
@@ -67,7 +79,6 @@ window.onload =
                     });
 
                     player.kineticImage = playerKineticImage;
-
                     addKeystrokeListener();
                     addMouseEventListeners();
                     playerLayer.add(player.kineticImage);
@@ -115,6 +126,7 @@ window.onload =
                     var $gameplayContainer = $('#gameplay-container'),
                         relativeClientX = e.clientX - $gameplayContainer.offset().left,
                         relativeClientY = e.clientY - $gameplayContainer.offset().top;
+
                     playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
                     playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
 
@@ -246,6 +258,7 @@ window.onload =
                     playerLayer.draw();
                 });
                 stage.addEventListener('mousedown', function (e) {
+
                     e = e || window.event; // for IE
                     var isRightClick;
                     if ('which' in e) {
@@ -255,62 +268,76 @@ window.onload =
                     }
 
                     if (!isRightClick) {
+                        var $gameplayContainer = $('#gameplay-container'),
+                            relativeClientX = e.clientX - $gameplayContainer.offset().left,
+                            relativeClientY = e.clientY - $gameplayContainer.offset().top;
+
                         var bulletShotAnimationCoords = {};
                         switch (player.facingDirection) {
                             case CONSTANTS.FACING_DIRECTIONS.LEFT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
+                                shootBullet(player.kineticImage.getX() + 22, player.kineticImage.getY() + 76, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.RIGHT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
+                                shootBullet(player.kineticImage.getX() + 130, player.kineticImage.getY() + 58, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.UP:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
+                                shootBullet(player.kineticImage.getX() + 83, player.kineticImage.getY() + 115, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
+                                shootBullet(player.kineticImage.getX() + 68, player.kineticImage.getY() + 10, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
+                                shootBullet(player.kineticImage.getX() + 31, player.kineticImage.getY() + 29, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
+                                shootBullet(player.kineticImage.getX() + 115, player.kineticImage.getY() + 36, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
+                                shootBullet(player.kineticImage.getX() + 24, player.kineticImage.getY() + 106, relativeClientX, relativeClientY);
                                 break;
                             }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
                             {
                                 bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
                                 bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
+                                shootBullet(player.kineticImage.getX() + 138, player.kineticImage.getY() + 108, relativeClientX, relativeClientY);
                                 break;
                             }
-
                         }
 
                         runBulletShotAnimation(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
                         createjs.Sound.play('gun');
                     }
+                });
+                stage.addEventListener('mouseup', function(e) {
+                    isFiring = false;
                 });
             }
 
@@ -467,7 +494,6 @@ window.onload =
                 deathObj.src = 'assets/images/explosion.png';
             }
 
-            // Returns a random INTEGER number from the range between MIN and MAX values.
             function getRandomCoordinate(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
@@ -543,6 +569,8 @@ window.onload =
                     backgroundLayer.setZIndex(1);
                     playerLayer.setZIndex(2);
                     enemiesLayer.setZIndex(3);
+                    ammoLayer.setZIndex(4);
+
                     enemiesLayer.draw();
 
                     //Last step is to update the frame counter
@@ -554,5 +582,76 @@ window.onload =
                 initialize();
                 run();
             }());
+
+            function createBullet(gunBarrelX, gunBarrelY) {
+                var bulletImageObject = new Image();
+                var bulletKineticImage = new Kinetic.Image({
+                    x: gunBarrelX,
+                    y: gunBarrelY,
+                    image: bulletImageObject,
+                    width: 30,
+                    height: 30,
+                    crop: {
+                        x: 0,
+                        y: 0,
+                        width: 30,
+                        height: 30
+                    }
+                });
+
+                bulletImageObject.onload = function () {
+                    ammoLayer.add(bulletKineticImage);
+                    stage.add(ammoLayer);
+                };
+
+                bulletImageObject.src = 'assets/images/bullet-image.png';
+
+                return bulletKineticImage;
+            }
+
+            function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY) {
+                var bullet = createBullet(gunBarrelX, gunBarrelY);
+
+                var targetX = bulletDestinationX - bullet.getX(),
+                    targetY = bulletDestinationY - bullet.getY(),
+                    distance = Math.sqrt(targetX * targetX + targetY * targetY);
+
+                var velocityX = (targetX / distance) * attackSpeed,
+                    velocityY = (targetY / distance) * attackSpeed;
+
+                var bulletShotAnimation = new Kinetic.Animation(function(frame) {
+                    bullet.setX(bullet.getX() + velocityX);
+                    bullet.setY(bullet.getY() + velocityY);
+
+                    //if(enemyCollision(bullet) == true) {
+                    //    mayDelete = true;
+                    //}
+
+                    if (bulletLeftField(bullet) == true) {
+                        mayDelete = true;
+                    }
+
+                    //if (mayDelete == true) {
+                    //    bullets.splice(index, 1);
+                    //    this.stop();
+                    //}
+
+                }, ammoLayer);
+
+                bullets.push(bullet);
+                bulletShotAnimation.start();
+            }
+
+            function bulletLeftField(bullet) {
+                if (bullet.getX() < 0 ||
+                    bullet.getX() > CONSTANTS.STAGE_WIDTH ||
+                    bullet.getY() < 0 ||
+                    bullet.getY() > CONSTANTS.STAGE_HEIGHT) {
+                    return true;
+                }
+
+                return false;
+            }
         }
     );
+

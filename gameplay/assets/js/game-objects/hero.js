@@ -12,7 +12,7 @@ define(['./contracts/character', '../constants'], function (character, CONSTANTS
     var hero = Object.create(character);
     Object.defineProperties(hero, {
         init: {
-            value: function (imagePath, health, layer) {
+            value: function (imagePath, health, layer, attackSpeed) {
                 character.init.call(this, imagePath);
                 this.health = health;
                 this.isDead = false;
@@ -21,6 +21,7 @@ define(['./contracts/character', '../constants'], function (character, CONSTANTS
                 this.largeTeleportationAmount = 300;
                 this.facingDirection = CONSTANTS.FACING_DIRECTIONS.DEFAULT;
                 this.layer = layer;
+                this.attackSpeed = attackSpeed;
 
                 return this;
             }

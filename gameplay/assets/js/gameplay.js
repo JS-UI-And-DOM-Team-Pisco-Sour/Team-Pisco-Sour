@@ -52,7 +52,7 @@ window.onload = function() {
         ENEMY_WIDTH: 99.2,
         ENEMY_HEIGHT: 111,
         ENEMY_FRAME_COUNT: 10,
-        ENEMY_SPAWN_FRAME_INTERVAL: 20,
+        ENEMY_SPAWN_FRAME_INTERVAL: 60,
         ENEMY_SPEED: 2,
 
         EXPLOSION_WIDTH: 256,
@@ -808,7 +808,7 @@ window.onload = function() {
 
             // Updating each Enemy separately
             for (var i = 0, len = enemies.length; i < len; i += 1) {
-                var currentEnemyFrame = currentFrame - enemies[i].frame;
+                var currentEnemyFrame = (currentFrame - enemies[i].frame) / 3 | 0;
                 if (currentEnemyFrame < CONSTANTS.ENEMY_FRAME_COUNT - 1) {
                     enemies[i].enemy.setCrop({
                         x: currentEnemyFrame * CONSTANTS.ENEMY_WIDTH,
@@ -817,6 +817,7 @@ window.onload = function() {
                         height: CONSTANTS.ENEMY_HEIGHT
                     });
                 }
+
                 attackPlayer(enemies[i].enemy, player);
             }
 
@@ -825,7 +826,7 @@ window.onload = function() {
             enemiesLayer.setZIndex(3);
 
             enemiesLayer.draw();
-        }, 100);
+        }, 30);
     }
 
     (function() {

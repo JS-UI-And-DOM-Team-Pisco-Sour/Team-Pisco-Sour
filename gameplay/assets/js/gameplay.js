@@ -126,15 +126,11 @@ window.onload =
 
                     bordersVerdict = isPlayerOutOfBorders(newPlayerX, newPlayerY);
 
-                if(bordersVerdict.x) {
-
-                } else {
+                if(!bordersVerdict.x) {
                     player.kineticImage.setX(newPlayerX - CONSTANTS.PLAYER_WIDTH / 2);
                 }
 
-                if(bordersVerdict.y) {
-
-                } else {
+                if(!bordersVerdict.y) {
                     player.kineticImage.setY(newPlayerY - CONSTANTS.PLAYER_HEIGHT / 2);
                 }
 

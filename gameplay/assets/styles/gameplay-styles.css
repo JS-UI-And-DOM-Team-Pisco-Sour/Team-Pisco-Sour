@@ -1,16 +1,16 @@
 @font-face {
     font-family: goodDog;
-    src: url("/fonts/GoodDog.otf");
+    src: url("../fonts/GoodDog.otf");
 }
 
 @font-face {
     font-family: footerFont;
-    src: url("/fonts/ArchitectsDaughter.ttf");
+    src: url("../fonts/ArchitectsDaughter.ttf");
 }
 
 @font-face {
     font-family: headerFontFill;
-    src: url("/fonts/AmazDooMLeft.ttf");
+    src: url("../fonts/AmazDooMLeft.ttf");
 }
 
 body {
@@ -19,7 +19,8 @@ body {
 }
 
 #gameplay-container {
-    margin: 2% 0 0 2%;
+    margin: 2% 0 0 0;
+    padding: 0;
     float: left;
     border: 3px solid brown;
 }
@@ -39,7 +40,7 @@ body {
 
 #healthLogo {
     position: relative;
-    margin: 3%;
+    margin: 3% 1% 3% 0;
     float: right;
     padding: 0;
     width: 15%;
@@ -101,3 +102,63 @@ p#name {
   margin: 0 0 0 0;
   padding: 0;
 }
+
+#controls {
+ float: left;
+ position: relative;
+ padding: 0;
+ margin: 8% 1% 0 4%;
+}
+
+#controls > ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#controls > ul > li > img{
+    margin: 0;
+    padding: 8% 0 8% 0;
+    width: 50%;
+}
+
+#timer {
+    float: left;
+    font-family: 'Consolas';
+    font-size: 0.9em;
+    color: white;
+    padding: 0;
+    margin: 0 0 0 -17%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#title {
+    float: left;
+    position: absolute;
+    margin: 0 0 10% 2%;
+    padding: 0;
+}
+
+#title > p {
+    font-family: "headerFontFill";
+    font-size: 1.6em;
+    font-weight: 500;
+    color: #F5F6F7;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    text-align: center;
+    text-shadow: 10px 10px 5px  #151617, #000 0 -1px 2px;
+    letter-spacing: 5px;
+    margin:0 5% 0 0;
+    padding-top: 50px;
+    padding-bottom: 0px;
+ }
+
+ #title > p:hover {
+    color: #94AAD9;
+    text-shadow: 10px 10px 20px  #000, #000 0 -1px 2px;
+ }
+

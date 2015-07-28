@@ -12,8 +12,9 @@ window.onload =
             'health',
             '../../../lib/jquery-1.11.3.min',
             '../../lib/kinetic-v5.1.0.min',
-            '../../../lib/createjs-2015.05.21.min'],
-        function (CONSTANTS, Hero, Enemy, logHealth) {
+            '../../../lib/createjs-2015.05.21.min'
+        ],
+        function(CONSTANTS, Hero, Enemy, logHealth) {
             var stage,
                 backgroundLayer,
                 playerLayer,
@@ -54,7 +55,7 @@ window.onload =
             function loadPlayer() {
 
                 player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, CONSTANTS.PLAYER_ATTACK_SPEED);
-                player.image.onload = function () {
+                player.image.onload = function() {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
                         y: 50,
@@ -80,7 +81,7 @@ window.onload =
             function loadBackground() {
                 backgroundImageObj = new Image();
 
-                backgroundImageObj.onload = function () {
+                backgroundImageObj.onload = function() {
                     var background = new Kinetic.Image({
                         x: 0,
                         y: 0,
@@ -97,7 +98,7 @@ window.onload =
             }
 
             function addKeystrokeListener() {
-                $(document).keyup(function (e) {
+                $(document).keyup(function(e) {
                     var keyPressed = e.keyCode ? e.keyCode : e.which;
 
                     if (keyPressed === CONSTANTS.KEYS.Q || keyPressed === CONSTANTS.KEYS.W ||
@@ -118,7 +119,7 @@ window.onload =
             }
 
             function addMouseEventListeners() {
-                stage.addEventListener('mousemove', function (e) {
+                stage.addEventListener('mousemove', function(e) {
                     var $gameplayContainer = $('#gameplay-container'),
                         relativeClientX = e.clientX - $gameplayContainer.offset().left,
                         relativeClientY = e.clientY - $gameplayContainer.offset().top,
@@ -252,7 +253,7 @@ window.onload =
 
                     playerLayer.draw();
                 });
-                stage.addEventListener('mousedown', function (e) {
+                stage.addEventListener('mousedown', function(e) {
 
                     e = e || window.event; // for IE
                     var isRightClick;
@@ -272,53 +273,53 @@ window.onload =
                             bulletShotDisplacementY;
                         switch (player.facingDirection) {
                             case CONSTANTS.FACING_DIRECTIONS.LEFT:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
+                                    break;
+                                }
                             case CONSTANTS.FACING_DIRECTIONS.RIGHT:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
+                                    break;
+                                }
                             case CONSTANTS.FACING_DIRECTIONS.UP:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
+                                    break;
+                                }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
+                                    break;
+                                }
                             case CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
+                                    break;
+                                }
                             case CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
+                                    break;
+                                }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
+                                    break;
+                                }
                             case CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
-                            {
-                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
-                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
-                                break;
-                            }
+                                {
+                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
+                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
+                                    break;
+                                }
                         }
 
                         shootBullet(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, relativeClientX, relativeClientY);
@@ -326,14 +327,14 @@ window.onload =
                         createjs.Sound.play('gun');
                     }
                 });
-                stage.addEventListener('mouseup', function (e) {
+                stage.addEventListener('mouseup', function(e) {
                     isFiring = false;
                 });
             }
 
             function spawnEnemy(frame) {
                 var creature = new Enemy('assets/images/enemy.png', frame);
-                creature.image.onload = function () {
+                creature.image.onload = function() {
                     var newEnemy = new Kinetic.Image({
                         x: getRandomCoordinate(50, 950),
                         y: getRandomCoordinate(50, 600),
@@ -371,18 +372,6 @@ window.onload =
                 }
             }
 
-            function attackPlayer() {
-                var playerCenterX = getPlayerCenter().x;
-                var playerCenterY = getPlayerCenter().y;
-
-                var enemyX = this.enemy.getX(),
-                    enemyY = this.enemy.getY(),
-                    rotation = Math.atan2(playerCenterY - enemyY, playerCenterX - enemyX);
-
-                this.enemy.setX(enemyX + Math.cos(rotation) * CONSTANTS.ENEMY_SPEED);
-                this.enemy.setY(enemyY + Math.sin(rotation) * CONSTANTS.ENEMY_SPEED);
-            }
-
             function runDeathAnimation(targetX, targetY, scale, frameRate) {
                 var frameCount = 0;
                 explosionAnimation.setAnimation('explosion');
@@ -395,7 +384,7 @@ window.onload =
                 explosionAnimation.setFrameRate(frameRate);
 
                 explosionAnimation.show();
-                explosionAnimation.on('frameIndexChange', function (e) {
+                explosionAnimation.on('frameIndexChange', function(e) {
                     if (frameCount === 0) {
                         createjs.Sound.play('bomb');
                     }
@@ -422,7 +411,7 @@ window.onload =
                 explosionAnimation.setFrameRate(frameRate);
 
                 explosionAnimation.show();
-                explosionAnimation.on('frameIndexChange', function (e) {
+                explosionAnimation.on('frameIndexChange', function(e) {
                     if (frameCount === 0) {
                         //createjs.Sound.play('bomb');
                     }
@@ -438,7 +427,7 @@ window.onload =
 
             function loadExplosionAnimation() {
                 var deathObj = new Image();
-                deathObj.onload = function () {
+                deathObj.onload = function() {
                     explosionAnimation = new Kinetic.Sprite({
                         x: 0,
                         y: 0,
@@ -521,7 +510,7 @@ window.onload =
             function loadDisappearanceAnimation() {
                 console.log('pesho');
                 var disappearanceObj = new Image();
-                disappearanceObj.onload = function () {
+                disappearanceObj.onload = function() {
                     disappearanceAnimation = new Kinetic.Sprite({
                         x: 0,
                         y: 0,
@@ -565,7 +554,7 @@ window.onload =
                 disappearanceAnimation.setFrameRate(frameRate);
 
                 disappearanceAnimation.show();
-                disappearanceAnimation.on('frameIndexChange', function (e) {
+                disappearanceAnimation.on('frameIndexChange', function(e) {
                     if (++frameCount > 4) {
                         disappearanceAnimation.stop();
                         disappearanceAnimation.hide();
@@ -589,7 +578,7 @@ window.onload =
             }
 
             function run() {
-                var gameLoop = setTimeout(function () {
+                var gameLoop = setTimeout(function() {
                     var smoothGameLoop = requestAnimationFrame(run);
 
                     // Spawning an enemy each frame
@@ -642,7 +631,7 @@ window.onload =
                 }, 30);
             }
 
-            (function () {
+            (function() {
                 initialize();
                 run();
             }());
@@ -663,7 +652,7 @@ window.onload =
                     }
                 });
 
-                bulletImageObject.onload = function () {
+                bulletImageObject.onload = function() {
                     ammoLayer.add(bulletKineticImage);
                     stage.add(ammoLayer);
                 };
@@ -683,7 +672,7 @@ window.onload =
                 var velocityX = (targetX / distance) * player.attackSpeed,
                     velocityY = (targetY / distance) * player.attackSpeed;
 
-                var bulletShotAnimation = new Kinetic.Animation(function (frame) {
+                var bulletShotAnimation = new Kinetic.Animation(function(frame) {
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
@@ -708,7 +697,7 @@ window.onload =
             function checkForAndRemoveDeadEnemies(anim, bullet) {
                 for (var i in enemies) {
                     if (enemies.hasOwnProperty(i)) {
-                        var enemyCenterX = enemies[i].enemy.getX() + 0.6 * CONSTANTS.ENEMY_WIDTH / 2,// 0.6 is the scale of the image
+                        var enemyCenterX = enemies[i].enemy.getX() + 0.6 * CONSTANTS.ENEMY_WIDTH / 2, // 0.6 is the scale of the image
                             enemyCenterY = enemies[i].enemy.getY() + 0.6 * CONSTANTS.ENEMY_HEIGHT / 2,
                             bulletCenterX = bullet.getX() + CONSTANTS.BULLET_RADIUS,
                             bulletCenterY = bullet.getY() + CONSTANTS.BULLET_RADIUS;
@@ -738,4 +727,3 @@ window.onload =
             }
         }
     );
-

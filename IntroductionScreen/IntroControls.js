@@ -8,15 +8,15 @@ function togglediv(id) {
     div.style.display = div.style.display == "none" ? "block" : "none";
     gameControls.style.visibility =  gameControls.style.visibility == "visible" ? "hidden" : "visible";
 }
-function storeHeroName() {
-    var input = document.getElementById("heroName").value;
-    var score=0;
-    console.log(input);
-    if (input==''){
-        return;
-    }
-    else{
-        localStorage.setItem(input, score );
+
+function storeHeroName(id){
+        var input = window.document.getElementById(id).value;
+        if (input == '' || input == 'undefined') {
+            throw new Error("Player name is undefined or null");
+        }
+        else {
+            sessionStorage.setItem('heroName', input);
+        }
 
     }
-}
+

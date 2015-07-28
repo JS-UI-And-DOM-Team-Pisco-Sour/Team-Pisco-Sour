@@ -114,5 +114,4 @@ define(['./contracts/character', '../constants'], function (character, CONSTANTS
     });
 
     return hero;
-})
-;
+});

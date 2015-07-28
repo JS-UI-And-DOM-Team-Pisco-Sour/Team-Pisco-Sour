@@ -100,6 +100,11 @@ window.onload =
                 $(document).keyup(function (e) {
                     var keyPressed = e.keyCode ? e.keyCode : e.which;
 
+                    if (keyPressed === CONSTANTS.KEYS.Q || keyPressed === CONSTANTS.KEYS.W ||
+                        keyPressed === CONSTANTS.KEYS.E || keyPressed === CONSTANTS.KEYS.A) {
+                        runDisappearanceAnimation(getPlayerCenter().x, getPlayerCenter().y, 0.4, 30);
+                    }
+
                     if (keyPressed === CONSTANTS.KEYS.Q) {
                         player.checkDirectionAndTeleport(100);
                     } else if (keyPressed === CONSTANTS.KEYS.W) {
@@ -513,6 +518,63 @@ window.onload =
                 deathObj.src = 'assets/images/explosion.png';
             }
 
+            function loadDisappearanceAnimation() {
+                console.log('pesho');
+                var disappearanceObj = new Image();
+                disappearanceObj.onload = function () {
+                    disappearanceAnimation = new Kinetic.Sprite({
+                        x: 0,
+                        y: 0,
+                        image: disappearanceObj,
+                        scale: {
+                            x: 0,
+                            y: 0
+                        },
+
+                        animation: 'disappearance',
+                        animations: {
+                            disappearance: [
+                                0, 512, 128, 128,
+                                0, 384, 128, 128,
+                                0, 256, 128, 128,
+                                0, 128, 128, 128,
+                                0, 0, 128, 128
+                            ]
+                        },
+
+                        frameRate: 20
+                    });
+
+                    ammoLayer.add(disappearanceAnimation);
+                    disappearanceAnimation.hide();
+                };
+
+                disappearanceObj.src = 'assets/images/poof.png';
+            }
+
+            function runDisappearanceAnimation(targetX, targetY, scale, frameRate) {
+                disappearanceAnimation.stop();
+                var frameCount = 0;
+                disappearanceAnimation.setAnimation('disappearance');
+                disappearanceAnimation.setX(targetX - CONSTANTS.PLAYER_SMOKE_ANIMATION_WIDTH / 2 * scale);
+                disappearanceAnimation.setY(targetY - CONSTANTS.PLAYER_SMOKE_ANIMATION_HEIGHT / 2 * scale);
+                disappearanceAnimation.setScale({
+                    x: scale,
+                    y: scale
+                });
+                disappearanceAnimation.setFrameRate(frameRate);
+
+                disappearanceAnimation.show();
+                disappearanceAnimation.on('frameIndexChange', function (e) {
+                    if (++frameCount > 4) {
+                        disappearanceAnimation.stop();
+                        disappearanceAnimation.hide();
+                        frameCount = 0;
+                    }
+                });
+                disappearanceAnimation.start();
+            }
+
             function getRandomCoordinate(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
@@ -523,6 +585,7 @@ window.onload =
                 loadBackground();
                 loadPlayer();
                 loadExplosionAnimation();
+                loadDisappearanceAnimation();
             }
 
             function run() {
@@ -555,6 +618,7 @@ window.onload =
                     ammoLayer.setZIndex(2);
 
                     enemiesLayer.draw();
+                    ammoLayer.draw();
 
                     // Check if not dead
                     player.isDead = player.health === 0;

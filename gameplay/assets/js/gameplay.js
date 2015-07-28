@@ -6,15 +6,14 @@ requirejs.config({
 });
 
 window.onload =
-    requirejs(['constants', 'game-objects/hero', '../../../lib/jquery-1.11.3.min', '../../lib/kinetic-v5.1.0.min',
-            '../../../lib/createjs-2015.05.21.min',
-            'health'],
-        function start(CONSTANTS, hero) {
-            function loadSounds() {
-                createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
-                createjs.Sound.registerSound('assets/sounds/gunfire.mp3', 'gun');
-            }
-
+    requirejs(['constants',
+            'game-objects/hero',
+            'game-objects/enemy',
+            'health',
+            '../../../lib/jquery-1.11.3.min',
+            '../../lib/kinetic-v5.1.0.min',
+            '../../../lib/createjs-2015.05.21.min'],
+        function (CONSTANTS, Hero, Enemy, logHealth) {
             var stage,
                 backgroundLayer,
                 playerLayer,
@@ -36,9 +35,13 @@ window.onload =
                 enemies = [],
 
                 currentFrame = -1,
+                playerWasHit = true;
 
-                deathModeOn = false;
 
+            function loadSounds() {
+                createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
+                createjs.Sound.registerSound('assets/sounds/gunfire.mp3', 'gun');
+            }
 
             function loadCanvas() {
                 stage = new Kinetic.Stage({
@@ -62,7 +65,8 @@ window.onload =
             }
 
             function loadPlayer() {
-                player = Object.create(hero).init('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, attackSpeed);
+
+                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, attackSpeed);
                 player.image.onload = function () {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
@@ -129,6 +133,8 @@ window.onload =
 
                     playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
                     playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
+                    var playerCenterX = getPlayerCenter().x;
+                    var playerCenterY = getPlayerCenter().y;
 
                     // Left
                     if (relativeClientX < playerCenterX) {
@@ -347,16 +353,56 @@ window.onload =
                 enemies = [];
             }
 
-            function attackPlayer(enemy) {
-                playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
-                playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
+            function spawnEnemy(frame) {
+                var creature = new Enemy('assets/images/enemy.png', frame);
+                creature.image.onload = function () {
+                    var newEnemy = new Kinetic.Image({
+                        x: getRandomCoordinate(50, 950),
+                        y: getRandomCoordinate(50, 600),
+                        image: creature.image,
+                        width: CONSTANTS.ENEMY_WIDTH,
+                        height: CONSTANTS.ENEMY_HEIGHT,
+                        crop: {
+                            x: creature.frame,
+                            y: 0,
+                            width: CONSTANTS.ENEMY_WIDTH,
+                            height: CONSTANTS.ENEMY_HEIGHT
+                        },
 
-                var enemyX = enemy.getX(),
-                    enemyY = enemy.getY(),
+                        scale: {
+                            x: 0.6,
+                            y: 0.6
+                        }
+                    });
+
+                    enemies.push({
+                        enemy: newEnemy,
+                        frame: creature.frame,
+                        attackPlayer: creature.attackPlayer
+                    });
+
+                    enemiesLayer.add(newEnemy);
+                    stage.add(enemiesLayer);
+                }
+            }
+
+            function getPlayerCenter() {
+                return {
+                    x: player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
+                    y: player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2
+                }
+            }
+
+            function attackPlayer() {
+                var playerCenterX = getPlayerCenter().x;
+                var playerCenterY = getPlayerCenter().y;
+
+                var enemyX = this.enemy.getX(),
+                    enemyY = this.enemy.getY(),
                     rotation = Math.atan2(playerCenterY - enemyY, playerCenterX - enemyX);
 
-                enemy.setX(enemyX + Math.cos(rotation) * CONSTANTS.ENEMY_SPEED);
-                enemy.setY(enemyY + Math.sin(rotation) * CONSTANTS.ENEMY_SPEED);
+                this.enemy.setX(enemyX + Math.cos(rotation) * CONSTANTS.ENEMY_SPEED);
+                this.enemy.setY(enemyY + Math.sin(rotation) * CONSTANTS.ENEMY_SPEED);
             }
 
             function runDeathAnimation(targetX, targetY, scale, frameRate) {
@@ -510,45 +556,10 @@ window.onload =
             function run() {
                 var gameLoop = setTimeout(function () {
                     var smoothGameLoop = requestAnimationFrame(run);
-                    deathModeOn = health === 0;
-
-                    // some code sets deathModeOn to true, i.e the hero has died
-                    if (deathModeOn) {
-                        runDeathAnimation(player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
-                            player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
-                        cancelAnimationFrame(smoothGameLoop);
-                        clearTimeout(gameLoop);
-                        player.kineticImage.remove();
-                    }
 
                     // Spawning an enemy each frame
                     if (currentFrame % CONSTANTS.ENEMY_SPAWN_FRAME_INTERVAL === 0) {
-                        var newEnemy = new Kinetic.Image({
-                            x: getRandomCoordinate(50, 950),
-                            y: getRandomCoordinate(50, 600),
-                            image: enemyImageObj,
-                            width: CONSTANTS.ENEMY_WIDTH,
-                            height: CONSTANTS.ENEMY_HEIGHT,
-                            crop: {
-                                x: currentFrame,
-                                y: 0,
-                                width: CONSTANTS.ENEMY_WIDTH,
-                                height: CONSTANTS.ENEMY_HEIGHT
-                            },
-
-                            scale: {
-                                x: 0.6,
-                                y: 0.6
-                            }
-                        });
-
-                        enemies.push({
-                            enemy: newEnemy,
-                            frame: currentFrame
-                        });
-
-                        enemiesLayer.add(newEnemy);
-                        stage.add(enemiesLayer);
+                        spawnEnemy(currentFrame);
                     }
 
                     // Updating each Enemy separately
@@ -563,15 +574,32 @@ window.onload =
                             });
                         }
 
-                        attackPlayer(enemies[i].enemy);
+                        Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
                     }
 
                     backgroundLayer.setZIndex(1);
-                    playerLayer.setZIndex(2);
+                    playerLayer.setZIndex(4);
                     enemiesLayer.setZIndex(3);
-                    ammoLayer.setZIndex(4);
+                    ammoLayer.setZIndex(2);
 
                     enemiesLayer.draw();
+
+                    // Check if not dead
+                    player.isDead = player.health === 0;
+
+                    if (player.isDead) {
+                        runDeathAnimation(player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
+                            player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
+                        cancelAnimationFrame(smoothGameLoop);
+                        clearTimeout(gameLoop);
+                        stage.remove(enemiesLayer);
+                        player.kineticImage.remove();
+                    }
+
+                    // Improvised dying
+                    if(currentFrame % 40 === 0 && playerWasHit) {
+                        logHealth(100, player);
+                    }
 
                     //Last step is to update the frame counter
                     currentFrame += 1;
@@ -616,8 +644,8 @@ window.onload =
                     targetY = bulletDestinationY - bullet.getY(),
                     distance = Math.sqrt(targetX * targetX + targetY * targetY);
 
-                var velocityX = (targetX / distance) * attackSpeed,
-                    velocityY = (targetY / distance) * attackSpeed;
+                var velocityX = (targetX / distance) * player.attackSpeed,
+                    velocityY = (targetY / distance) * player.attackSpeed;
 
                 var bulletShotAnimation = new Kinetic.Animation(function(frame) {
                     bullet.setX(bullet.getX() + velocityX);

@@ -1,16 +1,13 @@
 define(function () {
-    var character = {};
-    Object.defineProperties(character, {
-        init: {
-            value: function (imagePath) {
-                this.image = new Image();
-                this.image.src = imagePath;
-                this.kineticImage = null;
+    var Character = (function(){
+        var Character = function(imagePath){
+            this.image = new Image();
+            this.image.src = imagePath;
+            this.kineticImage = null;
+        };
 
-                return this;
-            }
-        }
-    });
+        return Character;
+    }());
 
-    return character;
+    return Character;
 });

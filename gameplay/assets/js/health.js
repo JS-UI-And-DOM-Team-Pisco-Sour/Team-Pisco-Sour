@@ -1,4 +1,4 @@
-$(document).ready(function() {
+define(function() {
     var hitBtn = $('button.damage'),
         hBar = $('.health-bar'),
         bar = hBar.find('.bar'),
@@ -14,11 +14,7 @@ $(document).ready(function() {
         damage += 100;
         if (health >= 0) {
             var newValue = value - damage;
-            // calculate the percentage of the total width
             var hitWidth = (damage / total) * 100 + "%";
-            //var barWidth = (newValue / total) * 100 + "%";
-
-            // show hit bar and set the width
             hit.css({
                 'display': 'block',
                 'width': hitWidth
@@ -27,12 +23,12 @@ $(document).ready(function() {
             log(damage, hitWidth, health);
         }
     });
-});
 
-function log(_damage, _hitWidth, _decreasedLife) {
-    var log = $('.log');
-    log.empty();
-    if (_damage !== undefined && _hitWidth !== undefined) {
-        log.append("<div> (" + _decreasedLife + " / 1000)</div>");
+    function log(_damage, _hitWidth, _decreasedLife) {
+        var log = $('.log');
+        log.empty();
+        if (_damage !== undefined && _hitWidth !== undefined) {
+            log.append("<div> (" + _decreasedLife + " / 1000)</div>");
+        }
     }
-}
+});

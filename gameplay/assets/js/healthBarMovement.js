@@ -4,15 +4,15 @@ $(document).ready(function() {
         bar = hBar.find('.bar'),
         hit = hBar.find('.hit');
     var damage = 0;
-    decreasedLife = 1000;
+    health = 1000;
 
     hitBtn.on("click", function() {
         var total = hBar.data('total'),
             value = hBar.data('value');
 
-        decreasedLife -= 100;
+        health -= 100;
         damage += 100;
-        if (decreasedLife >= 0) {
+        if (health >= 0) {
             var newValue = value - damage;
             // calculate the percentage of the total width
             var hitWidth = (damage / total) * 100 + "%";
@@ -24,7 +24,7 @@ $(document).ready(function() {
                 'width': hitWidth
             });
             hBar.data('value', newValue);
-            log(damage, hitWidth, decreasedLife);
+            log(damage, hitWidth, health);
         }
     });
 });

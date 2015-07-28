@@ -764,7 +764,7 @@ window.onload = function() {
     function run() {
         var gameLoop = setTimeout(function() {
             var smoothGameLoop = requestAnimationFrame(run);
-            deathModeOn = decreasedLife === 0;
+            deathModeOn = health === 0;
 
             // some code sets deathModeOn to true, i.e the hero has died
             if (deathModeOn) {

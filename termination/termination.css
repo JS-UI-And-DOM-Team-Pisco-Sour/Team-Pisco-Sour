@@ -1,0 +1,15 @@
+@font-face {
+    font-family: storyfont;
+    src: url("../IntroductionScreen/fonts/GoodDog.otf");
+}
+
+@font-face {
+    font-family: footerFont;
+    src: url("../IntroductionScreen/fonts/ArchitectsDaughter.ttf");
+}
+
+@font-face {
+    font-family: headerFontFill;
+    src: url("../IntroductionScreen/fonts/AmazDooMLeft.ttf");
+}
+

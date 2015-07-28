@@ -610,13 +610,13 @@ window.onload =
                     x: gunBarrelX,
                     y: gunBarrelY,
                     image: bulletImageObject,
-                    width: 30,
-                    height: 30,
+                    width: 28,
+                    height: 27,
                     crop: {
                         x: 0,
                         y: 0,
-                        width: 30,
-                        height: 30
+                        width: 28,
+                        height: 27
                     }
                 });
 

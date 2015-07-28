@@ -14,9 +14,9 @@ define(['./contracts/character', '../constants'], function (Character, CONSTANTS
             parent.call(this, imagePath);
             this.health = health;
             this.isDead = false;
-            this.smallTeleportationAmount = 100;
-            this.averageTeleportationAmount = 200;
-            this.largeTeleportationAmount = 300;
+            this.smallTeleportationAmount = 150;
+            this.averageTeleportationAmount = 300;
+            this.largeTeleportationAmount = 450;
             this.facingDirection = CONSTANTS.FACING_DIRECTIONS.DEFAULT;
             this.layer = layer;
             this.attackSpeed = attackSpeed;

@@ -10,6 +10,7 @@ define(function () {
         PLAYER_HEIGHT: 160,
         PLAYER_DEATH_ANIMATION_FRAMES_COUNT: 48,
         PLAYER_INITIAL_HEALTH: 1000,
+        PLAYER_ATTACK_SPEED: 20,
 
         FACING_DIRECTIONS: {
             UP: 2,
@@ -36,6 +37,7 @@ define(function () {
 
         ENEMY_WIDTH: 99.2,
         ENEMY_HEIGHT: 111,
+        ENEMY_RADIUS: 105,
         ENEMY_FRAME_COUNT: 10,
         ENEMY_SPAWN_FRAME_INTERVAL: 60,
         ENEMY_SPEED: 2,
@@ -45,6 +47,9 @@ define(function () {
         EXPLOSION_SCALE: 2.6,
         EXPLOSION_FRAME_RATE: 30,
 
+        BULLET_WIDTH: 28,
+        BULLET_HEIGHT: 28,
+        BULLET_RADIUS: 14,
         BULLET_SHOT_SCALE: 0.2,
         BULLET_SHOT_FRAMERATE: 10000000,
         SHIFT: 30

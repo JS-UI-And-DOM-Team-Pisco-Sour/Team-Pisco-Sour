@@ -21,10 +21,8 @@ window.onload =
                 ammoLayer,
 
                 backgroundImageObj,
-                enemyImageObj,
 
                 player,
-                attackSpeed,
 
                 bullets = [],
                 enemies = [],
@@ -51,13 +49,11 @@ window.onload =
 
                 ammoLayer = new Kinetic.Layer();
                 stage.add(ammoLayer);
-
-                attackSpeed = 20;
             }
 
             function loadPlayer() {
 
-                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, attackSpeed);
+                player = new Hero('assets/images/player.png', CONSTANTS.PLAYER_INITIAL_HEALTH, playerLayer, CONSTANTS.PLAYER_ATTACK_SPEED);
                 player.image.onload = function () {
                     var playerKineticImage = new Kinetic.Image({
                         x: 50,
@@ -121,8 +117,8 @@ window.onload =
                     var $gameplayContainer = $('#gameplay-container'),
                         relativeClientX = e.clientX - $gameplayContainer.offset().left,
                         relativeClientY = e.clientY - $gameplayContainer.offset().top,
-                     playerCenterX = getPlayerCenter().x,
-                     playerCenterY = getPlayerCenter().y;
+                        playerCenterX = getPlayerCenter().x,
+                        playerCenterY = getPlayerCenter().y;
 
                     // Left
                     if (relativeClientX < playerCenterX) {
@@ -325,7 +321,7 @@ window.onload =
                         createjs.Sound.play('gun');
                     }
                 });
-                stage.addEventListener('mouseup', function(e) {
+                stage.addEventListener('mouseup', function (e) {
                     isFiring = false;
                 });
             }
@@ -573,7 +569,7 @@ window.onload =
                     }
 
                     // Improvised dying
-                    if(currentFrame % 40 === 0 && playerWasHit) {
+                    if (currentFrame % 40 === 0 && playerWasHit) {
                         logHealth(100, player);
                     }
 
@@ -594,12 +590,12 @@ window.onload =
                     y: gunBarrelY,
                     image: bulletImageObject,
                     width: 28,
-                    height: 27,
+                    height: 28,
                     crop: {
                         x: 0,
                         y: 0,
-                        width: 28,
-                        height: 27
+                        width: 128,
+                        height: 128
                     }
                 });
 
@@ -608,7 +604,7 @@ window.onload =
                     stage.add(ammoLayer);
                 };
 
-                bulletImageObject.src = 'assets/images/bullet-image.png';
+                bulletImageObject.src = 'assets/images/bullet.png';
 
                 return bulletKineticImage;
             }
@@ -623,13 +619,11 @@ window.onload =
                 var velocityX = (targetX / distance) * player.attackSpeed,
                     velocityY = (targetY / distance) * player.attackSpeed;
 
-                var bulletShotAnimation = new Kinetic.Animation(function(frame) {
+                var bulletShotAnimation = new Kinetic.Animation(function (frame) {
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
-                    //if(enemyCollision(bullet) == true) {
-                    //    canRemoveBullet = true;
-                    //}
+                    checkForAndRemoveDeadEnemies(bullet);
 
                     if (bulletLeftField(bullet) == true) {
                         canRemoveBullet = true;
@@ -647,11 +641,32 @@ window.onload =
                 bulletShotAnimation.start();
             }
 
+            function checkForAndRemoveDeadEnemies(bullet) {
+                for (var i in enemies) {
+                    if (enemies.hasOwnProperty(i)) {
+                        var enemyCenterX = enemies[i].enemy.getX() + CONSTANTS.ENEMY_WIDTH / 2,
+                            enemyCenterY = enemies[i].enemy.getY() + CONSTANTS.ENEMY_HEIGHT / 2,
+                            bulletCenterX = bullet.getX() + CONSTANTS.BULLET_RADIUS,
+                            bulletCenterY = bullet.getY() + CONSTANTS.BULLET_RADIUS;
+
+                        if ((enemyCenterX - bulletCenterX) * (enemyCenterX - bulletCenterX) +
+                            (enemyCenterY - bulletCenterY) * (enemyCenterY - bulletCenterY) <=
+                            0.3 * (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS) * (CONSTANTS.ENEMY_RADIUS + CONSTANTS.BULLET_RADIUS)) {
+                            enemies[i].enemy.remove();
+                            enemies.splice(i, 1);
+                            bullet.remove();
+                            bullets.splice(bullets.indexOf(bullet), 1);
+                            console.log(bullets.indexOf(bullet));
+                        }
+                    }
+                }
+            }
+
             function bulletLeftField(bullet) {
                 if (bullet.getX() < 0 - 30 ||
                     bullet.getX() > CONSTANTS.STAGE_WIDTH + 30 ||
                     bullet.getY() < 0 - 30 ||
-                    bullet.getY() > CONSTANTS.STAGE_HEIGHT +30) {
+                    bullet.getY() > CONSTANTS.STAGE_HEIGHT + 30) {
                     return true;
                 }
 

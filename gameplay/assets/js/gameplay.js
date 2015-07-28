@@ -6,28 +6,14 @@ requirejs.config({
 });
 
 window.onload =
-    requirejs(['constants', 'game-objects/hero', 'game-objects/enemy', '../../../lib/jquery-1.11.3.min', '../../lib/kinetic-v5.1.0.min',
-            '../../../lib/createjs-2015.05.21.min',
-            'health'],
-        function (CONSTANTS, Hero, Enemy) {
-            Object.deepExtend = function (destination, source) {
-                for (var property in source) {
-                    if (typeof source[property] === "object" &&
-                        source[property] !== null) {
-                        destination[property] = destination[property] || {};
-                        arguments.callee(destination[property], source[property]);
-                    } else {
-                        destination[property] = source[property];
-                    }
-                }
-                return destination;
-            };
-
-            function loadSounds() {
-                createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
-                createjs.Sound.registerSound('assets/sounds/gunfire.mp3', 'gun');
-            }
-
+    requirejs(['constants',
+            'game-objects/hero',
+            'game-objects/enemy',
+            'health',
+            '../../../lib/jquery-1.11.3.min',
+            '../../lib/kinetic-v5.1.0.min',
+            '../../../lib/createjs-2015.05.21.min'],
+        function (CONSTANTS, Hero, Enemy, logHealth) {
             var stage,
                 backgroundLayer,
                 playerLayer,
@@ -37,18 +23,15 @@ window.onload =
                 enemyImageObj,
 
                 player,
-                playerCenterX,
-                playerCenterY,
-
                 enemies = [],
-
-            //playerAutoPosition,
-            //playerLineEquation,
-
                 currentFrame = -1,
+                playerWasHit = true;
 
-                deathModeOn = false;
 
+            function loadSounds() {
+                createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
+                createjs.Sound.registerSound('assets/sounds/gunfire.mp3', 'gun');
+            }
 
             function loadCanvas() {
                 stage = new Kinetic.Stage({
@@ -128,8 +111,8 @@ window.onload =
                     var $gameplayContainer = $('#gameplay-container'),
                         relativeClientX = e.clientX - $gameplayContainer.offset().left,
                         relativeClientY = e.clientY - $gameplayContainer.offset().top;
-                    playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
-                    playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
+                    var playerCenterX = getPlayerCenter().x;
+                    var playerCenterY = getPlayerCenter().y;
 
                     // Left
                     if (relativeClientX < playerCenterX) {
@@ -366,9 +349,16 @@ window.onload =
                 }
             }
 
+            function getPlayerCenter() {
+                return {
+                    x: player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
+                    y: player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2
+                }
+            }
+
             function attackPlayer() {
-                playerCenterX = player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2;
-                playerCenterY = player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2;
+                var playerCenterX = getPlayerCenter().x;
+                var playerCenterY = getPlayerCenter().y;
 
                 var enemyX = this.enemy.getX(),
                     enemyY = this.enemy.getY(),
@@ -513,7 +503,6 @@ window.onload =
                 deathObj.src = 'assets/images/explosion.png';
             }
 
-            // Returns a random INTEGER number from the range between MIN and MAX values.
             function getRandomCoordinate(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
@@ -530,16 +519,6 @@ window.onload =
             function run() {
                 var gameLoop = setTimeout(function () {
                     var smoothGameLoop = requestAnimationFrame(run);
-                    deathModeOn = health === 0;
-
-                    // some code sets deathModeOn to true, i.e the hero has died
-                    if (deathModeOn) {
-                        runDeathAnimation(player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
-                            player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
-                        cancelAnimationFrame(smoothGameLoop);
-                        clearTimeout(gameLoop);
-                        player.kineticImage.remove();
-                    }
 
                     // Spawning an enemy each frame
                     if (currentFrame % CONSTANTS.ENEMY_SPAWN_FRAME_INTERVAL === 0) {
@@ -565,6 +544,23 @@ window.onload =
                     playerLayer.setZIndex(2);
                     enemiesLayer.setZIndex(3);
                     enemiesLayer.draw();
+
+                    // Check if not dead
+                    player.isDead = player.health === 0;
+
+                    if (player.isDead) {
+                        runDeathAnimation(player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
+                            player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
+                        cancelAnimationFrame(smoothGameLoop);
+                        clearTimeout(gameLoop);
+                        stage.remove(enemiesLayer);
+                        player.kineticImage.remove();
+                    }
+
+                    // Improvised dying
+                    if(currentFrame % 40 === 0 && playerWasHit) {
+                        logHealth(100, player);
+                    }
 
                     //Last step is to update the frame counter
                     currentFrame += 1;

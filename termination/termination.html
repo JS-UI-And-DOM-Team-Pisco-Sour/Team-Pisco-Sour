@@ -6,6 +6,7 @@
     <script src="../gameplay/lib/kinetic-v5.1.0.min.js"></script>
     <script src="../lib/createjs-2015.05.21.min.js"></script>
     <script src="../termination/termination.js"></script>
+    <script src="../IntroductionScreen/IntroControls.js"></script>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../IntroductionScreen/IntroStyles.css">
     <title>Snailiens</title>
@@ -14,14 +15,15 @@
     <div id="container">
         <div id="title"><p>Snailiens</p></div>
         <div id="menu">
-                <form action="../gameplay/gameplay.html">
+                <form action="../IntroductionScreen/Intro.html">
                     <input type="submit" value="PLAY AGAIN" id="playButton" title="Play Snailiens">
                 </form>
-            <input type="button" value="Show Highscores" title="Show High Scores">
+            <input type="button" value="Show Highscores" title="Show High Scores" onclick="showHighScores();">
             <form action="https://github.com/JS-UI-And-DOM-Team-Pisco-Sour.html">
                 <input type="submit" value="GitHub Repo">
             </form>
         </div>
+        <div id="HighScores"></div>
         <div id="footer">
             <p><small>Developed by Team "Pisco Sour" @ Telerik Academy, 2015</small></p>
         </div>

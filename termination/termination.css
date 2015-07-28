@@ -13,3 +13,23 @@
     src: url("../IntroductionScreen/fonts/AmazDooMLeft.ttf");
 }
 
+
+#GameOver{
+    position: fixed;
+    left: 660px;
+    top: 260px;
+}
+#high-scores{
+    line-height: 43px;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    font-family: 'storyFont';
+    font-size: 3.8em;
+    letter-spacing: 2px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 3px 3px #000;
+}

@@ -1,3 +1,6 @@
 function showHighScores(){
-    document.getElementById("HighScores").innerHTML = 9;
+    var counter=1;
+    document.getElementById("high-scores").innerHTML = counter +'. '+ sessionStorage.getItem('heroName');
+    document.getElementById("GameOver").style.display='none';
+    counter++;
 }

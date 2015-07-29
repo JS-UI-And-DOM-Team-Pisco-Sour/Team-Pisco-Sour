@@ -2,7 +2,7 @@ define(function() {
     return {
         WIDTH: 155,
         HEIGHT: 160,
-        DEATH_ANIMATION_FRAMES_COUNT: 48,
+        DEATH_ANIMATION_FRAMES_COUNT: 49,
         SMOKE_ANIMATION_FRAMES_COUNT: 40,
         SMOKE_ANIMATION_WIDTH: 128,
         SMOKE_ANIMATION_HEIGHT: 128,

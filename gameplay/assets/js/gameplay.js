@@ -17,7 +17,7 @@ window.onload =
             'health', 'buttonTimer',
             'jquery', 'kinetic', 'create'
         ],
-        function(GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, logHealth) {
+        function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, logHealth) {
             var stage,
                 backgroundLayer,
                 playerLayer,
@@ -53,9 +53,9 @@ window.onload =
                 });
 
                 backgroundLayer = new Kinetic.Layer();
-                ammoLayer = new Kinetic.Layer();
-                enemiesLayer = new Kinetic.Layer();
-                playerLayer = new Kinetic.Layer();
+                ammoLayer = new Kinetic.FastLayer();
+                enemiesLayer = new Kinetic.FastLayer();
+                playerLayer = new Kinetic.FastLayer();
 
                 stage.add(ammoLayer);
                 stage.add(enemiesLayer);
@@ -70,7 +70,7 @@ window.onload =
             function loadBackground() {
                 backgroundImageObj = new Image();
 
-                backgroundImageObj.onload = function() {
+                backgroundImageObj.onload = function () {
                     var background = new Kinetic.Image({
                         x: 0,
                         y: 0,
@@ -244,53 +244,53 @@ window.onload =
 
                         switch (player.facingDirection) {
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.LEFT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.RIGHT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.UP:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.DOWN:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
+                                break;
+                            }
                         }
 
                         shootBullet(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, relativeClientX, relativeClientY, ordinaryFirePath);
@@ -328,7 +328,7 @@ window.onload =
 
             function spawnEnemy(frame) {
                 var creature = new Enemy('assets/images/enemy.png', frame);
-                creature.image.onload = function() {
+                creature.image.onload = function () {
                     var newEnemy = new Kinetic.Image({
                         x: getRandomCoordinate(50, 950 - ENEMY_CONSTANTS.WIDTH),
                         y: getRandomCoordinate(50, 600 - ENEMY_CONSTANTS.HEIGHT),
@@ -370,7 +370,7 @@ window.onload =
                 explosionAnimation.setFrameRate(frameRate);
 
                 explosionAnimation.show();
-                explosionAnimation.on('frameIndexChange', function(e) {
+                explosionAnimation.on('frameIndexChange', function (e) {
                     if (frameCount === 0) {
                         createjs.Sound.play('bomb');
                     }
@@ -397,7 +397,7 @@ window.onload =
                 explosionAnimation.setFrameRate(frameRate);
 
                 explosionAnimation.show();
-                explosionAnimation.on('frameIndexChange', function(e) {
+                explosionAnimation.on('frameIndexChange', function (e) {
                     if (frameCount === 0) {
                         //createjs.Sound.play('bomb');
                     }
@@ -413,7 +413,7 @@ window.onload =
 
             function loadExplosionAnimation() {
                 var deathObj = new Image();
-                deathObj.onload = function() {
+                deathObj.onload = function () {
                     explosionAnimation = new Kinetic.Sprite({
                         x: 0,
                         y: 0,
@@ -478,7 +478,8 @@ window.onload =
                                 1024, 1280, 256, 256,
                                 1280, 1280, 256, 256,
                                 1536, 1280, 256, 256,
-                                1792, 1280, 256, 256
+                                1792, 1280, 256, 256,
+                                1792, 1536, 256, 256
                             ]
                         },
 
@@ -495,7 +496,7 @@ window.onload =
 
             function loadDisappearanceAnimation() {
                 var disappearanceObj = new Image();
-                disappearanceObj.onload = function() {
+                disappearanceObj.onload = function () {
                     disappearanceAnimation = new Kinetic.Sprite({
                         x: 0,
                         y: 0,
@@ -539,7 +540,7 @@ window.onload =
                 disappearanceAnimation.setFrameRate(frameRate);
 
                 disappearanceAnimation.show();
-                disappearanceAnimation.on('frameIndexChange', function(e) {
+                disappearanceAnimation.on('frameIndexChange', function (e) {
                     if (++frameCount > 4) {
                         disappearanceAnimation.stop();
                         disappearanceAnimation.hide();
@@ -564,7 +565,7 @@ window.onload =
             }
 
             function run() {
-                var gameLoopControl = setTimeout(function() {
+                var gameLoopControl = setTimeout(function () {
                     var gameLoop = requestAnimationFrame(run);
 
                     // Check if not dead
@@ -580,7 +581,7 @@ window.onload =
                             player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2, PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
 
                         // Delay the endscreen show-up
-                        setTimeout(function() {
+                        setTimeout(function () {
                             stage.remove(enemiesLayer);
                             //window.location.href = '../termination/termination.html';
                         }, 3000);
@@ -619,20 +620,22 @@ window.onload =
                     enemiesLayer.moveToTop();
 
                     // Draw only the layer that needs update
-                    enemiesLayer.draw();
-
-                    // Improvised dying
-                    //if (currentFrame % 40 === 0 && playerWasHit) {
-                    //    logHealth(100, player);
-                    //}
+                    enemiesLayer.drawScene();
 
                     //Last step is to update the frame counter
                     currentFrame += 1;
 
+                    // Clear the cache for better performance
+                    ammoLayer.clearCache();
+                    enemiesLayer.clearCache();
+                    playerLayer.clearCache();
+                    backgroundLayer.clearCache();
+
+                    stage.clearCache();
                 }, 30);
             }
 
-            (function() {
+            (function () {
                 initialize();
                 run();
             }());
@@ -653,7 +656,7 @@ window.onload =
                     }
                 });
 
-                bulletImageObject.onload = function() {
+                bulletImageObject.onload = function () {
                     ammoLayer.add(bulletKineticImage); // ammoLayer has now length of 1
                     stage.add(ammoLayer);
                 };
@@ -674,7 +677,7 @@ window.onload =
                 var velocityX = (targetX / distance) * player.attackSpeed,
                     velocityY = (targetY / distance) * player.attackSpeed;
 
-                var bulletShotAnimation = new Kinetic.Animation(function(frame) {
+                var bulletShotAnimation = new Kinetic.Animation(function (frame) {
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
@@ -688,7 +691,7 @@ window.onload =
                         bullet.setX(GLOBAL_CONSTANTS.STAGE_WIDTH * 2);
                         bullet.setY(GLOBAL_CONSTANTS.STAGE_HEIGHT * 2);
                         bullet.destroy();
-                        
+
                         removeEnemy(deadEnemyIndex);
 
                         // Lifesteal ability
@@ -815,7 +818,7 @@ window.onload =
                 playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
-        enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
+                    enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
                     enemyTopY = enemy.getY(),
                     enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.HEIGHT;
 

@@ -810,19 +810,19 @@ window.onload =
                 playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
-                    enemyRigthX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
+                    enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
                     enemyTopY = enemy.getY(),
                     enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.HEIGHT;
 
-                var playerCenterXBetweenEnemyLeftXAndRightX = enemyLeftX <= playerCenterX && playerCenterX <= enemyRigthX;
+                var playerCenterXBetweenEnemyLeftXAndRightX = enemyLeftX <= playerCenterX && playerCenterX <= enemyRightX;
 
                 var enemyTopSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyTopY - playerCenterY) <= deadlyRadius,
                     enemyBottomSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyBottomY - playerCenterY) <= deadlyRadius;
 
                 var enemyLeftTopInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
-                    enemyRightTopInDeadlyRadius = (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
+                    enemyRightTopInDeadlyRadius = (enemyRightX - playerCenterX) * (enemyRightX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
                     enemyLeftBottomInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius,
-                    enemyRightBottomInDeadlyRadius = (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius;
+                    enemyRightBottomInDeadlyRadius = (enemyRightX - playerCenterX) * (enemyRightX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius;
 
                 var enemyTopXInDeadlyRadius = enemyLeftTopInDeadlyRadius || enemyRightTopInDeadlyRadius,
                     enemyBottomXInDeadlyRadius = enemyLeftBottomInDeadlyRadius || enemyRightBottomInDeadlyRadius;

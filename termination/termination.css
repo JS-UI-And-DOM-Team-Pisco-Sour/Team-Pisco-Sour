@@ -1,24 +1,243 @@
 @font-face {
     font-family: storyfont;
-    src: url("../IntroductionScreen/fonts/GoodDog.otf");
+    src: url("fonts/GoodDog.otf");
 }
 
 @font-face {
     font-family: footerFont;
-    src: url("../IntroductionScreen/fonts/ArchitectsDaughter.ttf");
+    src: url("fonts/ArchitectsDaughter.ttf");
 }
 
 @font-face {
     font-family: headerFontFill;
-    src: url("../IntroductionScreen/fonts/AmazDooMLeft.ttf");
+    src: url("fonts/AmazDooMLeft.ttf");
+}
+
+@font-face {
+    font-family: logoFont;
+    src: url("fonts/machine.ttf");
 }
 
 
+html, body, div, p, form {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    background-image: url("images/background-min.jpg");
+    width: 100%;
+}
+
+#title {
+    margin-top: 2%;
+}
+
+h1 {
+    font-family: "headerFontFill";
+    font-size: 15vw;
+    font-size: 15vh;
+    font-weight: 500;
+    color: rgba(233, 0, 5, 0.91);
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    text-align: center;
+    text-shadow: 10px 10px 5px  #151617, #000 0 -1px 2px;
+    letter-spacing: 5px;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+
+h1 {
+    font-family: "headerFontFill";
+    font-size: 20vw;
+    font-size: 20vh;
+    color: rgba(233, 0, 5, 0.91);
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    text-align: center;
+    text-shadow: 10px 10px 5px  #151617, #000 0 -1px 2px;
+    letter-spacing: 5px;
+    padding-top: 10px;
+    vertical-align: baseline;
+    margin: 0;
+}
+
+h1:hover {
+    color: rgba(17, 17, 17, 1);
+    text-shadow: 10px 10px 20px rgb(233, 0, 5), rgb(233, 0, 5) 0 -1px 2px;
+}
+
+#container {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    /*border: 1px solid red;*/
+    zoom: 1;
+}
+
+#container:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear:both;
+}
+
+#container>div {
+    float: left;
+}
+
+#container > #scores {
+    float: left;
+}
+
+#container > #menu {
+    float: left;
+}
+
+#scores {
+    width: 60%;
+    padding-left: 2%;
+    border: 1px solid rbg(19, 19, 4);
+    border-radius: 5%;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+    background-color: rgba(1, 8, 26, 0.3);
+}
+
+h2 {
+    font-family: "storyFont";
+    font-size: 6vw;
+    font-size: 6vh;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px #000;
+    color: #F5F6F7;
+    padding-left: 5%;
+}
+
+#menu {
+    float: right;
+    width: 30%;
+    margin: 0 auto;
+    margin-left: 6%;
+    border-left: 5px solid rgba(1, 8, 26, 0.7);
+    border:1px solid white;
+}
+
+#menu input[type="text"] {
+    background-color: #01081A;
+    border: 1px solid #2c90c6;
+    border-radius: 5%;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+    line-height: 170%;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    font-family: 'storyFont';
+    font-size: 4.5vw;
+    font-size: 4.5vh;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    height: 40%;
+    width: 88%;
+    display: block;
+    margin: 7%;
+}
+
+#menu input[type=text]:focus {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  border: 1px solid rgba(245, 246, 247, 1);
+}
+
+#menu input[type="submit"] {
+    background-color: #01081A;
+    border: 1px solid #2c90c6;
+    border-radius: 5%;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+    color: #fff;
+    font-family: "storyFont";
+    font-size: 4.5vw;
+    font-size: 4.5vh;
+    font-weight: bold;
+    line-height: 170%;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    width: 88%;
+    display: block;
+    margin: 7%;
+}
+
+#menu input[type="submit"]:hover {
+    background-color: #2c70c6;
+    box-shadow: 2px 2px 20px  #2c90c6, #fff 0 1px 2px;
+}
+
+#menu input[type="submit"]:active {
+  box-shadow: 1px 0px 1px #203891,0px 1px 1px #3852b1, 2px 1px 1px #203891, 1px 2px 1px #3852b1, 3px 2px 1px #203891;
+  @include transform(translate(-3px, -3px));
+}
+
+#menu input[type="button"] {
+    background-color: #01081A;
+    border: 1px solid #2c90c6;
+    border-radius: 5%;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+    color: #fff;
+    font-family: "storyFont";
+    font-size: 4.5vw;
+    font-size: 4.5vh;
+    font-weight: bold;
+    line-height: 170%;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    width: 88%;
+    display: block;
+    margin: 7%;
+}
+
+#menu input[type="button"]:hover {
+    background-color: #2c70c6;
+    box-shadow: 2px 2px 20px  #2c90c6, #fff 0 1px 2px;
+}
+
+#menu input[type="button"]:active {
+  box-shadow: 1px 0px 1px #203891,0px 1px 1px #3852b1, 2px 1px 1px #203891, 1px 2px 1px #3852b1, 3px 2px 1px #203891;
+  @include transform(translate(-3px, -3px));
+}
+
+#logo {
+    display: inline-block;
+}
+
+/*
 #GameOver>p{
     position: absolute;
     left: 710px;
     top: 260px;
-font-family: "headerFontFill";
+    font-family: "headerFontFill";
     font-size: 10em;
     font-weight: 500;
     color: rgba(233, 0, 5, 0.91);
@@ -33,30 +252,4 @@ font-family: "headerFontFill";
     padding-top: 50px;
     padding-bottom: 0px;
 }
-
-/*#GameOver > p:hover {*/
-/*color: #94AAD9;*/
-/*text-shadow: 10px 10px 20px  #000, #000 0 -1px 2px;*/
-/*}*/
-
-#high-scores{
-    display: none;
-    position: absolute;
-    left: 820px;
-    top: 260px;
-    line-height: 43px;
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none;
-    font-family: 'storyFont';
-    font-size: 3.8em;
-    letter-spacing: 2px;
-    color: #fff;
-    text-align: center;
-    text-shadow: 3px 3px #000;
-}
-.scoreSheet{
-    color: #94AAD9;
-}
+*/

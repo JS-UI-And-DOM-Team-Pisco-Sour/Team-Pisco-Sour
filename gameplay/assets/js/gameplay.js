@@ -605,7 +605,7 @@ window.onload =
                     enemiesLayer.draw();
 
                     // Check if not dead
-                    player.isDead = player.health === 0;
+                    player.isDead = player.health <= 0;
 
                     if (player.isDead) {
                         runDeathAnimation(player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
@@ -614,6 +614,7 @@ window.onload =
                         clearTimeout(gameLoop);
                         stage.remove(enemiesLayer);
                         player.kineticImage.remove();
+                        window.location.href='../termination/termination.html'
                     }
 
                     // Improvised dying
@@ -623,6 +624,7 @@ window.onload =
 
                     //Last step is to update the frame counter
                     currentFrame += 1;
+
                 }, 30);
             }
 
@@ -701,7 +703,32 @@ window.onload =
                         }
                         // Update score count
                         score += 1;
+
                         $("#scoreSpan").text(score);
+
+                        var name=sessionStorage.getItem('heroName')
+                        var highestScore=0;
+                        sessionStorage.playerScore=Number(sessionStorage.playerScore) + 1;
+                        highestScore=sessionStorage.playerScore;
+                        if(localStorage.highestScore)
+                        {
+                            // If player score is greater-than top scorer then
+                            // update its score as a top scorer.
+                            if(highestScore >= localStorage.highestScore)
+                            {
+                                setHighScore(name, highestScore);
+                            }
+                        }
+                        else
+                        {
+                            setHighScore(name, highestScore);
+                        }
+                        function setHighScore(name, newScore)
+                        {
+                                //save the winner score and name to local storage
+                                localStorage.highestScore = newScore;
+                                localStorage.highScorerName = name;
+                        }
                     }
 
                     if (bulletHasLeftField) {

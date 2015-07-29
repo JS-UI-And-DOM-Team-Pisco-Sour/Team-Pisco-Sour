@@ -28,12 +28,14 @@ window.onload =
                 explosionAnimation,
 
                 player,
+                playerCenter,
 
                 enemies = [],
 
                 currentFrame = 0,
                 playerWasHit = true,
-                score = 0;
+                score = 0,
+                bulletOffset = 20;
 
             function loadSounds() {
                 createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
@@ -298,8 +300,9 @@ window.onload =
                 function onKeyDown(e) {
                     var keyPressed = e.keyCode ? e.keyCode : e.which;
 
-                    if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q || keyPressed === GLOBAL_CONSTANTS.KEYS.W ||
-                        keyPressed === GLOBAL_CONSTANTS.KEYS.E || keyPressed === GLOBAL_CONSTANTS.KEYS.A) {
+                    if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q ||
+                        keyPressed === GLOBAL_CONSTANTS.KEYS.W ||
+                        keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
                         runDisappearanceAnimation(player.getCenter().x, player.getCenter().y, 0.4, 30);
                     }
 
@@ -311,6 +314,7 @@ window.onload =
                         player.checkDirectionAndTeleport(player.largeTeleportationAmount);
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.A) {
                         // TODO: Raise Hell
+                        sprayBulletsOutwardsPlayer();
                     }
                 }
             }
@@ -749,6 +753,46 @@ window.onload =
                 }
 
                 return false;
+            }
+
+            function sprayBulletsOutwardsPlayer() {
+                playerCenter = player.getCenter();
+
+                shootBullet(playerCenter.x, playerCenter.y - bulletOffset,
+                    playerCenter.x, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT);
+
+                shootBullet(playerCenter.x + bulletOffset/3, playerCenter.y - bulletOffset/3,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT);
+
+                shootBullet(playerCenter.x + bulletOffset/2, playerCenter.y - bulletOffset/2,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT/2);
+
+                shootBullet(playerCenter.x + bulletOffset, playerCenter.y,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH, playerCenter.y);
+
+                shootBullet(playerCenter.x + bulletOffset/3, playerCenter.y + bulletOffset/3,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT);
+
+                shootBullet(playerCenter.x + bulletOffset/2, playerCenter.y + bulletOffset/2,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT/2);
+
+                shootBullet(playerCenter.x, playerCenter.y + bulletOffset,
+                    playerCenter.x, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT);
+
+                shootBullet(playerCenter.x - bulletOffset/3, playerCenter.y + bulletOffset/3,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT);
+
+                shootBullet(playerCenter.x - bulletOffset/2, playerCenter.y + bulletOffset/2,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT/2);
+
+                shootBullet(playerCenter.x - bulletOffset, playerCenter.y,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH, playerCenter.y);
+
+                shootBullet(playerCenter.x -bulletOffset/3, playerCenter.y - bulletOffset/3,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT);
+
+                shootBullet(playerCenter.x -bulletOffset/2, playerCenter.y - bulletOffset/2,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT/2);
             }
         }
     );

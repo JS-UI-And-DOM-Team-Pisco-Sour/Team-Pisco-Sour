@@ -1,4 +1,4 @@
-define(['./constants', 'jquery'], function(CONSTANTS) {
+define(['jquery'], function() {
     var hBar = $('.health-bar'),
         bar = hBar.find('.bar'),
         hit = hBar.find('.hit'),

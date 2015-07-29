@@ -1,4 +1,4 @@
-define(['./constants'], function(CONSTANTS) {
+define(['./constants', 'jquery'], function(CONSTANTS) {
     var hBar = $('.health-bar'),
         bar = hBar.find('.bar'),
         hit = hBar.find('.hit'),
@@ -20,8 +20,6 @@ define(['./constants'], function(CONSTANTS) {
             log(damage, hitWidth, player.health);
         }
     }
-
-    //hitBtn.on("click", onBtnClick);
 
     function log(_damage, _hitWidth, _decreasedLife) {
         var log = $('.log');

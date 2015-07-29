@@ -3,9 +3,6 @@ define(function () {
         STAGE_WIDTH: 0.7 * window.innerWidth,
         STAGE_HEIGHT: 0.9 * window.innerHeight,
 
-        SCALE_HEIGHT: (1 / 6),
-        SCALE_WIDTH: (1 / 4.5),
-
         PLAYER_WIDTH: 155,
         PLAYER_HEIGHT: 160,
         PLAYER_DEATH_ANIMATION_FRAMES_COUNT: 48,

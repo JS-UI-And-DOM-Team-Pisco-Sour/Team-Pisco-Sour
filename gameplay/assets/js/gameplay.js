@@ -1,18 +1,15 @@
 requirejs.config({
     baseUrl: 'assets/js',
     paths: {
-        app: 'gameplay'
+        app: 'gameplay',
+        jquery: '../../../lib/jquery-1.11.3.min',
+        create: '../../../lib/createjs-2015.05.21.min',
+        kinetic: '../../lib/kinetic-v5.1.0.min'
     }
 });
 
 window.onload =
-    requirejs(['constants',
-            'game-objects/hero',
-            'game-objects/enemy',
-            'health',
-            '../../../lib/jquery-1.11.3.min',
-            '../../lib/kinetic-v5.1.0.min',
-            '../../../lib/createjs-2015.05.21.min'],
+    requirejs(['constants', 'game-objects/hero', 'game-objects/enemy', 'health', 'buttonTimer', 'jquery', 'kinetic', 'create'],
         function (CONSTANTS, Hero, Enemy, logHealth) {
             var stage,
                 backgroundLayer,

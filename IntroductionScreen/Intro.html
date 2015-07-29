@@ -6,13 +6,16 @@
     <title>Snailiens</title>
 </head>
 <body>
-    <div id="container">
-
-        <div id="title"><p>Snailiens</p></div>
+    <div id="title">
+        <h1>Snailiens</h1> 
+    </div>
+    
+    <div id="wrapper">            
 
         <div id="game-description">
-            <p class="speech">I'm stuck on a deserted place surrounded by ugly and dangerous creatures. Please, Help me survive!</p>
-            <p id="hero"><img src="images/hero.png" alt="" width="371" height="480"></p>
+            <p class="speech">
+                I'm stuck on a deserted place surrounded by ugly and dangerous creatures. Please, Help me survive!
+            </p>
         </div>
 
         <div id="game-controls">
@@ -20,15 +23,15 @@
             <ul>
                 <li>
                     <span><img src="images/QButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Teleport x2 steps in chosen direction</p>
+                    <p> - Move x2 steps in chosen direction</p>
                 </li>
                 <li>
                     <span><img src="images/WButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Teleport x4 steps in chosen direction</p>
+                    <p> - Move x4 steps in chosen direction</p>
                 </li>
                 <li>
                     <span><img src="images/EButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Teleport x6 steps in chosen direction</p>
+                    <p> - Move x6 steps in chosen direction</p>
                 </li>
                 <li>
                     <span><img src="images/AButton.svg" alt="" width="50" height="50"></span>
@@ -43,24 +46,24 @@
                     <p> - Laser</p>
                 </li>
             </ul>
-            <p id="hero"><img src="images/hero.png" alt="" width="371" height="480"></p>
+        </div>
 
+        <div id="hero">
+            <img src="images/hero-min.png" alt="" width="371" height="480">
         </div>
 
         <div id="menu">
-            <form method="post" action="../gameplay/gameplay.html">
+            <form method="post" action="../gameplay/gameplay.html;">
                 <input type="text" required placeholder="Hero name" autocomplete="off" id="heroName">
                 <input type="submit" value="PLAY" id="playButton" title="Play Snailiens" onclick="storeHeroName('heroName');" >
-                </form>
+            </form>
                 <input type="button" onclick="togglediv('game-description')" value="CONTROLS" title="Show game controls">
+        </div>           
 
-        </div>
-
-        <div id="footer">
-            <p><small>Developed by Team "Pisco Sour" @ Telerik Academy, 2015</small></p>
-        </div>
     </div>
-
+    <div id="footer">
+            <p>Developed by Team "Pisco Sour" @ Telerik Academy, 2015</p>
+        </div>
     <script src="IntroControls.js"></script>
 </body>
 </html>

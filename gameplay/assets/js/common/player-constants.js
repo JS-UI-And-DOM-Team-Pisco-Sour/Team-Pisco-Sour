@@ -35,6 +35,9 @@ define(function() {
         BULLET_RADIUS: 12,
         BULLET_SHOT_SCALE: 0.2,
         BULLET_SHOT_FRAMERATE: 10000000,
-        SHIFT: 30
+        SHIFT: 30,
+
+        HEALTH_REDUCED_ON_ENEMY_COLLISION: 200,
+        HEALTH_INCREASED_ON_ENEMY_HIT: 15
     }
 });

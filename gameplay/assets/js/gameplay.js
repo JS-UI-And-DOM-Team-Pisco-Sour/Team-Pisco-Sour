@@ -607,7 +607,7 @@ window.onload =
 
                         var playerEnemyCollision = checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
                         if (playerEnemyCollision) {
-                            logHealth(100, player);
+                            logHealth(PLAYER_CONSTANTS.HEALTH_REDUCED_ON_ENEMY_COLLISION, player);
                             removeEnemy(i);
                         }
                     }
@@ -688,8 +688,8 @@ window.onload =
 
                         // Lifesteal ability
                         if (player.health < 1000) {
-                            player.health += 15;
-                            logHealth(-15, player.health);
+                            // Using '-' sign, so that the damage is inverted and the value is actually added to the player's health points
+                            logHealth(-PLAYER_CONSTANTS.HEALTH_INCREASED_ON_ENEMY_HIT, player);
                         }
 
                         // Update score count
@@ -803,25 +803,26 @@ window.onload =
             }
 
             function checkIfPlayerCollidedWithEnemy(player, enemy) {
-                var deadlyRadius = 40,
-                    playerCenterX = player.getCenter().x,
-                    playerCenterY = player.getCenter().y,
-                    playerCollidedWithEnemy;
+                var playerCollidedWithEnemy = false;
+
+                var deadlyRadius = 30;
+                var playerCenterX = player.getCenter().x + PLAYER_CONSTANTS.WIDTH / 2;
+                var playerCenterY = player.getCenter().y + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
-                    enemyRight = enemy.getX() + ENEMY_CONSTANTS.SCALE * ENEMY_CONSTANTS.WIDTH,
+                    enemyRigthX = enemy.getX() + ENEMY_CONSTANTS.SCALE * ENEMY_CONSTANTS.WIDTH,
                     enemyTopY = enemy.getY(),
                     enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.SCALE * ENEMY_CONSTANTS.HEIGHT;
 
-                var playerCenterXBetweenEnemyLeftXAndRightX = enemyLeftX <= playerCenterX && playerCenterX <= enemyRight;
+                var playerCenterXBetweenEnemyLeftXAndRightX = enemyLeftX <= playerCenterX && playerCenterX <= enemyRigthX;
 
                 var enemyTopSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyTopY - playerCenterY) <= deadlyRadius,
                     enemyBottomSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyBottomY - playerCenterY) <= deadlyRadius;
 
                 var enemyLeftTopInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
-                    enemyRightTopInDeadlyRadius = (enemyRight - playerCenterX) * (enemyRight - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
+                    enemyRightTopInDeadlyRadius = (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
                     enemyLeftBottomInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius,
-                    enemyRightBottomInDeadlyRadius = (enemyRight - playerCenterX) * (enemyRight - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius;
+                    enemyRightBottomInDeadlyRadius = (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius;
 
                 var enemyTopXInDeadlyRadius = enemyLeftTopInDeadlyRadius || enemyRightTopInDeadlyRadius,
                     enemyBottomXInDeadlyRadius = enemyLeftBottomInDeadlyRadius || enemyRightBottomInDeadlyRadius;

@@ -114,7 +114,6 @@ define(['./contracts/character', 'globalConstants', 'playerConstants'],
                 }
             };
 
-
             Hero.prototype.loadToStage = function (stage) {
                 this.kineticImage = new Kinetic.Image({
                     x: 50,

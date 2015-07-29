@@ -810,7 +810,7 @@ window.onload =
                 playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
-                    enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
+        enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
                     enemyTopY = enemy.getY(),
                     enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.HEIGHT;
 

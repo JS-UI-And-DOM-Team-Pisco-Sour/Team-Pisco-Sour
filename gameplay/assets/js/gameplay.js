@@ -75,8 +75,7 @@ window.onload =
                     playerLayer.add(player.kineticImage);
                     stage.add(playerLayer);
 
-                    addKeystrokeListener();
-                    addMouseEventListeners();
+                    addEventListeners();
                 };
             }
 
@@ -99,7 +98,9 @@ window.onload =
                 backgroundImageObj.src = "assets/images/canvas-bg.jpg";
             }
 
-            function addKeystrokeListener() {
+            function addEventListeners() {
+                stage.addEventListener('mousemove', onMouseMove);
+                stage.addEventListener('mousedown', onMouseDown);
                 $(document).keydown(function (e) {
                     var keyPressed = e.keyCode ? e.keyCode : e.which;
 
@@ -120,9 +121,10 @@ window.onload =
                 });
             }
 
-            function addMouseEventListeners() {
-                stage.addEventListener('mousemove', onMouseMove);
-                stage.addEventListener('mousedown', onMouseDown);
+            function removeEventListeners() {
+                stage.off('mousedown');
+                stage.off('mouseover');
+                $(document).off('keydown');
             }
 
             function onMouseMove(e) {
@@ -581,6 +583,25 @@ window.onload =
                 var gameLoopControl = setTimeout(function () {
                     var gameLoop = requestAnimationFrame(run);
 
+                    // Check if not dead
+                    player.isDead = player.health <= 0;
+
+                    if (player.isDead) {
+                        removeEventListeners();
+                        cancelAnimationFrame(gameLoop);
+                        clearTimeout(gameLoopControl);
+                        playerLayer.clear();
+                        player.kineticImage.remove();
+                        runDeathAnimation(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
+                            player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2, PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
+
+                        // Delay the endscreen show-up
+                        setTimeout(function () {
+                            stage.remove(enemiesLayer);
+                            window.location.href = '../termination/termination.html';
+                        }, 3000);
+                    }
+
                     // Spawning an enemy each frame
                     if (currentFrame % ENEMY_CONSTANTS.SPAWN_FRAME_INTERVAL === 0) {
                         spawnEnemy(currentFrame);
@@ -609,24 +630,6 @@ window.onload =
 
                     // Draw only the layer that needs update
                     enemiesLayer.draw();
-
-                    // Check if not dead
-                    player.isDead = player.health <= 0;
-
-                    if (player.isDead) {
-                        cancelAnimationFrame(gameLoop);
-                        clearTimeout(gameLoopControl);
-                        playerLayer.clear();
-                        player.kineticImage.remove();
-                        runDeathAnimation(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
-                            player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2, PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
-
-                        // Delay the endscreen show-up
-                        setTimeout(function () {
-                            stage.remove(enemiesLayer);
-                            window.location.href = '../termination/termination.html';
-                        }, 3000);
-                    }
 
                     // Improvised dying
                     if (currentFrame % 40 === 0 && playerWasHit) {

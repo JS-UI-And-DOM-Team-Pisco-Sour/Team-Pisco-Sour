@@ -733,38 +733,38 @@ window.onload =
                 shootBullet(playerCenter.x, playerCenter.y - bulletOffset,
                     playerCenter.x, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
 
-                shootBullet(playerCenter.x + bulletOffset/3, playerCenter.y - bulletOffset/3,
-                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+                shootBullet(playerCenter.x + bulletOffset / 3, playerCenter.y - bulletOffset / 3,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 3, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
 
-                shootBullet(playerCenter.x + bulletOffset/2, playerCenter.y - bulletOffset/2,
-                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT/2, sprayFirePath);
+                shootBullet(playerCenter.x + bulletOffset / 2, playerCenter.y - bulletOffset / 2,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 2, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
 
                 shootBullet(playerCenter.x + bulletOffset, playerCenter.y,
                     playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH, playerCenter.y, sprayFirePath);
 
-                shootBullet(playerCenter.x + bulletOffset/3, playerCenter.y + bulletOffset/3,
-                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+                shootBullet(playerCenter.x + bulletOffset / 3, playerCenter.y + bulletOffset / 3,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 3, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
 
-                shootBullet(playerCenter.x + bulletOffset/2, playerCenter.y + bulletOffset/2,
-                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT/2, sprayFirePath);
+                shootBullet(playerCenter.x + bulletOffset / 2, playerCenter.y + bulletOffset / 2,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 2, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
 
                 shootBullet(playerCenter.x, playerCenter.y + bulletOffset,
                     playerCenter.x, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
 
-                shootBullet(playerCenter.x - bulletOffset/3, playerCenter.y + bulletOffset/3,
-                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+                shootBullet(playerCenter.x - bulletOffset / 3, playerCenter.y + bulletOffset / 3,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 3, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
 
-                shootBullet(playerCenter.x - bulletOffset/2, playerCenter.y + bulletOffset/2,
-                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT/2, sprayFirePath);
+                shootBullet(playerCenter.x - bulletOffset / 2, playerCenter.y + bulletOffset / 2,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 2, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
 
                 shootBullet(playerCenter.x - bulletOffset, playerCenter.y,
                     playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH, playerCenter.y, sprayFirePath);
 
-                shootBullet(playerCenter.x -bulletOffset/3, playerCenter.y - bulletOffset/3,
-                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/3, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+                shootBullet(playerCenter.x - bulletOffset / 3, playerCenter.y - bulletOffset / 3,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 3, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
 
-                shootBullet(playerCenter.x -bulletOffset/2, playerCenter.y - bulletOffset/2,
-                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH/2, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT/2, sprayFirePath);
+                shootBullet(playerCenter.x - bulletOffset / 2, playerCenter.y - bulletOffset / 2,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 2, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
             }
 
             function bulletLeftField(bullet) {
@@ -805,20 +805,33 @@ window.onload =
             function checkIfPlayerCollidedWithEnemy(player, enemy) {
                 var playerCollidedWithEnemy = false;
 
-                var deadlyRadius = 50;
+                var deadlyRadius = 15;
                 playerCenterX = player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2;
                 playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
                     enemyRigthX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
-                    enemyY = enemy.getY();
+                    enemyTopY = enemy.getY(),
+                    enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.HEIGHT;
 
-                if (enemyLeftX <= playerCenterX && playerCenterX <= enemyRigthX && Math.abs(enemyY - playerCenterY) <= deadlyRadius) {
+                var playerCenterXBetweenEnemyLeftXAndRightX = enemyLeftX <= playerCenterX && playerCenterX <= enemyRigthX;
+
+                var enemyTopSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyTopY - playerCenterY) <= deadlyRadius,
+                    enemyBottomSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyBottomY - playerCenterY) <= deadlyRadius;
+
+                var enemyLeftTopInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
+                    enemyRightTopInDeadlyRadius = (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
+                    enemyLeftBottomInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius,
+                    enemyRightBottomInDeadlyRadius = (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius;
+
+                var enemyTopXInDeadlyRadius = enemyLeftTopInDeadlyRadius || enemyRightTopInDeadlyRadius,
+                    enemyBottomXInDeadlyRadius = enemyLeftBottomInDeadlyRadius || enemyRightBottomInDeadlyRadius;
+
+                if (enemyTopSideInDeadlyRadius || enemyBottomSideInDeadlyRadius) {
                     playerCollidedWithEnemy = true;
                 }
 
-                if ((enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyY - playerCenterY) * (enemyY - playerCenterY) <= deadlyRadius ||
-                    (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyY - playerCenterY) * (enemyY - playerCenterY) <= deadlyRadius) {
+                if (enemyTopXInDeadlyRadius || enemyBottomXInDeadlyRadius) {
                     playerCollidedWithEnemy = true;
                 }
 

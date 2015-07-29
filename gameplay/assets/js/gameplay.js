@@ -578,7 +578,7 @@ window.onload =
                         // Delay the endscreen show-up
                         setTimeout(function() {
                             stage.remove(enemiesLayer);
-                            window.location.href = '../termination/termination.html';
+                            //window.location.href = '../termination/termination.html';
                         }, 3000);
                     }
 
@@ -618,9 +618,9 @@ window.onload =
                     enemiesLayer.draw();
 
                     // Improvised dying
-                    if (currentFrame % 40 === 0 && playerWasHit) {
-                        logHealth(100, player);
-                    }
+                    //if (currentFrame % 40 === 0 && playerWasHit) {
+                    //    logHealth(100, player);
+                    //}
 
                     //Last step is to update the frame counter
                     currentFrame += 1;
@@ -761,18 +761,20 @@ window.onload =
             function checkIfPlayerCollidedWithEnemy(player, enemy) {
                 var playerCollidedWithEnemy = false;
 
-                var playerLeftX = player.kineticImage.getX(),
-                    playerRightX = player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH,
-                    playerTopY = player.kineticImage.getY(),
-                    playerBottomY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT;
+                var deadlyRadius = 50;
+                playerCenterX = player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2;
+                playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
                     enemyRigthX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
-                    enemyTopY = enemy.getY(),
-                    enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.HEIGHT;
+                    enemyY = enemy.getY();
 
-                if (!(enemyRigthX < playerLeftX || playerRightX < enemyLeftX ||
-                        enemyBottomY < playerTopY || playerBottomY < enemyTopY)) {
+                if (enemyLeftX <= playerCenterX && playerCenterX <= enemyRigthX && Math.abs(enemyY - playerCenterY) <= deadlyRadius) {
+                    playerCollidedWithEnemy = true;
+                }
+
+                if ((enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyY - playerCenterY) * (enemyY - playerCenterY) <= deadlyRadius ||
+                    (enemyRigthX - playerCenterX) * (enemyRigthX - playerCenterX) + (enemyY - playerCenterY) * (enemyY - playerCenterY) <= deadlyRadius) {
                     playerCollidedWithEnemy = true;
                 }
 

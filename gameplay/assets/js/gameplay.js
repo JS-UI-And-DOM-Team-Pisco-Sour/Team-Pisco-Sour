@@ -160,7 +160,6 @@ window.onload =
 
                     // Up-Left
                     if (relativeClientX < playerCenterX) {
-
                         if (playerCenterY - relativeClientY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - relativeClientX) &&
                             playerCenterY - relativeClientY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - relativeClientX)) {
                             if (player.facingDirection !== PLAYER_CONSTANTS.FACING_DIRECTIONS.UP_LEFT) {
@@ -621,11 +620,6 @@ window.onload =
                     // Draw only the layer that needs update
                     enemiesLayer.draw();
 
-                    // Improvised dying
-                    //if (currentFrame % 40 === 0 && playerWasHit) {
-                    //    logHealth(100, player);
-                    //}
-
                     //Last step is to update the frame counter
                     currentFrame += 1;
 
@@ -815,7 +809,7 @@ window.onload =
                 playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
-        enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
+                    enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
                     enemyTopY = enemy.getY(),
                     enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.HEIGHT;
 

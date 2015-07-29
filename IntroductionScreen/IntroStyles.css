@@ -16,33 +16,22 @@
 html, body, div, p, form {
     margin: 0;
     padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+    border: 0;    
 }
 
 body {
-    background-image: url("images/background.jpg");
-    margin: 0 auto;
+    background-image: url("images/background-min.jpg");    
     width: 100%;
 }
 
-#container {
-    width: 75%;
-    margin: 0 auto;
-
-}
-
 #title {
-    display: block;
-    margin: 0 auto;
-    padding: 0;
+    margin-top: 2%;
 }
 
-#title > p {
+h1 {    
     font-family: "headerFontFill";
-    font-size: 10em;
+    font-size: 15vw;
+    font-size: 15vh;
     font-weight: 500;
     color: #F5F6F7;
     -webkit-transition: all 0.30s ease-in-out;
@@ -52,51 +41,95 @@ body {
     text-align: center;
     text-shadow: 10px 10px 5px  #151617, #000 0 -1px 2px;
     letter-spacing: 5px;
-    margin:0;
-    padding-top: 50px;
-    padding-bottom: 0px;
- }
+    margin: 0 auto;
+    margin-top: 5%;    
+}
 
- #title > p:hover {
+h1 {    
+    font-family: "headerFontFill";
+    font-size: 20vw;
+    font-size: 20vh;    
+    color: #F5F6F7;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    text-align: center;
+    text-shadow: 10px 10px 5px  #151617, #000 0 -1px 2px;
+    letter-spacing: 5px;
+    padding-top: 10px;
+    vertical-align: baseline;
+    margin: 0;
+}
+
+h1:hover {
     color: #94AAD9;
     text-shadow: 10px 10px 20px  #000, #000 0 -1px 2px;
  }
 
-#game-description {
-    position: absolute;
-    top: 250px;
-    margin:0 auto;
+#wrapper {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    /*border: 1px solid red;*/
+    zoom: 1;    
+}
 
+#wrapper:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear:both;
+}
+
+#wrapper>div {
+    float: left;
+}
+
+#wrapper > #game-description {
+    float: left;
+}
+
+#wrapper > #game-controls {
+    float: left;
+}
+
+#game-description {    
+    visibility: visible;
+    width: 40%;    
+    padding-top: 6%;
+    padding-left: 2%;
 }
 
 /* Speech-bubble style */
 p.speech
 {
     position: relative;
-    width: 300px;
-    height: 200px;
+    top: 4%;
+    left: 28%;
+    width: 62%;
+    height: 41%;
+    padding: 2%;
+    background-color: #01081A;
     font-family: 'storyFont';
-    font-size: 2em;
+    font-size: 5vw;
+    font-size: 5vh;
     color: #94AAD9;
     text-align: center;
+    line-height: 150%;
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
     -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     outline: none;
-    line-height: 50px;
-    background-color: #01081A;
     border: 8px solid #666;
+    border-radius: 6%;
     -webkit-border-radius: 30px;
     -moz-border-radius: 30px;
-    border-radius: 30px;
     -webkit-box-shadow: 2px 2px 4px #888;
     -moz-box-shadow: 2px 2px 4px #888;
     box-shadow: 2px 2px 4px #888;
-    padding: 10px;
     box-shadow: 5px 5px 3px #94AAD9;
-    left: 220px;
-    top: 70px;
 }
 
 p.speech:hover {
@@ -110,8 +143,8 @@ p.speech:before
     position: absolute;
     width: 0;
     height: 0;
-    left: 320px;
-    top: 30px;
+    left: 100%;
+    top: 10%;
     border: 25px solid;
     border-color: #666 transparent transparent #666;
 }
@@ -122,58 +155,99 @@ p.speech:after
     position: absolute;
     width: 0;
     height: 0;
-    left: 320px;
-    top: 38px;
+    left: 100%;
+    top: 13.5%;
     border: 15px solid;
     border-color: #01081A transparent transparent #01081A;
 }
 /* End of Speech-bubble style */
 
+#game-controls {    
+    display: none;    
+    width: 40%;    
+    margin-right: 2%;
+}
+
+h2 {
+    font-family: "storyFont";
+    font-size: 6vw;
+    font-size: 6vh;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px #000;
+    color: #F5F6F7;
+    padding-left: 25%;
+}
+
+ul {
+    list-style-type: none;
+}
+
+ul li {    
+    vertical-align: middle;
+}
+
+ul > li > p {
+    display: inline-block;
+    font-family: "storyFont";
+    font-size: 3.5vw;
+    font-size: 3.5vh;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px #000;
+    color: #F5F6F7;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+span img {
+    vertical-align: middle;
+    width: 8%;
+    height: 8%;
+}
+
 #hero {
-    position: fixed;
-    left: 760px;
-    top: 240px;
+    float: right;            
+    width: 25%;
+}
+
+#hero img {
+    width: 110%;
+    height: 140%;
 }
 
 #menu {
-    float: right;
-    /*border:1px solid white;*/
+    float: right;    
+    width: 25%;    
     margin: 0 auto;
-    padding-right: 40px;
-    width: 20%;
+    margin-left: 6%;
     border-left: 5px solid rgba(1, 8, 26, 0.7);
-}
-
-#menu input {
-    border: none;
-    height: 48px;
-    outline: none;
 }
 
 #menu input[type="text"] {
     background-color: #01081A;
     border: 1px solid #2c90c6;
-    border-radius: 15px;
+    border-radius: 5%;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     -ms-border-radius: 15px;
     -o-border-radius: 15px;
-    line-height: 43px;
+    line-height: 170%;
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
     -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     outline: none;
     font-family: 'storyFont';
-    font-size: 1.8em;
+    font-size: 4.5vw;
+    font-size: 4.5vh;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #fff;
     text-align: center;
-    height: 46px;
-    width: 240px;
+    height: 40%;
+    width: 88%;
     display: block;
-    margin: 20px;
+    margin: 7%;
 }
 
 #menu input[type=text]:focus {
@@ -184,22 +258,23 @@ p.speech:after
 #menu input[type="submit"] {
     background-color: #01081A;
     border: 1px solid #2c90c6;
-    border-radius: 15px;
+    border-radius: 5%;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     -ms-border-radius: 15px;
     -o-border-radius: 15px;
     color: #fff;
     font-family: "storyFont";
-    font-size: 1.8em;
+    font-size: 4.5vw;
+    font-size: 4.5vh;
     font-weight: bold;
-    line-height: 48px;
+    line-height: 170%;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
-    width: 240px;
+    width: 88%;
     display: block;
-    margin: 20px;
+    margin: 7%;
 }
 
 #menu input[type="submit"]:hover {
@@ -215,22 +290,23 @@ p.speech:after
 #menu input[type="button"] {
     background-color: #01081A;
     border: 1px solid #2c90c6;
-    border-radius: 15px;
+    border-radius: 5%;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     -ms-border-radius: 15px;
     -o-border-radius: 15px;
     color: #fff;
     font-family: "storyFont";
-    font-size: 1.8em;
+    font-size: 4.5vw;
+    font-size: 4.5vh;
     font-weight: bold;
-    line-height: 48px;
+    line-height: 170%;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
-    width: 240px;
+    width: 88%;
     display: block;
-    margin: 20px;
+    margin: 7%;
 }
 
 #menu input[type="button"]:hover {
@@ -244,61 +320,19 @@ p.speech:after
 }
 
 #footer {
-    position:fixed;
-    left:0px;
-    bottom:20px;
-    height:30px;
-    width:100%;
+    display: block;        
+    width: 80%;    
+    margin: 0 auto;
+    padding: 0;    
+}
+
+#footer p {    
     font-family: "footerFont";
-    font-size: 1.2em;
+    font-size: 3vw;
+    font-size: 3vh;
     font-weight: bold;
+    color: #F5F6F7;
     text-align: center;
     letter-spacing: 1px;
-    text-shadow: 2px 2px #000;
-    color: #F5F6F7;
-    display: block;
-    margin: 0 auto;
-    padding: 0;
-}
-
-#game-controls {
-    visibility: hidden;
-    position: fixed;
-    top: 190px;
-    left: 300px;
-    margin:0 auto;
-}
-
-h2 {
-    font-family: "storyFont";t-size: 1.6em;
-    font-size: 2.8em;
-    text-decoration: underline;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px #000;
-    color: #F5F6F7;
-    padding-left: 125px;
-}
-
-ul {
-    list-style-type: none;
-}
-
-ul li {
-    margin-bottom: 10px;
-    vertical-align: middle;
-}
-
-ul > li > p {
-    display: inline-block;
-    font-family: "storyFont";t-size: 1.6em;
-    font-size: 1.6em;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px #000;
-    color: #F5F6F7;
-    text-transform: uppercase;
-    vertical-align: middle;
-}
-
-span img {
-    vertical-align: middle;
+    text-shadow: 2px 2px #000;    
 }

@@ -66,7 +66,7 @@ window.onload = function () {
         // Legs
         var pattern = paper.path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
             fill: "#D13A00",
-            stroke: "#C48368",
+            stroke: "#F5F6F7",
             strokeWidth: 5
         });
         pattern = pattern.pattern(0, 0, 1, 6);
@@ -94,7 +94,7 @@ window.onload = function () {
         paper.path('M60,0.013c-6.286,0.389-17.138,1.137-30,14C20.539,23.474,12.239,37.231,8.348,46.36l9.367,9.367 ' +
             'C26.793,51.874,40.459,43.553,50,34.013c12.779-12.779,13.507-23.669,14-30C64.22,1.187,62.614-0.149,60,0.013z')
             .attr({
-                'fill': '#597A43'
+                'fill': '#01081A'
             })
             .transform('t' + 170 / 400 * CONSTANTS.SVG_WIDTH + ',' + 150 / 400 * CONSTANTS.SVG_HEIGHT + 's' + CONSTANTS.SHIP_SCALE + ',' + CONSTANTS.SHIP_SCALE);
 

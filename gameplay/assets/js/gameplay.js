@@ -683,7 +683,12 @@ window.onload =
 
                     if (deadEnemyIndex) {
                         // Remove dead bullet and dead enemy
+
+                        // The three magic rows that save the whole of the universe. Amin.
+                        bullet.setX(GLOBAL_CONSTANTS.STAGE_WIDTH * 2);
+                        bullet.setY(GLOBAL_CONSTANTS.STAGE_HEIGHT * 2);
                         bullet.destroy();
+                        
                         removeEnemy(deadEnemyIndex);
 
                         // Lifesteal ability

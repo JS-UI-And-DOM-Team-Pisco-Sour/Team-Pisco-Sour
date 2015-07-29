@@ -107,6 +107,33 @@ define(['./contracts/character', 'globalConstants', 'playerConstants'],
                 }
             };
 
+            Hero.prototype.getCenter = function () {
+                return {
+                    x: this.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
+                    y: this.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2
+                }
+            };
+
+
+            Hero.prototype.loadToStage = function (stage) {
+                this.kineticImage = new Kinetic.Image({
+                    x: 50,
+                    y: 50,
+                    image: this.image,
+                    width: PLAYER_CONSTANTS.WIDTH,
+                    height: PLAYER_CONSTANTS.HEIGHT,
+                    crop: {
+                        x: PLAYER_CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT * PLAYER_CONSTANTS.WIDTH,
+                        y: 0,
+                        width: PLAYER_CONSTANTS.WIDTH,
+                        height: PLAYER_CONSTANTS.HEIGHT
+                    }
+                });
+
+                this.layer.add(this.kineticImage);
+                stage.add(this.layer);
+            };
+
             return Hero;
         }(Character));
 

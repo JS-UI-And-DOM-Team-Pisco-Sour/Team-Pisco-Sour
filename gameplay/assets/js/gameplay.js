@@ -24,6 +24,7 @@ window.onload =
                 enemiesLayer,
                 ammoLayer,
                 backgroundImageObj,
+                layer,
 
                 disappearanceAnimation,
                 explosionAnimation,
@@ -38,7 +39,9 @@ window.onload =
                 score = 0,
                 bulletOffset = 20,
                 ordinaryFirePath = 'assets/images/bullet.png',
-                sprayFirePath = 'assets/images/bullet-image.png';
+                sprayFirePath = 'assets/images/bullet-image.png',
+
+                gameSpeed = 0;
 
             function loadSounds() {
                 createjs.Sound.registerSound('assets/sounds/boom.mp3', 'bomb');
@@ -56,9 +59,11 @@ window.onload =
                 ammoLayer = new Kinetic.FastLayer();
                 enemiesLayer = new Kinetic.FastLayer();
                 playerLayer = new Kinetic.FastLayer();
+                layer = new Kinetic.FastLayer();
 
                 stage.add(ammoLayer);
                 stage.add(enemiesLayer);
+                stage.add(layer);
             }
 
             function loadPlayer() {
@@ -294,7 +299,7 @@ window.onload =
                         }
 
                         shootBullet(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, relativeClientX, relativeClientY, ordinaryFirePath);
-                        runBulletShotAnimation(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, PLAYER_CONSTANTS.BULLET_SHOT_SCALE, PLAYER_CONSTANTS.BULLET_SHOT_FRAMERATE);
+                        runExplosionAt(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, PLAYER_CONSTANTS.BULLET_SHOT_SCALE, PLAYER_CONSTANTS.BULLET_SHOT_FRAMERATE);
                         createjs.Sound.play('gun');
                     }
                 }
@@ -382,6 +387,56 @@ window.onload =
                     }
                 });
                 explosionAnimation.start();
+            }
+
+            function runExplosionAt(x, y, scale) {
+                var frameX = 0, frameY = 0;
+                var image;
+                var explosion = new Image();
+                image = new Kinetic.Image({
+                    x: x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale,
+                    y: y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale,
+                    image: explosion,
+                    width: 256,
+                    height: 256,
+                    crop: {
+                        x: 0,
+                        y: 0,
+                        width: 256,
+                        height: 256
+                    }
+                });
+
+                layer.add(image);
+
+                explosion.src = 'assets/images/explosion.png';
+                (function run() {
+                    image.setX(x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
+                    image.setY(y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
+                    image.setCrop({
+                        x: frameX * 256,
+                        y: frameY * 256,
+                        width: 256,
+                        height: 256
+                    });
+                    image.setScale({
+                        x: scale,
+                        y: scale
+                    });
+
+                    layer.draw();
+                    frameX++;
+                    if (frameX % 8 === 0) {
+                        frameX = 0;
+                        frameY++;
+                    }
+
+                    if (frameY === 6) {
+                        cancelAnimationFrame(mariika);
+                    }
+
+                    var mariika = requestAnimationFrame(run);
+                }())
             }
 
             function runBulletShotAnimation(targetX, targetY, scale, frameRate) {
@@ -560,7 +615,7 @@ window.onload =
                 loadBackground();
                 loadPlayer();
                 addEventListeners();
-                loadExplosionAnimation();
+                //loadExplosionAnimation();
                 loadDisappearanceAnimation();
             }
 
@@ -577,8 +632,10 @@ window.onload =
                         clearTimeout(gameLoopControl);
                         playerLayer.clear();
                         player.kineticImage.remove();
-                        runDeathAnimation(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
-                            player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2, PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
+                        runExplosionAt(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
+                            player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2,
+                            PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
+                        createjs.Sound.play('bomb');
 
                         // Delay the endscreen show-up
                         setTimeout(function () {
@@ -618,6 +675,7 @@ window.onload =
                     ammoLayer.moveToTop();
                     playerLayer.moveToTop();
                     enemiesLayer.moveToTop();
+                    layer.moveToTop();
 
                     // Draw only the layer that needs update
                     enemiesLayer.drawScene();
@@ -632,7 +690,19 @@ window.onload =
                     backgroundLayer.clearCache();
 
                     stage.clearCache();
-                }, 30);
+
+                    if(currentFrame % 10 === 0) {
+                        layer.destroyChildren();
+                    }
+
+                    if(currentEnemyFrame % 30 === 0) {
+                        ammoLayer.destroyChildren();
+                    }
+
+                    if(currentFrame % 10 === 0) {
+                        gameSpeed += 1;
+                    }
+                }, 30 - gameSpeed);
             }
 
             (function () {
@@ -685,13 +755,12 @@ window.onload =
                         bulletHasLeftField = bulletLeftField(bullet);
 
                     if (deadEnemyIndex) {
-                        // Remove dead bullet and dead enemy
-
                         // The three magic rows that save the whole of the universe. Amin.
                         bullet.setX(GLOBAL_CONSTANTS.STAGE_WIDTH * 2);
                         bullet.setY(GLOBAL_CONSTANTS.STAGE_HEIGHT * 2);
                         bullet.destroy();
 
+                        runExplosionAt(enemies[deadEnemyIndex].enemy.getX(), enemies[deadEnemyIndex].enemy.getY(), 0.6);
                         removeEnemy(deadEnemyIndex);
 
                         // Lifesteal ability

@@ -109,11 +109,11 @@ window.onload =
                     }
 
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q) {
-                        player.checkDirectionAndTeleport(100);
+                        player.checkDirectionAndTeleport(player.smallTeleportationAmount);
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.W) {
-                        player.checkDirectionAndTeleport(200);
+                        player.checkDirectionAndTeleport(player.averageTeleportationAmount);
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
-                        player.checkDirectionAndTeleport(300);
+                        player.checkDirectionAndTeleport(player.largeTeleportationAmount);
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.A) {
                         // TODO: Raise Hell
                     }

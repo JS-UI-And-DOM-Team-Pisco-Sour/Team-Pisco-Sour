@@ -12,25 +12,20 @@ window.onload =
             'health',
             '../../../lib/jquery-1.11.3.min',
             '../../lib/kinetic-v5.1.0.min',
-            '../../../lib/createjs-2015.05.21.min'
-        ],
+            '../../../lib/createjs-2015.05.21.min'],
         function (CONSTANTS, Hero, Enemy, logHealth) {
             var stage,
                 backgroundLayer,
                 playerLayer,
                 enemiesLayer,
                 ammoLayer,
-                htmlScoreElement,
                 backgroundImageObj,
 
                 player,
-                bullets = [],
                 enemies = [],
 
-                currentFrame = -1,
+                currentFrame = 0,
                 playerWasHit = true,
-                shouldRemoveBullet = false,
-                bulletId = 1,
                 score = 0;
 
             function loadSounds() {
@@ -46,11 +41,13 @@ window.onload =
                 });
 
                 backgroundLayer = new Kinetic.Layer();
+                ammoLayer = new Kinetic.Layer();
                 enemiesLayer = new Kinetic.Layer();
                 playerLayer = new Kinetic.Layer();
-                ammoLayer = new Kinetic.Layer();
 
                 stage.add(ammoLayer);
+                stage.add(enemiesLayer);
+
             }
 
             function loadPlayer() {
@@ -72,10 +69,11 @@ window.onload =
                     });
 
                     player.kineticImage = playerKineticImage;
-                    addKeystrokeListener();
-                    addMouseEventListeners();
                     playerLayer.add(player.kineticImage);
                     stage.add(playerLayer);
+
+                    addKeystrokeListener();
+                    addMouseEventListeners();
                 };
             }
 
@@ -362,7 +360,6 @@ window.onload =
                     });
 
                     enemiesLayer.add(newEnemy);
-                    stage.add(enemiesLayer);
                 }
             }
 
@@ -576,7 +573,6 @@ window.onload =
                 loadPlayer();
                 loadExplosionAnimation();
                 loadDisappearanceAnimation();
-                htmlScoreElement = $("#scoreSpan");
             }
 
             function run() {
@@ -603,13 +599,13 @@ window.onload =
                         Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
                     }
 
-                    backgroundLayer.setZIndex(1);
-                    playerLayer.setZIndex(4);
-                    enemiesLayer.setZIndex(3);
-                    ammoLayer.setZIndex(2);
+                    // The right way to set z indices
+                    backgroundLayer.moveToTop();
+                    ammoLayer.moveToTop();
+                    playerLayer.moveToTop();
+                    enemiesLayer.moveToTop();
 
                     enemiesLayer.draw();
-                    ammoLayer.draw();
 
                     // Check if not dead
                     player.isDead = player.health === 0;
@@ -666,9 +662,6 @@ window.onload =
 
             function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY) {
                 var bullet = createBullet(gunBarrelX, gunBarrelY);
-
-                bulletId += 1;
-
                 ammoLayer.add(bullet);
 
                 var targetX = bulletDestinationX - bullet.getX(),
@@ -692,18 +685,17 @@ window.onload =
                         bulletHasLeftField = bulletLeftField(bullet);
 
                     if (deadEnemyIndex) {
-                        console.log(ammoLayer.children.length);
-                        var pesho = Array.prototype.indexOf.call(ammoLayer.children, bullet);
-                        ammoLayer.children[pesho].remove();
-                        console.log(ammoLayer.children[pesho]);
-                        Array.prototype.splice.call(ammoLayer.children, pesho, 1);
-                        console.log(ammoLayer.children.length);
+                        // Remove dead bullet and dead enemy
+                        var bulletToRemoveIndex = Array.prototype.indexOf.call(ammoLayer.children, bullet);
+                        ammoLayer.children[bulletToRemoveIndex].remove();
+
+                        Array.prototype.splice.call(ammoLayer.children, bulletToRemoveIndex, 1);
                         Array.prototype.filter(function (item) {
                             return item.getX() < -30 && item.getX() > CONSTANTS.STAGE_WIDTH + 30 &&
                                 item.getY() < -30 && item.getY() > CONSTANTS.STAGE_HEIGHT + 30
                         }, ammoLayer.children);
 
-                        score += 1;
+                        removeEnemy(deadEnemyIndex);
 
                         // Lifesteal ability
                         if (player.health < 1000) {
@@ -711,11 +703,11 @@ window.onload =
                             logHealth(-15, player.health);
                         }
                         // Update score count
-                        htmlScoreElement.text(score);
-                        removeEnemy(deadEnemyIndex);
+                        score += 1;
+                        $("#scoreSpan").text(score);
                     }
 
-                    if(bulletHasLeftField) {
+                    if (bulletHasLeftField) {
                         bullet.remove();
                     }
 

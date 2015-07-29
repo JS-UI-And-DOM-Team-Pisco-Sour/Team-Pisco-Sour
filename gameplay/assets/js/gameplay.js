@@ -607,7 +607,7 @@ window.onload =
 
                         var playerEnemyCollision = checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
                         if (playerEnemyCollision) {
-                            player.health -= 100;
+                            logHealth(PLAYER_CONSTANTS.HEALTH_REDUCED_ON_ENEMY_COLLISION, player);
                             removeEnemy(i);
                         }
                     }
@@ -688,8 +688,8 @@ window.onload =
 
                         // Lifesteal ability
                         if (player.health < 1000) {
-                            player.health += 15;
-                            logHealth(-15, player.health);
+                            // Using '-' sign, so that the damage is inverted and the value is actually added to the player's health points
+                            logHealth(-PLAYER_CONSTANTS.HEALTH_INCREASED_ON_ENEMY_HIT, player);
                         }
 
                         // Update score count

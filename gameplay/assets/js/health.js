@@ -9,7 +9,7 @@ define(['jquery'], function() {
             value = hBar.data('value');
         player.health -= inflictedDamage;
         damage += inflictedDamage;
-        if (player.health >= 0) {
+        if (true) {
             var newValue = value - damage;
             var hitWidth = (damage / total) * 100 + "%";
             hit.css({
@@ -21,19 +21,25 @@ define(['jquery'], function() {
         }
     }
 
-    function log(_damage, _hitWidth, _decreasedLife) {
+    function log(_damage, _hitWidth, _lifeLeft) {
         var log = $('.log');
         log.empty();
         if (_damage !== undefined && _hitWidth !== undefined) {
-            if (_decreasedLife === 1000) {
-                log.append("<p> (" + _decreasedLife + " / 1000)</p>");
+            if (_lifeLeft === 1000) {
+                log.append("<p> (" + _lifeLeft + " / 1000)</p>");
             }
-            if (_decreasedLife <= 900 && _decreasedLife >= 100) {
-                log.append("<p> (0" + _decreasedLife + " / 1000)</p>");
+            else if (_lifeLeft <= 900 && _lifeLeft >= 100) {
+                log.append("<p> (0" + _lifeLeft + " / 1000)</p>");
             }
-            if(_decreasedLife === 0){
-            log.append("<p> (000" + _decreasedLife + " / 1000)</p>");
-        }
+            else if(_lifeLeft < 100 && _lifeLeft >= 10){
+                log.append("<p> (00" + _lifeLeft + " / 1000)</p>");
+            }
+            else if(_lifeLeft < 10 && _lifeLeft> 0){
+                log.append("<p> (000" + _lifeLeft + " / 1000)</p>");
+            }
+            else {
+                log.append("<p> (0000 / 1000)</p>");
+            }
         }
     }
 

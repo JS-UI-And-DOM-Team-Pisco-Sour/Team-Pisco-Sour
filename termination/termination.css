@@ -18,11 +18,10 @@
     position: absolute;
     left: 710px;
     top: 260px;
-
 font-family: "headerFontFill";
     font-size: 10em;
     font-weight: 500;
-    color: #ff0005;
+    color: rgba(233, 0, 5, 0.91);
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
     -ms-transition: all 0.30s ease-in-out;
@@ -41,6 +40,10 @@ font-family: "headerFontFill";
 /*}*/
 
 #high-scores{
+    display: none;
+    position: absolute;
+    left: 820px;
+    top: 260px;
     line-height: 43px;
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
@@ -53,4 +56,7 @@ font-family: "headerFontFill";
     color: #fff;
     text-align: center;
     text-shadow: 3px 3px #000;
+}
+.scoreSheet{
+    color: #94AAD9;
 }

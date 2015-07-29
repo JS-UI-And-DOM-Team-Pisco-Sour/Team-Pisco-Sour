@@ -17,6 +17,7 @@ function storeHeroName(id){
         else {
             sessionStorage.setItem('heroName', input);
         }
+            sessionStorage.playerScore=0;
 
     }
 

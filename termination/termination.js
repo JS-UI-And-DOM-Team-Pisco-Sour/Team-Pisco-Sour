@@ -1,6 +1,6 @@
 function showHighScores(){
-    var counter=1;
-    document.getElementById("high-scores").innerHTML = counter +'. '+ sessionStorage.getItem('heroName');
-    document.getElementById("GameOver").style.display='none';
-    counter++;
+document.getElementById('high-scores').style.display='block';
+    document.getElementById("currentScore").innerHTML =sessionStorage.getItem('heroName')+'&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;'+sessionStorage.playerScore;
+    document.getElementById("highestScore").innerHTML =localStorage.highScorerName + '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;'+localStorage.highestScore;
+        document.getElementById("GameOver").style.display='none';
 }

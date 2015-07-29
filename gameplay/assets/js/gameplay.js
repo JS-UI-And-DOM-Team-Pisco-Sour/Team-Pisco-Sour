@@ -614,7 +614,11 @@ window.onload =
                         clearTimeout(gameLoop);
                         stage.remove(enemiesLayer);
                         player.kineticImage.remove();
-                        window.location.href='../termination/termination.html'
+
+                        // Delay the endscreen show-up
+                        setTimeout(function () {
+                            window.location.href = '../termination/termination.html';
+                        }, 3000);
                     }
 
                     // Improvised dying
@@ -706,28 +710,24 @@ window.onload =
 
                         $("#scoreSpan").text(score);
 
-                        var name=sessionStorage.getItem('heroName')
-                        var highestScore=0;
-                        sessionStorage.playerScore=Number(sessionStorage.playerScore) + 1;
-                        highestScore=sessionStorage.playerScore;
-                        if(localStorage.highestScore)
-                        {
+                        var name = sessionStorage.getItem('heroName')
+                        var highestScore = 0;
+                        sessionStorage.playerScore = Number(sessionStorage.playerScore) + 1;
+                        highestScore = sessionStorage.playerScore;
+                        if (localStorage.highestScore) {
                             // If player score is greater-than top scorer then
                             // update its score as a top scorer.
-                            if(highestScore >= localStorage.highestScore)
-                            {
+                            if (highestScore >= localStorage.highestScore) {
                                 setHighScore(name, highestScore);
                             }
                         }
-                        else
-                        {
+                        else {
                             setHighScore(name, highestScore);
                         }
-                        function setHighScore(name, newScore)
-                        {
-                                //save the winner score and name to local storage
-                                localStorage.highestScore = newScore;
-                                localStorage.highScorerName = name;
+                        function setHighScore(name, newScore) {
+                            //save the winner score and name to local storage
+                            localStorage.highestScore = newScore;
+                            localStorage.highScorerName = name;
                         }
                     }
 

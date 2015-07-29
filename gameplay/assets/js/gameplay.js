@@ -160,6 +160,7 @@ window.onload =
 
                     // Up-Left
                     if (relativeClientX < playerCenterX) {
+
                         if (playerCenterY - relativeClientY > Math.tan(22.5 / 180 * Math.PI) * (playerCenterX - relativeClientX) &&
                             playerCenterY - relativeClientY < Math.tan(67.5 / 180 * Math.PI) * (playerCenterX - relativeClientX)) {
                             if (player.facingDirection !== PLAYER_CONSTANTS.FACING_DIRECTIONS.UP_LEFT) {
@@ -619,11 +620,7 @@ window.onload =
                     enemiesLayer.moveToTop();
 
                     // Draw only the layer that needs update
-<<<<<<< HEAD
                     enemiesLayer.drawScene();
-=======
-                    enemiesLayer.draw();
->>>>>>> 20eaa9947ddf414c6f3bc014cfbce74375ec24ec
 
                     //Last step is to update the frame counter
                     currentFrame += 1;

@@ -115,7 +115,16 @@ window.onload =
             }
 
             function addMouseEventListeners() {
-                stage.addEventListener('mousemove', function (e) {
+                stage.addEventListener('mousemove', onMouseMove);
+                stage.addEventListener('mousedown', onMouseDown);
+            }
+
+            function removeMouseEventListeners() {
+                stage.off('mousemove');
+                stage.off('mousedown');
+            }
+
+            function onMouseMove(e) {
                     var $gameplayContainer = $('#gameplay-container'),
                         relativeClientX = e.clientX - $gameplayContainer.offset().left,
                         relativeClientY = e.clientY - $gameplayContainer.offset().top,
@@ -248,8 +257,9 @@ window.onload =
                     }
 
                     playerLayer.draw();
-                });
-                stage.addEventListener('mousedown', function (e) {
+            }
+
+            function onMouseDown(e) {
 
                     e = e || window.event; // for IE
                     var isRightClick;
@@ -264,9 +274,7 @@ window.onload =
                             relativeClientX = e.clientX - $gameplayContainer.offset().left,
                             relativeClientY = e.clientY - $gameplayContainer.offset().top;
 
-                        var bulletShotAnimationCoords = {},
-                            bulletShotDisplacementX,
-                            bulletShotDisplacementY;
+                        var bulletShotAnimationCoords = {};
                         switch (player.facingDirection) {
                             case CONSTANTS.FACING_DIRECTIONS.LEFT:
                             {
@@ -322,10 +330,6 @@ window.onload =
                         runBulletShotAnimation(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, CONSTANTS.BULLET_SHOT_SCALE, CONSTANTS.BULLET_SHOT_FRAMERATE);
                         createjs.Sound.play('gun');
                     }
-                });
-                stage.addEventListener('mouseup', function (e) {
-                    isFiring = false;
-                });
             }
 
             function spawnEnemy(frame) {
@@ -573,8 +577,8 @@ window.onload =
             }
 
             function run() {
-                var gameLoop = setTimeout(function () {
-                    var smoothGameLoop = requestAnimationFrame(run);
+                var gameLoopControl = setTimeout(function () {
+                    var gameLoop = requestAnimationFrame(run);
 
                     // Spawning an enemy each frame
                     if (currentFrame % CONSTANTS.ENEMY_SPAWN_FRAME_INTERVAL === 0) {
@@ -602,23 +606,25 @@ window.onload =
                     playerLayer.moveToTop();
                     enemiesLayer.moveToTop();
 
+                    // Draw only the layer that needs update
                     enemiesLayer.draw();
 
                     // Check if not dead
                     player.isDead = player.health <= 0;
 
                     if (player.isDead) {
+                        cancelAnimationFrame(gameLoop);
+                        clearTimeout(gameLoopControl);
+                        playerLayer.clear();
+                        player.kineticImage.remove();
                         runDeathAnimation(player.kineticImage.getX() + CONSTANTS.PLAYER_WIDTH / 2,
                             player.kineticImage.getY() + CONSTANTS.PLAYER_HEIGHT / 2, CONSTANTS.EXPLOSION_SCALE, CONSTANTS.EXPLOSION_FRAME_RATE);
-                        cancelAnimationFrame(smoothGameLoop);
-                        clearTimeout(gameLoop);
-                        stage.remove(enemiesLayer);
-                        player.kineticImage.remove();
 
                         // Delay the endscreen show-up
                         setTimeout(function () {
+                            stage.remove(enemiesLayer);
                             window.location.href = '../termination/termination.html';
-                        }, 3000);
+                        },3000);
                     }
 
                     // Improvised dying
@@ -678,26 +684,12 @@ window.onload =
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
-                    /* !!! DO NOT TOUCH THE NEXT 30 LINES!!! */
-                    /* !!! DO NOT TOUCH THE NEXT 30 LINES!!! */
-                    /* !!! DO NOT TOUCH THE NEXT 30 LINES!!! */
-                    /* !!! DO NOT TOUCH THE NEXT 30 LINES!!! */
-                    /* !!! DO NOT TOUCH THE NEXT 30 LINES!!! */
-
                     var deadEnemyIndex = getDeadEnemyIndex(bullet),
                         bulletHasLeftField = bulletLeftField(bullet);
 
                     if (deadEnemyIndex) {
                         // Remove dead bullet and dead enemy
-                        var bulletToRemoveIndex = Array.prototype.indexOf.call(ammoLayer.children, bullet);
-                        ammoLayer.children[bulletToRemoveIndex].remove();
-
-                        Array.prototype.splice.call(ammoLayer.children, bulletToRemoveIndex, 1);
-                        Array.prototype.filter(function (item) {
-                            return item.getX() < -30 && item.getX() > CONSTANTS.STAGE_WIDTH + 30 &&
-                                item.getY() < -30 && item.getY() > CONSTANTS.STAGE_HEIGHT + 30
-                        }, ammoLayer.children);
-
+                        bullet.destroy();
                         removeEnemy(deadEnemyIndex);
 
                         // Lifesteal ability
@@ -705,6 +697,7 @@ window.onload =
                             player.health += 15;
                             logHealth(-15, player.health);
                         }
+
                         // Update score count
                         score += 1;
 
@@ -732,7 +725,7 @@ window.onload =
                     }
 
                     if (bulletHasLeftField) {
-                        bullet.remove();
+                        bullet.destroy();
                     }
 
                 }, ammoLayer);
@@ -760,7 +753,7 @@ window.onload =
             }
 
             function removeEnemy(position) {
-                enemies[position].enemy.remove();
+                enemies[position].enemy.destroy();
                 enemies.splice(position, 1);
             }
 

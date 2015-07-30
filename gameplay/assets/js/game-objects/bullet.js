@@ -18,20 +18,21 @@ define(['./contracts/game-object', 'globalConstants', 'playerConstants', '../hel
                 });
             };
 
-            Bullet.prototype.shoot = function (bulletDestinationX, bulletDestinationY, enemies, player, stage, ammoLayer, layer, score) {
+            Bullet.prototype.shoot = function (bulletDestinationX, bulletDestinationY, enemies, player, stage, ammoLayer, layer) {
                 var that = this;
                 var targetX = bulletDestinationX - that.kineticImage.getX(),
                     targetY = bulletDestinationY - that.kineticImage.getY(),
                     distance = Math.sqrt(targetX * targetX + targetY * targetY);
 
-                var velocityX = (targetX / distance) * PLAYER_CONSTANTS.ATTACK_SPEED,
-                    velocityY = (targetY / distance) * PLAYER_CONSTANTS.ATTACK_SPEED;
+                var velocityX = (targetX / distance) * player.attackSpeed,
+                    velocityY = (targetY / distance) * player.attackSpeed;
                 var bulletShotAnimation = new Kinetic.Animation(function () {
                     that.kineticImage.setX(that.kineticImage.getX() + velocityX);
                     that.kineticImage.setY(that.kineticImage.getY() + velocityY);
 
                     var deadEnemyIndex = gameStateHelper.getDeadEnemyIndex(enemies, that.kineticImage),
                         bulletHasLeftField = gameStateHelper.bulletLeftField(that.kineticImage);
+
                     if (deadEnemyIndex) {
                         // The three magic rows that save the whole of the universe. Amin.
                         that.kineticImage.setX(GLOBAL_CONSTANTS.STAGE_WIDTH * 2);
@@ -48,7 +49,7 @@ define(['./contracts/game-object', 'globalConstants', 'playerConstants', '../hel
                         }
 
                         // Update score count
-                        score += 1;
+                        player.score += 1;
                     }
 
                     if (bulletHasLeftField) {

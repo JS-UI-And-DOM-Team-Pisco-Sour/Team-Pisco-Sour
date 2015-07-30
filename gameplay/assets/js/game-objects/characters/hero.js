@@ -21,6 +21,7 @@ define(['../contracts/game-object', 'globalConstants', 'playerConstants'],
                 this.facingDirection = PLAYER_CONSTANTS.FACING_DIRECTIONS.DEFAULT;
                 this.layer = layer;
                 this.attackSpeed = attackSpeed;
+                this.score = 0;
             };
 
             Hero.prototype = parent.prototype;

@@ -34,7 +34,6 @@ window.onload =
                 enemies = [],
 
                 currentFrame = 0,
-                score = 0,
                 bulletOffset = 20,
                 ordinaryFirePath = 'assets/images/bullet.png',
                 sprayFirePath = 'assets/images/bullet-image.png',
@@ -417,7 +416,7 @@ window.onload =
 
             function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY, bulletImagePath) {
                 var bullet = new Bullet(gunBarrelX, gunBarrelY, bulletImagePath);
-                bullet.shoot(bulletDestinationX,bulletDestinationY,enemies, player, stage, ammoLayer, layer, score);
+                bullet.shoot(bulletDestinationX,bulletDestinationY,enemies, player, stage, ammoLayer, layer);
             }
 
             function sprayBulletsOutwardsPlayer() {
@@ -461,7 +460,7 @@ window.onload =
             }
 
             function updateScore() {
-                $("#scoreSpan").text(score);
+                $("#scoreSpan").text(player.score);
 
                 var name = sessionStorage.getItem('heroName');
                 sessionStorage.playerScore = Number(sessionStorage.playerScore) + 1;

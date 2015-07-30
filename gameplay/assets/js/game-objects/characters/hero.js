@@ -1,5 +1,5 @@
-define(['./contracts/character', 'globalConstants', 'playerConstants'],
-    function (Character, GLOBAL_CONSTANTS, PLAYER_CONSTANTS) {
+define(['../contracts/game-object', 'globalConstants', 'playerConstants'],
+    function (GameObject, GLOBAL_CONSTANTS, PLAYER_CONSTANTS) {
         var Hero = (function (parent) {
             function isPlayerOutOfBorders(x, y) {
                 var isOutOfBorderX = x <= 40 || x >= (GLOBAL_CONSTANTS.STAGE_WIDTH - 50),
@@ -134,7 +134,7 @@ define(['./contracts/character', 'globalConstants', 'playerConstants'],
             };
 
             return Hero;
-        }(Character));
+        }(GameObject));
 
         return Hero;
     });

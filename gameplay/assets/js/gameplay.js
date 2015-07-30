@@ -14,7 +14,7 @@ requirejs.config({
 
 window.onload =
     requirejs(['globalConstants', 'playerConstants', 'enemyConstants',
-            'game-objects/hero', 'game-objects/enemy',
+            'game-objects/characters/hero', 'game-objects/characters/enemy',
             'health', 'gameStateHelper', 'buttonTimer',
             'jquery', 'kinetic', 'create'
         ],

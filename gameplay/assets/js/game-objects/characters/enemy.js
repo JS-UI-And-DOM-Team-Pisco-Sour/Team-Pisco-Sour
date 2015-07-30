@@ -1,5 +1,5 @@
-define(['./contracts/character', 'playerConstants', 'enemyConstants'],
-    function (Character, PLAYER_CONSTANTS, ENEMY_CONSTANTS) {
+define(['../contracts/game-object', 'playerConstants', 'enemyConstants'],
+    function (GameObject, PLAYER_CONSTANTS, ENEMY_CONSTANTS) {
         var Enemy = (function (parent) {
             var Enemy = function (imagePath, frame) {
                 parent.call(this, imagePath);
@@ -10,8 +10,8 @@ define(['./contracts/character', 'playerConstants', 'enemyConstants'],
             Enemy.prototype = parent.prototype;
 
             Enemy.prototype.attackPlayer = function (playerKineticImage) {
-                playerCenterX = playerKineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2;
-                playerCenterY = playerKineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
+                var playerCenterX = playerKineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
+                    playerCenterY = playerKineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyX = this.getX(),
                     enemyY = this.getY(),
@@ -22,7 +22,7 @@ define(['./contracts/character', 'playerConstants', 'enemyConstants'],
             };
 
             return Enemy;
-        }(Character));
+        }(GameObject));
 
         return Enemy;
     });

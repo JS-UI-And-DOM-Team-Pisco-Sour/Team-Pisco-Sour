@@ -1,35 +1,25 @@
 window.onload = function () {
     var CONSTANTS = {
-        SVG_WIDTH: 300,
-        SVG_HEIGHT: 300,
-        SVG_TOP_LEFT_X: 50,
-        SVG_TOP_LEFT_Y: 50,
+        SVG_WIDTH: 200,
+        SVG_HEIGHT: 200,
+        SVG_TOP_LEFT_X: 10,
+        SVG_TOP_LEFT_Y: 600,
 
         OUTLINE_RADIUS: 20,
-        OUTLINE_STROKE_WIDTH: 15,
+        OUTLINE_STROKE_WIDTH: 2,
 
-        SHIP_SCALE: 2,
+        SHIP_SCALE: 1.5,
 
         BEZIER_CIRCLE_CONST: 0.551915,
         MAX_NUMBER_OF_LOOPS: 100,
-        LOOP_TIME: 10000,
+        LOOP_TIME: 22000,
         LOOP_OFFSET: 1000
     };
 
     var paper;
 
     function loadSVG() {
-        var xmlns = "http://www.w3.org/2000/svg";
-        var svg = document.createElementNS(xmlns, 'svg');
-        svg.setAttributeNS(null, 'id', 'svg_logo');
-        svg.setAttributeNS(null, 'width', CONSTANTS.SVG_WIDTH);
-        svg.setAttributeNS(null, 'height', CONSTANTS.SVG_HEIGHT);
-        svg.setAttributeNS(null, 'position', 'absolute');
-        svg.setAttributeNS(null, 'top', CONSTANTS.SVG_TOP_LEFT_Y);
-        svg.setAttributeNS(null, 'left', CONSTANTS.SVG_TOP_LEFT_X);
-        document.body.appendChild(svg);
-
-        paper = Snap('#svg_logo');
+        paper = Snap('#logo');
     }
 
     function loadFont() {
@@ -144,9 +134,10 @@ window.onload = function () {
         var animatedText = paper.text(0, 0, teamName)
             .attr({
                 'font-family': 'logoFont',
-                'font-size': '30px',
+                'font-size': '25px',
+                'font-weight': '600',
                 'textpath': path,
-                'fill': '#FFF'
+                'fill': '#F5F6F7'
             })
             .transform('t' + CONSTANTS.SVG_WIDTH / 2 + ',' + CONSTANTS.SVG_HEIGHT / 2);
 

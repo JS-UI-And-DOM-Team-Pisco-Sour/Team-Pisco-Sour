@@ -26,16 +26,12 @@ window.onload =
                 backgroundImageObj,
                 layer,
 
-                disappearanceAnimation,
-                explosionAnimation,
-
                 player,
                 playerCenter,
 
                 enemies = [],
 
                 currentFrame = 0,
-                playerWasHit = true,
                 score = 0,
                 bulletOffset = 20,
                 secondArrayBulletOffset = 35,
@@ -365,33 +361,6 @@ window.onload =
                 }
             }
 
-            // TODO: Remove this function
-            function runDeathAnimation(targetX, targetY, scale, frameRate) {
-                var frameCount = 0;
-                explosionAnimation.setAnimation('explosion');
-                explosionAnimation.setX(targetX - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
-                explosionAnimation.setY(targetY - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
-                explosionAnimation.setScale({
-                    x: scale,
-                    y: scale
-                });
-                explosionAnimation.setFrameRate(frameRate);
-
-                explosionAnimation.show();
-                explosionAnimation.on('frameIndexChange', function (e) {
-                    if (frameCount === 0) {
-                        createjs.Sound.play('bomb');
-                    }
-
-                    if (++frameCount > PLAYER_CONSTANTS.DEATH_ANIMATION_FRAMES_COUNT - 1) {
-                        explosionAnimation.stop();
-                        explosionAnimation.hide();
-                        frameCount = 0;
-                    }
-                });
-                explosionAnimation.start();
-            }
-
             function runExplosionAt(x, y, scale, frameRate) {
                 var frameX = 0, frameY = 0;
                 var image;
@@ -441,176 +410,6 @@ window.onload =
                     var mariika = setTimeout(run, frameRate);
                 }
                 run();
-            }
-
-            // TODO: Remove this function
-            function runBulletShotAnimation(targetX, targetY, scale, frameRate) {
-                explosionAnimation.stop();
-                var frameCount = 0;
-                explosionAnimation.setAnimation('explosion');
-                explosionAnimation.setX(targetX - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
-                explosionAnimation.setY(targetY - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
-                explosionAnimation.setScale({
-                    x: scale,
-                    y: scale
-                });
-                explosionAnimation.setFrameRate(frameRate);
-
-                explosionAnimation.show();
-                explosionAnimation.on('frameIndexChange', function (e) {
-                    if (frameCount === 0) {
-                        //createjs.Sound.play('bomb');
-                    }
-
-                    if (++frameCount > PLAYER_CONSTANTS.DEATH_ANIMATION_FRAMES_COUNT - 1) {
-                        explosionAnimation.stop();
-                        explosionAnimation.hide();
-                        frameCount = 0;
-                    }
-                });
-                explosionAnimation.start();
-            }
-
-            // TODO: Remove this function
-            function loadExplosionAnimation() {
-                var deathObj = new Image();
-                deathObj.onload = function () {
-                    explosionAnimation = new Kinetic.Sprite({
-                        x: 0,
-                        y: 0,
-                        image: deathObj,
-                        scale: {
-                            x: 0,
-                            y: 0
-                        },
-
-                        animation: 'explosion',
-                        animations: {
-                            explosion: [
-                                0, 0, 256, 256,
-                                256, 0, 256, 256,
-                                512, 0, 256, 256,
-                                768, 0, 256, 256,
-                                1024, 0, 256, 256,
-                                1280, 0, 256, 256,
-                                1536, 0, 256, 256,
-                                1792, 0, 256, 256,
-
-                                0, 256, 256, 256,
-                                256, 256, 256, 256,
-                                512, 256, 256, 256,
-                                768, 256, 256, 256,
-                                1024, 256, 256, 256,
-                                1280, 256, 256, 256,
-                                1536, 256, 256, 256,
-                                1792, 256, 256, 256,
-
-                                0, 512, 256, 256,
-                                256, 512, 256, 256,
-                                512, 512, 256, 256,
-                                768, 512, 256, 256,
-                                1024, 512, 256, 256,
-                                1280, 512, 256, 256,
-                                1536, 512, 256, 256,
-                                1792, 512, 256, 256,
-
-                                0, 768, 256, 256,
-                                256, 768, 256, 256,
-                                512, 768, 256, 256,
-                                768, 768, 256, 256,
-                                1024, 768, 256, 256,
-                                1280, 768, 256, 256,
-                                1536, 768, 256, 256,
-                                1792, 768, 256, 256,
-
-                                0, 1024, 256, 256,
-                                256, 1024, 256, 256,
-                                512, 1024, 256, 256,
-                                768, 1024, 256, 256,
-                                1024, 1024, 256, 256,
-                                1280, 1024, 256, 256,
-                                1536, 1024, 256, 256,
-                                1792, 1024, 256, 256,
-
-                                0, 1280, 256, 256,
-                                256, 1280, 256, 256,
-                                512, 1280, 256, 256,
-                                768, 1280, 256, 256,
-                                1024, 1280, 256, 256,
-                                1280, 1280, 256, 256,
-                                1536, 1280, 256, 256,
-                                1792, 1280, 256, 256,
-                                1792, 1536, 256, 256
-                            ]
-                        },
-
-                        frameRate: 30,
-                        frameIndex: 0
-                    });
-
-                    playerLayer.add(explosionAnimation);
-                    explosionAnimation.hide();
-                };
-
-                deathObj.src = 'assets/images/explosion.png';
-            }
-
-            // TODO: Remove this function
-            function loadDisappearanceAnimation() {
-                var disappearanceObj = new Image();
-                disappearanceObj.onload = function () {
-                    disappearanceAnimation = new Kinetic.Sprite({
-                        x: 0,
-                        y: 0,
-                        image: disappearanceObj,
-                        scale: {
-                            x: 0,
-                            y: 0
-                        },
-
-                        animation: 'disappearance',
-                        animations: {
-                            disappearance: [
-                                0, 512, 128, 128,
-                                0, 384, 128, 128,
-                                0, 256, 128, 128,
-                                0, 128, 128, 128,
-                                0, 0, 128, 128
-                            ]
-                        },
-
-                        frameRate: 20
-                    });
-
-                    ammoLayer.add(disappearanceAnimation);
-                    disappearanceAnimation.hide();
-                };
-
-                disappearanceObj.src = 'assets/images/poof.png';
-            }
-
-            // TODO: Remove this function
-            function runDisappearanceAnimation(targetX, targetY, scale, frameRate) {
-                disappearanceAnimation.stop();
-                var frameCount = 0;
-                disappearanceAnimation.setAnimation('disappearance');
-                disappearanceAnimation.setX(targetX - PLAYER_CONSTANTS.SMOKE_ANIMATION_WIDTH / 2 * scale);
-                disappearanceAnimation.setY(targetY - PLAYER_CONSTANTS.SMOKE_ANIMATION_HEIGHT / 2 * scale);
-                disappearanceAnimation.setScale({
-                    x: scale,
-                    y: scale
-                });
-                disappearanceAnimation.setFrameRate(frameRate);
-
-                disappearanceAnimation.show();
-                disappearanceAnimation.on('frameIndexChange', function (e) {
-                    if (++frameCount > 4) {
-                        disappearanceAnimation.stop();
-                        disappearanceAnimation.hide();
-                        frameCount = 0;
-                    }
-                });
-                disappearanceAnimation.start();
             }
 
             function runPoofAt(x, y, scale) {
@@ -872,9 +671,9 @@ window.onload =
             function checkIfPlayerCollidedWithEnemy(player, enemy) {
                 var playerCollidedWithEnemy = false;
 
-                var deadlyRadius = 30;
-                playerCenterX = player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2;
-                playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
+                var deadlyRadius = 50;
+                var playerCenterX = player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2;
+                var playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
 
                 var enemyLeftX = enemy.getX(),
                     enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
@@ -911,8 +710,6 @@ window.onload =
                 loadBackground();
                 loadPlayer();
                 addEventListeners();
-                //loadExplosionAnimation();
-                //loadDisappearanceAnimation();
             }
 
             function run() {

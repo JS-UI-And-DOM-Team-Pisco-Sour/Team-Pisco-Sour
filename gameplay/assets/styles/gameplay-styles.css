@@ -122,13 +122,36 @@ p#name {
     width: 50%;
 }
 
-#timer {
-    float: left;
+#timers {
+    position: relative;
+}
+
+#qTimer {
     font-family: 'Consolas';
-    font-size: 0.9em;
+    font-size: 0.7em;
     color: white;
     padding: 0;
-    margin: 0 0 0 -17%;
+    margin: 20% 0 0 -17%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#wTimer {
+    font-family: 'Consolas';
+    font-size: 0.7em;
+    color: white;
+    padding: 0;
+    margin: 20% 0 0 -17%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#eTimer {
+    font-family: 'Consolas';
+    font-size: 0.7em;
+    color: white;
+    padding: 0;
+    margin: 20% 0 0 -17%;
     text-align: center;
     font-weight: bold;
 }

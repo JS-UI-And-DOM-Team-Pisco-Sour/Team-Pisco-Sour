@@ -7,17 +7,18 @@ requirejs.config({
         kinetic: '../../lib/kinetic-v5.1.0.min',
         globalConstants: './common/global-constants',
         playerConstants: './common/player-constants',
-        enemyConstants: './common/enemy-constants'
+        enemyConstants: './common/enemy-constants',
+        gameStateHelper: './helpers/game-state-helper'
     }
 });
 
 window.onload =
     requirejs(['globalConstants', 'playerConstants', 'enemyConstants',
             'game-objects/hero', 'game-objects/enemy',
-            'health', 'buttonTimer',
+            'health', 'gameStateHelper', 'buttonTimer',
             'jquery', 'kinetic', 'create'
         ],
-        function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, logHealth) {
+        function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, logHealth, gameStateHelper) {
             var stage,
                 backgroundLayer,
                 playerLayer,
@@ -409,6 +410,7 @@ window.onload =
 
                     var mariika = setTimeout(run, frameRate);
                 }
+
                 run();
             }
 
@@ -503,8 +505,8 @@ window.onload =
                     bullet.setX(bullet.getX() + velocityX);
                     bullet.setY(bullet.getY() + velocityY);
 
-                    var deadEnemyIndex = getDeadEnemyIndex(bullet),
-                        bulletHasLeftField = bulletLeftField(bullet);
+                    var deadEnemyIndex = gameStateHelper.getDeadEnemyIndex(enemies, bullet),
+                        bulletHasLeftField = gameStateHelper.bulletLeftField(bullet);
 
                     if (deadEnemyIndex) {
                         // The three magic rows that save the whole of the universe. Amin.
@@ -513,7 +515,7 @@ window.onload =
                         bullet.destroy();
 
                         runExplosionAt(enemies[deadEnemyIndex].enemy.getX(), enemies[deadEnemyIndex].enemy.getY(), 0.6, 5);
-                        removeEnemy(deadEnemyIndex);
+                        gameStateHelper.removeEnemy(enemies, deadEnemyIndex);
 
                         // Lifesteal ability
                         if (player.health < 1000) {
@@ -633,77 +635,6 @@ window.onload =
                     playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 2.5, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
             }
 
-            function bulletLeftField(bullet) {
-                if (bullet.getX() < 0 - 30 ||
-                    bullet.getX() > GLOBAL_CONSTANTS.STAGE_WIDTH + 30 ||
-                    bullet.getY() < 0 - 30 ||
-                    bullet.getY() > GLOBAL_CONSTANTS.STAGE_HEIGHT + 30) {
-                    return true;
-                }
-
-                return false;
-            }
-
-            function getDeadEnemyIndex(bullet) {
-                for (var i in enemies) {
-                    if (enemies.hasOwnProperty(i)) {
-                        var enemyCenterX = enemies[i].enemy.getX() + ENEMY_CONSTANTS.SCALE * ENEMY_CONSTANTS.WIDTH / 2,
-                            enemyCenterY = enemies[i].enemy.getY() + ENEMY_CONSTANTS.SCALE * ENEMY_CONSTANTS.HEIGHT / 2,
-                            bulletCenterX = bullet.getX() + PLAYER_CONSTANTS.BULLET_RADIUS,
-                            bulletCenterY = bullet.getY() + PLAYER_CONSTANTS.BULLET_RADIUS;
-
-                        if ((enemyCenterX - bulletCenterX) * (enemyCenterX - bulletCenterX) +
-                            (enemyCenterY - bulletCenterY) * (enemyCenterY - bulletCenterY) <=
-                            (ENEMY_CONSTANTS.RADIUS + PLAYER_CONSTANTS.BULLET_RADIUS) * (ENEMY_CONSTANTS.RADIUS + PLAYER_CONSTANTS.BULLET_RADIUS)) {
-
-                            return i;
-                        }
-                    }
-                }
-                return null;
-            }
-
-            function removeEnemy(position) {
-                enemies[position].enemy.destroy();
-                enemies.splice(position, 1);
-            }
-
-            function checkIfPlayerCollidedWithEnemy(player, enemy) {
-                var playerCollidedWithEnemy = false;
-
-                var deadlyRadius = 50;
-                var playerCenterX = player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2;
-                var playerCenterY = player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2;
-
-                var enemyLeftX = enemy.getX(),
-                    enemyRightX = enemy.getX() + ENEMY_CONSTANTS.WIDTH,
-                    enemyTopY = enemy.getY(),
-                    enemyBottomY = enemy.getY() + ENEMY_CONSTANTS.HEIGHT;
-
-                var playerCenterXBetweenEnemyLeftXAndRightX = enemyLeftX <= playerCenterX && playerCenterX <= enemyRightX;
-
-                var enemyTopSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyTopY - playerCenterY) <= deadlyRadius,
-                    enemyBottomSideInDeadlyRadius = playerCenterXBetweenEnemyLeftXAndRightX && Math.abs(enemyBottomY - playerCenterY) <= deadlyRadius;
-
-                var enemyLeftTopInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
-                    enemyRightTopInDeadlyRadius = (enemyRightX - playerCenterX) * (enemyRightX - playerCenterX) + (enemyTopY - playerCenterY) * (enemyTopY - playerCenterY) <= deadlyRadius,
-                    enemyLeftBottomInDeadlyRadius = (enemyLeftX - playerCenterX) * (enemyLeftX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius,
-                    enemyRightBottomInDeadlyRadius = (enemyRightX - playerCenterX) * (enemyRightX - playerCenterX) + (enemyBottomY - playerCenterY) * (enemyBottomY - playerCenterY) <= deadlyRadius;
-
-                var enemyTopXInDeadlyRadius = enemyLeftTopInDeadlyRadius || enemyRightTopInDeadlyRadius,
-                    enemyBottomXInDeadlyRadius = enemyLeftBottomInDeadlyRadius || enemyRightBottomInDeadlyRadius;
-
-                if (enemyTopSideInDeadlyRadius || enemyBottomSideInDeadlyRadius) {
-                    playerCollidedWithEnemy = true;
-                }
-
-                if (enemyTopXInDeadlyRadius || enemyBottomXInDeadlyRadius) {
-                    playerCollidedWithEnemy = true;
-                }
-
-                return playerCollidedWithEnemy;
-            }
-
             function initialize() {
                 loadSounds();
                 loadCanvas();
@@ -756,10 +687,10 @@ window.onload =
 
                         Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
 
-                        var playerEnemyCollision = checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
+                        var playerEnemyCollision = gameStateHelper.checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
                         if (playerEnemyCollision) {
                             logHealth(PLAYER_CONSTANTS.HEALTH_REDUCED_ON_ENEMY_COLLISION, player);
-                            removeEnemy(i);
+                            gameStateHelper.removeEnemy(enemies, i);
                         }
                     }
 
@@ -784,12 +715,8 @@ window.onload =
 
                     stage.clearCache();
 
-                    if (currentFrame % 10 === 0) {
+                    if (currentFrame % 50 === 0) {
                         layer.destroyChildren();
-                    }
-
-                    if (currentEnemyFrame % 30 === 0) {
-                        ammoLayer.destroyChildren();
                     }
                 }, 30 - gameSpeed);
             }

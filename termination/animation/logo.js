@@ -71,14 +71,14 @@ window.onload = function () {
             .attr({
                 'fill': '#FC6'
             })
-            .transform('t' + 130 / 400 * CONSTANTS.SVG_WIDTH + ',' + 190 / 400 * CONSTANTS.SVG_HEIGHT + 's' + CONSTANTS.SHIP_SCALE + ',' + CONSTANTS.SHIP_SCALE);
+            .transform('t' + 140 / 400 * CONSTANTS.SVG_WIDTH + ',' + 180 / 400 * CONSTANTS.SVG_HEIGHT + 's' + CONSTANTS.SHIP_SCALE + ',' + CONSTANTS.SHIP_SCALE);
 
         // Inner flames
         paper.path('M16,42.013c-3.939,5.748-12,12.835-12,16c0,2.091,0.201,2,2,2c3.217,0,10.011-8.031,16-12 L16,42.013z')
             .attr({
                 'fill': '#ED7161'
             })
-            .transform('t' + 130 / 400 * CONSTANTS.SVG_WIDTH + ',' + 190 / 400 * CONSTANTS.SVG_HEIGHT + 's' + CONSTANTS.SHIP_SCALE + ',' + CONSTANTS.SHIP_SCALE);
+            .transform('t' + 140 / 400 * CONSTANTS.SVG_WIDTH + ',' + 180 / 400 * CONSTANTS.SVG_HEIGHT + 's' + CONSTANTS.SHIP_SCALE + ',' + CONSTANTS.SHIP_SCALE);
 
         // Body below
         paper.path('M60,0.013c-6.286,0.389-17.138,1.137-30,14C20.539,23.474,12.239,37.231,8.348,46.36l9.367,9.367 ' +

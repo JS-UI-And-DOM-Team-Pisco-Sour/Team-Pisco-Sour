@@ -16,5 +16,7 @@ function storeHeroName(id) {
     else {
         sessionStorage.setItem('heroName', input);
     }
+
+    window.location.href = "../gameplay/gameplay.html";
 }
 

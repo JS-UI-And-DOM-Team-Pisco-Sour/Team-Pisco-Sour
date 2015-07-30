@@ -3,68 +3,72 @@
 <head lang="en">
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="assets/styles/intro.css">
-    <link rel="shortcut icon" href="assets/images/snailien-fav.ico" >
+    <link rel="shortcut icon" href="assets/images/snailien-fav.ico">
     <title>Snailiens</title>
 </head>
 <body>
-    <div id="title">
-        <h1>Snailiens</h1>
+<div id="title">
+    <h1>Snailiens</h1>
+</div>
+
+<div id="wrapper">
+
+    <div id="game-description">
+        <p class="speech">
+            I'm stuck on a deserted place surrounded by ugly and dangerous creatures. Please, Help me survive!
+        </p>
     </div>
 
-    <div id="wrapper">
+    <div id="game-controls">
+        <h2>Controls</h2>
+        <ul>
+            <li>
+                <span><img src="assets/images/QButton.svg" alt="" width="50" height="50"></span>
 
-        <div id="game-description">
-            <p class="speech">
-                I'm stuck on a deserted place surrounded by ugly and dangerous creatures. Please, Help me survive!
-            </p>
-        </div>
+                <p> - Move x2 steps in chosen direction</p>
+            </li>
+            <li>
+                <span><img src="assets/images/WButton.svg" alt="" width="50" height="50"></span>
 
-        <div id="game-controls">
-            <h2>Controls</h2>
-            <ul>
-                <li>
-                    <span><img src="assets/images/QButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Move x2 steps in chosen direction</p>
-                </li>
-                <li>
-                    <span><img src="assets/images/WButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Move x4 steps in chosen direction</p>
-                </li>
-                <li>
-                    <span><img src="assets/images/EButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Move x6 steps in chosen direction</p>
-                </li>
-                <li>
-                    <span><img src="assets/images/AButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Throw a grenade</p>
-                </li>
-                <li>
-                    <span><img src="assets/images/LeftMouseButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Shoot</p>
-                </li>
-                <li>
-                    <span><img src="assets/images/RightMouseButton.svg" alt="" width="50" height="50"></span>
-                    <p> - Laser</p>
-                </li>
-            </ul>
-        </div>
+                <p> - Move x4 steps in chosen direction</p>
+            </li>
+            <li>
+                <span><img src="assets/images/EButton.svg" alt="" width="50" height="50"></span>
 
-        <div id="hero">
-            <img src="assets/images/hero-min.png" alt="" width="371" height="480">
-        </div>
+                <p> - Move x6 steps in chosen direction</p>
+            </li>
+            <li>
+                <span><img src="assets/images/AButton.svg" alt="" width="50" height="50"></span>
 
-        <div id="menu">
-            <form method="post" action="../gameplay/gameplay.html">
-                <input type="text" required placeholder="Hero name" autocomplete="off" id="heroName">
-                <input type="submit" value="PLAY" id="playButton" title="Play Snailiens" onclick="storeHeroName('heroName');" >
-            </form>
-                <input type="button" onclick="togglediv('game-description')" value="CONTROLS" title="Show game controls">
-        </div>
+                <p> - Throw a grenade</p>
+            </li>
+            <li>
+                <span><img src="assets/images/LeftMouseButton.svg" alt="" width="50" height="50"></span>
 
+                <p> - Shoot</p>
+            </li>
+            <li>
+                <span><img src="assets/images/RightMouseButton.svg" alt="" width="50" height="50"></span>
+
+                <p> - Laser</p>
+            </li>
+        </ul>
     </div>
-    <div id="footer">
-            <p>Developed by Team "Pisco Sour" @ Telerik Academy, 2015</p>
-        </div>
-    <script src="assets/js/intro.js"></script>
+
+    <div id="hero">
+        <img src="assets/images/hero-min.png" alt="" width="371" height="480">
+    </div>
+
+    <div id="menu">
+        <input type="text" required placeholder="Hero name" autocomplete="off" id="heroName">
+        <input type="button" value="PLAY" id="playButton" title="Play Snailiens" onclick="storeHeroName('heroName');">
+        <input type="button" onclick="togglediv('game-description')" value="CONTROLS" title="Show game controls">
+    </div>
+
+</div>
+<div id="footer">
+    <p>Developed by Team "Pisco Sour" @ Telerik Academy, 2015</p>
+</div>
+<script src="assets/js/intro.js"></script>
 </body>
 </html>

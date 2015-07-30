@@ -319,26 +319,26 @@ window.onload =
                     }
 
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q) {
-                        if(activeButtons[0]) {
+                        if (activeButtons[0]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
-                            activateSkillDelayTimer(qTimer,qBtn, activeButtons, 0);
+                            activateSkillDelayTimer(qTimer, qBtn, activeButtons, 0);
                             player.checkDirectionAndTeleport(player.smallTeleportationAmount);
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.W) {
-                        if(activeButtons[1]) {
+                        if (activeButtons[1]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
-                            activateSkillDelayTimer(wTimer,wBtn, activeButtons, 1);
+                            activateSkillDelayTimer(wTimer, wBtn, activeButtons, 1);
                             player.checkDirectionAndTeleport(player.averageTeleportationAmount);
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
-                        if(activeButtons[2]) {
+                        if (activeButtons[2]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
-                            activateSkillDelayTimer(eTimer,eBtn, activeButtons, 2);
+                            activateSkillDelayTimer(eTimer, eBtn, activeButtons, 2);
                             player.checkDirectionAndTeleport(player.largeTeleportationAmount);
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.A) {
-                        if(activeButtons[3]) {
-                            activateSkillDelayTimer(aTimer,aBtn, activeButtons, 3);
+                        if (activeButtons[3]) {
+                            activateSkillDelayTimer(aTimer, aBtn, activeButtons, 3);
                             sprayBulletsOutwardsPlayer();
                         }
                     }
@@ -416,7 +416,7 @@ window.onload =
 
             function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY, bulletImagePath) {
                 var bullet = new Bullet(gunBarrelX, gunBarrelY, bulletImagePath);
-                bullet.shoot(bulletDestinationX,bulletDestinationY,enemies, player, stage, ammoLayer, layer);
+                bullet.shoot(bulletDestinationX, bulletDestinationY, enemies, player, stage, ammoLayer, layer);
             }
 
             function sprayBulletsOutwardsPlayer() {
@@ -463,22 +463,22 @@ window.onload =
                 $("#scoreSpan").text(player.score);
 
                 var name = sessionStorage.getItem('heroName');
-                sessionStorage.playerScore = Number(sessionStorage.playerScore) + 1;
-                var highestScore = sessionStorage.playerScore;
-                if (localStorage.highestScore) {
+                sessionStorage.setItem('playerScore', player.score);
+                if (localStorage.getItem('highestScore') !== "NaN") {
+                    var highestScore = localStorage.getItem('highestScore');
                     // If player score is greater-than top scorer then
                     // update its score as a top scorer.
-                    if (highestScore >= localStorage.highestScore) {
-                        setHighScore(name, highestScore);
+                    if (sessionStorage.getItem('playerScore') >= highestScore) {
+                        setHighScore(name, sessionStorage.getItem('playerScore'));
                     }
                 } else {
-                    setHighScore(name, highestScore);
+                    setHighScore(name, sessionStorage.getItem('playerScore'));
                 }
 
                 function setHighScore(name, newScore) {
                     //save the winner score and name to local storage
-                    localStorage.highestScore = newScore;
-                    localStorage.highScorerName = name;
+                    localStorage.setItem('highestScore', newScore);
+                    localStorage.setItem('highScorerName', name);
                 }
             }
 

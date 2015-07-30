@@ -522,22 +522,24 @@ window.onload =
 
                     // Updating each Enemy separately
                     for (var i = 0, len = enemies.length; i < len; i += 1) {
-                        var currentEnemyFrame = (currentFrame - enemies[i].frame) / 3 | 0;
-                        if (currentEnemyFrame < ENEMY_CONSTANTS.FRAME_COUNT - 1) {
-                            enemies[i].enemy.setCrop({
-                                x: currentEnemyFrame * ENEMY_CONSTANTS.WIDTH,
-                                y: 0,
-                                width: ENEMY_CONSTANTS.WIDTH,
-                                height: ENEMY_CONSTANTS.HEIGHT
-                            });
-                        }
+                        if(enemies[i]) {
+                            var currentEnemyFrame = (currentFrame - enemies[i].frame) / 3 | 0;
+                            if (currentEnemyFrame < ENEMY_CONSTANTS.FRAME_COUNT - 1) {
+                                enemies[i].enemy.setCrop({
+                                    x: currentEnemyFrame * ENEMY_CONSTANTS.WIDTH,
+                                    y: 0,
+                                    width: ENEMY_CONSTANTS.WIDTH,
+                                    height: ENEMY_CONSTANTS.HEIGHT
+                                });
+                            }
 
-                        Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
+                            Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
 
-                        var playerEnemyCollision = gameStateHelper.checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
-                        if (playerEnemyCollision) {
-                            logHealth(PLAYER_CONSTANTS.HEALTH_REDUCED_ON_ENEMY_COLLISION, player);
-                            gameStateHelper.removeEnemy(enemies, i);
+                            var playerEnemyCollision = gameStateHelper.checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
+                            if (playerEnemyCollision) {
+                                logHealth(PLAYER_CONSTANTS.HEALTH_REDUCED_ON_ENEMY_COLLISION, player);
+                                gameStateHelper.removeEnemy(enemies, i);
+                            }
                         }
                     }
 

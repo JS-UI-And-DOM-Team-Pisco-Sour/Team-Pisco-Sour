@@ -18,6 +18,7 @@
     src: url("fonts/machine.ttf");
 }
 
+
 html, body, div, p, form {
     margin: 0;
     padding: 0;
@@ -44,7 +45,7 @@ h1 {
     -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     text-align: center;
-    text-shadow: 10px 10px 5px #151617, #000 0 -1px 2px;
+    text-shadow: 10px 10px 5px  #151617, #000 0 -1px 2px;
     letter-spacing: 5px;
     margin: 0 auto;
     margin-top: 5%;
@@ -60,7 +61,7 @@ h1 {
     -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     text-align: center;
-    text-shadow: 10px 10px 5px #151617, #000 0 -1px 2px;
+    text-shadow: 10px 10px 5px  #151617, #000 0 -1px 2px;
     letter-spacing: 5px;
     padding-top: 10px;
     vertical-align: baseline;
@@ -84,10 +85,10 @@ h1:hover {
     content: "";
     display: block;
     height: 0;
-    clear: both;
+    clear:both;
 }
 
-#container > div {
+#container>div {
     float: left;
 }
 
@@ -128,7 +129,6 @@ h2 {
     margin: 0 auto;
     margin-left: 6%;
     border-left: 5px solid rgba(1, 8, 26, 0.7);
-    border: 1px solid white;
 }
 
 #menu input[type="text"] {
@@ -159,8 +159,8 @@ h2 {
 }
 
 #menu input[type=text]:focus {
-    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-    border: 1px solid rgba(245, 246, 247, 1);
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  border: 1px solid rgba(245, 246, 247, 1);
 }
 
 #menu input[type="submit"] {
@@ -187,12 +187,12 @@ h2 {
 
 #menu input[type="submit"]:hover {
     background-color: #2c70c6;
-    box-shadow: 2px 2px 20px #2c90c6, #fff 0 1px 2px;
+    box-shadow: 2px 2px 20px  #2c90c6, #fff 0 1px 2px;
 }
 
 #menu input[type="submit"]:active {
-    box-shadow: 1px 0px 1px #203891, 0px 1px 1px #3852b1, 2px 1px 1px #203891, 1px 2px 1px #3852b1, 3px 2px 1px #203891;
-@include transform(translate(- 3 px, - 3 px));
+  box-shadow: 1px 0px 1px #203891,0px 1px 1px #3852b1, 2px 1px 1px #203891, 1px 2px 1px #3852b1, 3px 2px 1px #203891;
+  @include transform(translate(-3px, -3px));
 }
 
 #menu input[type="button"] {
@@ -219,18 +219,24 @@ h2 {
 
 #menu input[type="button"]:hover {
     background-color: #2c70c6;
-    box-shadow: 2px 2px 20px #2c90c6, #fff 0 1px 2px;
+    box-shadow: 2px 2px 20px  #2c90c6, #fff 0 1px 2px;
 }
 
 #menu input[type="button"]:active {
-    box-shadow: 1px 0px 1px #203891, 0px 1px 1px #3852b1, 2px 1px 1px #203891, 1px 2px 1px #3852b1, 3px 2px 1px #203891;
-@include transform(translate(- 3 px, - 3 px));
+  box-shadow: 1px 0px 1px #203891,0px 1px 1px #3852b1, 2px 1px 1px #203891, 1px 2px 1px #3852b1, 3px 2px 1px #203891;
+  @include transform(translate(-3px, -3px));
 }
 
 #logo {
-    position: absolute;
-    right: 18%;
-    bottom: 0;
-    top: 68vh;
+    float: right;
+    margin-top: 5%;
+    margin-right: 18%;
+    background-color: rgba(1, 8, 26, 0.3);
+    border: 1px solid rgb(34, 34, 34);
+    border-radius: 5%;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
 }
 

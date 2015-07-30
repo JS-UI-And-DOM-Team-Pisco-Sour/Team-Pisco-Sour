@@ -311,7 +311,8 @@ window.onload =
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.W ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
-                        runDisappearanceAnimation(player.getCenter().x, player.getCenter().y, 0.4, 30);
+                        //runDisappearanceAnimation(player.getCenter().x, player.getCenter().y, 0.4, 30);
+                        runPoofAt(player.getCenter().x, player.getCenter().y, 0.4);
                     }
 
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q) {
@@ -364,6 +365,7 @@ window.onload =
                 }
             }
 
+            // TODO: Remove this function
             function runDeathAnimation(targetX, targetY, scale, frameRate) {
                 var frameCount = 0;
                 explosionAnimation.setAnimation('explosion');
@@ -390,7 +392,7 @@ window.onload =
                 explosionAnimation.start();
             }
 
-            function runExplosionAt(x, y, scale) {
+            function runExplosionAt(x, y, scale, frameRate) {
                 var frameX = 0, frameY = 0;
                 var image;
                 var explosion = new Image();
@@ -411,7 +413,7 @@ window.onload =
                 layer.add(image);
 
                 explosion.src = 'assets/images/explosion.png';
-                (function run() {
+                function run() {
                     image.setX(x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
                     image.setY(y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
                     image.setCrop({
@@ -433,13 +435,15 @@ window.onload =
                     }
 
                     if (frameY === 6) {
-                        cancelAnimationFrame(mariika);
+                        clearTimeout(mariika);
                     }
 
-                    var mariika = requestAnimationFrame(run);
-                }())
+                    var mariika = setTimeout(run, frameRate);
+                }
+                run();
             }
 
+            // TODO: Remove this function
             function runBulletShotAnimation(targetX, targetY, scale, frameRate) {
                 explosionAnimation.stop();
                 var frameCount = 0;
@@ -467,6 +471,7 @@ window.onload =
                 explosionAnimation.start();
             }
 
+            // TODO: Remove this function
             function loadExplosionAnimation() {
                 var deathObj = new Image();
                 deathObj.onload = function () {
@@ -550,6 +555,7 @@ window.onload =
                 deathObj.src = 'assets/images/explosion.png';
             }
 
+            // TODO: Remove this function
             function loadDisappearanceAnimation() {
                 var disappearanceObj = new Image();
                 disappearanceObj.onload = function () {
@@ -583,6 +589,7 @@ window.onload =
                 disappearanceObj.src = 'assets/images/poof.png';
             }
 
+            // TODO: Remove this function
             function runDisappearanceAnimation(targetX, targetY, scale, frameRate) {
                 disappearanceAnimation.stop();
                 var frameCount = 0;
@@ -606,110 +613,55 @@ window.onload =
                 disappearanceAnimation.start();
             }
 
+            function runPoofAt(x, y, scale) {
+                var frameX = 0, frameY = 0;
+                var image;
+                var poof = new Image();
+                image = new Kinetic.Image({
+                    x: x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale,
+                    y: y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale,
+                    image: poof,
+                    width: 256,
+                    height: 256,
+                    crop: {
+                        x: 0,
+                        y: 0,
+                        width: 256,
+                        height: 256
+                    }
+                });
+
+                layer.add(image);
+
+                poof.src = 'assets/images/poof.png';
+                (function run() {
+                    image.setX(x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
+                    image.setY(y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
+                    image.setCrop({
+                        x: frameX * 128,
+                        y: (4 - frameY) * 128,
+                        width: 128,
+                        height: 128
+                    });
+
+                    image.setScale({
+                        x: scale,
+                        y: scale
+                    });
+
+                    layer.draw();
+                    frameY++;
+                    if (frameY === 6) {
+                        cancelAnimationFrame(mariika);
+                        clearTimeout(animationControl);
+                    }
+                    var mariika = requestAnimationFrame(run);
+                }());
+            }
+
             function getRandomCoordinate(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
-
-            function initialize() {
-                loadSounds();
-                loadCanvas();
-                loadBackground();
-                loadPlayer();
-                addEventListeners();
-                //loadExplosionAnimation();
-                loadDisappearanceAnimation();
-            }
-
-            function run() {
-                var gameLoopControl = setTimeout(function () {
-                    var gameLoop = requestAnimationFrame(run);
-
-                    // Check if not dead
-                    player.isDead = player.health <= 0;
-
-                    if (player.isDead) {
-                        removeEventListeners();
-                        cancelAnimationFrame(gameLoop);
-                        clearTimeout(gameLoopControl);
-                        playerLayer.clear();
-                        player.kineticImage.remove();
-                        runExplosionAt(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
-                            player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2,
-                            PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
-                        createjs.Sound.play('bomb');
-
-                        // Delay the endscreen show-up
-                        setTimeout(function () {
-                            stage.remove(enemiesLayer);
-                            window.location.href = '../termination/termination.html';
-                        }, 3000);
-                    }
-
-                    // Spawning an enemy each frame
-                    if (currentFrame % ENEMY_CONSTANTS.SPAWN_FRAME_INTERVAL === 0) {
-                        spawnEnemy(currentFrame);
-                    }
-
-                    // Updating each Enemy separately
-                    for (var i = 0, len = enemies.length; i < len; i += 1) {
-                        var currentEnemyFrame = (currentFrame - enemies[i].frame) / 3 | 0;
-                        if (currentEnemyFrame < ENEMY_CONSTANTS.FRAME_COUNT - 1) {
-                            enemies[i].enemy.setCrop({
-                                x: currentEnemyFrame * ENEMY_CONSTANTS.WIDTH,
-                                y: 0,
-                                width: ENEMY_CONSTANTS.WIDTH,
-                                height: ENEMY_CONSTANTS.HEIGHT
-                            });
-                        }
-
-                        Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
-
-                        var playerEnemyCollision = checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
-                        if (playerEnemyCollision) {
-                            logHealth(PLAYER_CONSTANTS.HEALTH_REDUCED_ON_ENEMY_COLLISION, player);
-                            removeEnemy(i);
-                        }
-                    }
-
-                    // The right way to set z indices
-                    backgroundLayer.moveToTop();
-                    ammoLayer.moveToTop();
-                    playerLayer.moveToTop();
-                    enemiesLayer.moveToTop();
-                    layer.moveToTop();
-
-                    // Draw only the layer that needs update
-                    enemiesLayer.drawScene();
-
-                    //Last step is to update the frame counter
-                    currentFrame += 1;
-
-                    // Clear the cache for better performance
-                    ammoLayer.clearCache();
-                    enemiesLayer.clearCache();
-                    playerLayer.clearCache();
-                    backgroundLayer.clearCache();
-
-                    stage.clearCache();
-
-                    if(currentFrame % 10 === 0) {
-                        layer.destroyChildren();
-                    }
-
-                    if(currentEnemyFrame % 30 === 0) {
-                        ammoLayer.destroyChildren();
-                    }
-
-                    if(currentFrame % 10 === 0) {
-                        gameSpeed += 1;
-                    }
-                }, 30 - gameSpeed);
-            }
-
-            (function () {
-                initialize();
-                run();
-            }());
 
             function createBullet(gunBarrelX, gunBarrelY, bulletImagePath) {
                 var bulletImageObject = new Image();
@@ -761,7 +713,7 @@ window.onload =
                         bullet.setY(GLOBAL_CONSTANTS.STAGE_HEIGHT * 2);
                         bullet.destroy();
 
-                        runExplosionAt(enemies[deadEnemyIndex].enemy.getX(), enemies[deadEnemyIndex].enemy.getY(), 0.6);
+                        runExplosionAt(enemies[deadEnemyIndex].enemy.getX(), enemies[deadEnemyIndex].enemy.getY(), 0.6, 5);
                         removeEnemy(deadEnemyIndex);
 
                         // Lifesteal ability
@@ -952,5 +904,101 @@ window.onload =
 
                 return playerCollidedWithEnemy;
             }
-        }
-    );
+
+            function initialize() {
+                loadSounds();
+                loadCanvas();
+                loadBackground();
+                loadPlayer();
+                addEventListeners();
+                //loadExplosionAnimation();
+                //loadDisappearanceAnimation();
+            }
+
+            function run() {
+                var gameLoopControl = setTimeout(function () {
+                    var gameLoop = requestAnimationFrame(run);
+
+                    // Check if not dead
+                    player.isDead = player.health <= 0;
+
+                    if (player.isDead) {
+                        removeEventListeners();
+                        cancelAnimationFrame(gameLoop);
+                        clearTimeout(gameLoopControl);
+                        playerLayer.clear();
+                        player.kineticImage.remove();
+                        runExplosionAt(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
+                            player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2,
+                            PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
+                        createjs.Sound.play('bomb');
+
+                        // Delay the endscreen show-up
+                        setTimeout(function () {
+                            stage.remove(enemiesLayer);
+                            window.location.href = '../termination/termination.html';
+                        }, 3000);
+                    }
+
+                    // Spawning an enemy each frame
+                    if (currentFrame % ENEMY_CONSTANTS.SPAWN_FRAME_INTERVAL === 0) {
+                        spawnEnemy(currentFrame);
+                    }
+
+                    // Updating each Enemy separately
+                    for (var i = 0, len = enemies.length; i < len; i += 1) {
+                        var currentEnemyFrame = (currentFrame - enemies[i].frame) / 3 | 0;
+                        if (currentEnemyFrame < ENEMY_CONSTANTS.FRAME_COUNT - 1) {
+                            enemies[i].enemy.setCrop({
+                                x: currentEnemyFrame * ENEMY_CONSTANTS.WIDTH,
+                                y: 0,
+                                width: ENEMY_CONSTANTS.WIDTH,
+                                height: ENEMY_CONSTANTS.HEIGHT
+                            });
+                        }
+
+                        Enemy.prototype.attackPlayer.call(enemies[i].enemy, player.kineticImage);
+
+                        var playerEnemyCollision = checkIfPlayerCollidedWithEnemy(player, enemies[i].enemy);
+                        if (playerEnemyCollision) {
+                            logHealth(PLAYER_CONSTANTS.HEALTH_REDUCED_ON_ENEMY_COLLISION, player);
+                            removeEnemy(i);
+                        }
+                    }
+
+                    // The right way to set z indices
+                    backgroundLayer.moveToTop();
+                    ammoLayer.moveToTop();
+                    playerLayer.moveToTop();
+                    enemiesLayer.moveToTop();
+                    layer.moveToTop();
+
+                    // Draw only the layer that needs update
+                    enemiesLayer.drawScene();
+
+                    //Last step is to update the frame counter
+                    currentFrame += 1;
+
+                    // Clear the cache for better performance
+                    ammoLayer.clearCache();
+                    enemiesLayer.clearCache();
+                    playerLayer.clearCache();
+                    backgroundLayer.clearCache();
+
+                    stage.clearCache();
+
+                    if (currentFrame % 10 === 0) {
+                        layer.destroyChildren();
+                    }
+
+                    if (currentEnemyFrame % 30 === 0) {
+                        ammoLayer.destroyChildren();
+                    }
+                }, 30 - gameSpeed);
+            }
+
+            (function () {
+                initialize();
+                run();
+            }());
+        });

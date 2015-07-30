@@ -9,23 +9,22 @@ define(['jquery'], function() {
             value = hBar.data('value');
         player.health -= inflictedDamage;
         damage += inflictedDamage;
-        if (true) {
-            var newValue = value - damage;
-            var hitWidth = (damage / total) * 100 + "%";
-            hit.css({
-                'display': 'block',
-                'width': hitWidth
-            });
-            hBar.data('value', newValue);
-            log(damage, hitWidth, player.health);
-        }
+
+        var newValue = value - damage;
+        var hitWidth = (damage / total) * 100 + "%";
+        hit.css({
+            'display': 'block',
+            'width': hitWidth
+        });
+        hBar.data('value', newValue);
+        log(damage, hitWidth, player.health);
     }
 
     function log(_damage, _hitWidth, _lifeLeft) {
         var log = $('.log');
         log.empty();
-        if (_damage !== undefined && _hitWidth !== undefined) {
-            if (_lifeLeft === 1000) {
+        if (typeof(_damage) !== 'undefined' && typeof(_hitWidth) !== 'undefined') {
+            if (_lifeLeft >= 1000) {
                 log.append("<p> (" + _lifeLeft + " / 1000)</p>");
             }
             else if (_lifeLeft <= 900 && _lifeLeft >= 100) {
@@ -37,7 +36,7 @@ define(['jquery'], function() {
             else if(_lifeLeft < 10 && _lifeLeft> 0){
                 log.append("<p> (000" + _lifeLeft + " / 1000)</p>");
             }
-            else {
+            else if(_lifeLeft <= 0) {
                 log.append("<p> (0000 / 1000)</p>");
             }
         }

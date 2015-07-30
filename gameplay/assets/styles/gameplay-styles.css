@@ -162,3 +162,10 @@ p#name {
     text-shadow: 10px 10px 20px  #000, #000 0 -1px 2px;
  }
 
+ #kills-count {
+     font-size: 3em;
+     font-family: 'Consolas';
+     font-weight: 900;
+     margin-top: 100px;
+     color: white;
+ }

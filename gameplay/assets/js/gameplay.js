@@ -38,6 +38,7 @@ window.onload =
                 playerWasHit = true,
                 score = 0,
                 bulletOffset = 20,
+                secondArrayBulletOffset = 35,
                 ordinaryFirePath = 'assets/images/bullet.png',
                 sprayFirePath = 'assets/images/bullet-image.png',
 
@@ -640,7 +641,7 @@ window.onload =
                         // Delay the endscreen show-up
                         setTimeout(function () {
                             stage.remove(enemiesLayer);
-                            //window.location.href = '../termination/termination.html';
+                            window.location.href = '../termination/termination.html';
                         }, 3000);
                     }
 
@@ -842,6 +843,43 @@ window.onload =
 
                 shootBullet(playerCenter.x - bulletOffset / 2, playerCenter.y - bulletOffset / 2,
                     playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 2, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
+
+                // sec
+                shootBullet(playerCenter.x, playerCenter.y - secondArrayBulletOffset,
+                    playerCenter.x, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+
+                shootBullet(playerCenter.x + bulletOffset / 3, playerCenter.y - secondArrayBulletOffset / 3,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 3.5, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+
+                shootBullet(playerCenter.x + secondArrayBulletOffset / 2, playerCenter.y - secondArrayBulletOffset / 2,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 2.5, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
+
+                shootBullet(playerCenter.x + secondArrayBulletOffset, playerCenter.y,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH, playerCenter.y, sprayFirePath);
+
+                shootBullet(playerCenter.x + secondArrayBulletOffset / 3, playerCenter.y + secondArrayBulletOffset / 3,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 3.5, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+
+                shootBullet(playerCenter.x + secondArrayBulletOffset / 2, playerCenter.y + secondArrayBulletOffset / 2,
+                    playerCenter.x + GLOBAL_CONSTANTS.STAGE_WIDTH / 2.5, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
+
+                shootBullet(playerCenter.x, playerCenter.y + bulletOffset,
+                    playerCenter.x, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+
+                shootBullet(playerCenter.x - secondArrayBulletOffset / 3, playerCenter.y + secondArrayBulletOffset / 3,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 3.5, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+
+                shootBullet(playerCenter.x - secondArrayBulletOffset / 2, playerCenter.y + secondArrayBulletOffset / 2,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 2.5, playerCenter.y + GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
+
+                shootBullet(playerCenter.x - secondArrayBulletOffset, playerCenter.y,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH, playerCenter.y, sprayFirePath);
+
+                shootBullet(playerCenter.x - secondArrayBulletOffset / 3, playerCenter.y - secondArrayBulletOffset / 3,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 3.5, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT, sprayFirePath);
+
+                shootBullet(playerCenter.x - secondArrayBulletOffset / 2, playerCenter.y - secondArrayBulletOffset / 2,
+                    playerCenter.x - GLOBAL_CONSTANTS.STAGE_WIDTH / 2.5, playerCenter.y - GLOBAL_CONSTANTS.STAGE_HEIGHT / 2, sprayFirePath);
             }
 
             function bulletLeftField(bullet) {

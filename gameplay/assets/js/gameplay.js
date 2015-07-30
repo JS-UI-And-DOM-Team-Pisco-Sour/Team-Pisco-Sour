@@ -297,7 +297,7 @@ window.onload =
                         }
 
                         shootBullet(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, relativeClientX, relativeClientY, ordinaryFirePath);
-                        runExplosionAt(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, PLAYER_CONSTANTS.BULLET_SHOT_SCALE, PLAYER_CONSTANTS.BULLET_SHOT_FRAMERATE);
+                        gameStateHelper.runExplosionAt(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, PLAYER_CONSTANTS.BULLET_SHOT_SCALE, PLAYER_CONSTANTS.BULLET_SHOT_FRAMERATE, layer);
                         createjs.Sound.play('gun');
                     }
                 }
@@ -309,7 +309,7 @@ window.onload =
                         keyPressed === GLOBAL_CONSTANTS.KEYS.W ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
                         //runDisappearanceAnimation(player.getCenter().x, player.getCenter().y, 0.4, 30);
-                        runPoofAt(player.getCenter().x, player.getCenter().y, 0.4);
+                        gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
                     }
 
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q) {
@@ -360,104 +360,6 @@ window.onload =
 
                     enemiesLayer.add(newEnemy);
                 }
-            }
-
-            function runExplosionAt(x, y, scale, frameRate) {
-                var frameX = 0, frameY = 0;
-                var image;
-                var explosion = new Image();
-                image = new Kinetic.Image({
-                    x: x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale,
-                    y: y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale,
-                    image: explosion,
-                    width: 256,
-                    height: 256,
-                    crop: {
-                        x: 0,
-                        y: 0,
-                        width: 256,
-                        height: 256
-                    }
-                });
-
-                layer.add(image);
-
-                explosion.src = 'assets/images/explosion.png';
-                function run() {
-                    image.setX(x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
-                    image.setY(y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
-                    image.setCrop({
-                        x: frameX * 256,
-                        y: frameY * 256,
-                        width: 256,
-                        height: 256
-                    });
-                    image.setScale({
-                        x: scale,
-                        y: scale
-                    });
-
-                    layer.draw();
-                    frameX++;
-                    if (frameX % 8 === 0) {
-                        frameX = 0;
-                        frameY++;
-                    }
-
-                    if (frameY === 6) {
-                        clearTimeout(mariika);
-                    }
-
-                    var mariika = setTimeout(run, frameRate);
-                }
-
-                run();
-            }
-
-            function runPoofAt(x, y, scale) {
-                var frameX = 0, frameY = 0;
-                var image;
-                var poof = new Image();
-                image = new Kinetic.Image({
-                    x: x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale,
-                    y: y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale,
-                    image: poof,
-                    width: 256,
-                    height: 256,
-                    crop: {
-                        x: 0,
-                        y: 0,
-                        width: 256,
-                        height: 256
-                    }
-                });
-
-                layer.add(image);
-
-                poof.src = 'assets/images/poof.png';
-                (function run() {
-                    image.setX(x - PLAYER_CONSTANTS.EXPLOSION_WIDTH / 2 * scale);
-                    image.setY(y - PLAYER_CONSTANTS.EXPLOSION_HEIGHT / 2 * scale);
-                    image.setCrop({
-                        x: frameX * 128,
-                        y: (4 - frameY) * 128,
-                        width: 128,
-                        height: 128
-                    });
-
-                    image.setScale({
-                        x: scale,
-                        y: scale
-                    });
-
-                    layer.draw();
-                    frameY++;
-                    if (frameY === 6) {
-                        cancelAnimationFrame(mariika);
-                        clearTimeout(animationControl);
-                    }
-                    var mariika = requestAnimationFrame(run);
-                }());
             }
 
             function getRandomCoordinate(min, max) {
@@ -514,7 +416,7 @@ window.onload =
                         bullet.setY(GLOBAL_CONSTANTS.STAGE_HEIGHT * 2);
                         bullet.destroy();
 
-                        runExplosionAt(enemies[deadEnemyIndex].enemy.getX(), enemies[deadEnemyIndex].enemy.getY(), 0.6, 5);
+                        gameStateHelper.runExplosionAt(enemies[deadEnemyIndex].enemy.getX(), enemies[deadEnemyIndex].enemy.getY(), 0.6, 5, layer);
                         gameStateHelper.removeEnemy(enemies, deadEnemyIndex);
 
                         // Lifesteal ability
@@ -655,9 +557,9 @@ window.onload =
                         clearTimeout(gameLoopControl);
                         playerLayer.clear();
                         player.kineticImage.remove();
-                        runExplosionAt(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
+                        gameStateHelper.runExplosionAt(player.kineticImage.getX() + PLAYER_CONSTANTS.WIDTH / 2,
                             player.kineticImage.getY() + PLAYER_CONSTANTS.HEIGHT / 2,
-                            PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE);
+                            PLAYER_CONSTANTS.EXPLOSION_SCALE, PLAYER_CONSTANTS.EXPLOSION_FRAME_RATE, layer);
                         createjs.Sound.play('bomb');
 
                         // Delay the endscreen show-up

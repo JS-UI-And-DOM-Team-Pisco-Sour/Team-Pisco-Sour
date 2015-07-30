@@ -34,7 +34,7 @@ define(function() {
         BULLET_HEIGHT: 28,
         BULLET_RADIUS: 12,
         BULLET_SHOT_SCALE: 0.2,
-        BULLET_SHOT_FRAMERATE: 10000000,
+        BULLET_SHOT_FRAMERATE: 10,
         SHIFT: 30,
 
         HEALTH_REDUCED_ON_ENEMY_COLLISION: 200,

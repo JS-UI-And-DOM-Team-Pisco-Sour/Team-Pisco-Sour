@@ -39,9 +39,8 @@ window.onload =
                 ordinaryFirePath = 'assets/images/bullet.png',
                 sprayFirePath = 'assets/images/bullet-image.png',
 
-                gameSpeed = 0;
-
-            var qBtn = $('#qButton'),
+                gameSpeed = 0,
+                qBtn = $('#qButton'),
                 wBtn = $('#wButton'),
                 eBtn = $('#eButton'),
                 aBtn = $("#aButton"),
@@ -323,131 +322,55 @@ window.onload =
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q) {
                         if(activeButtons[0]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
+                            activateSkillDelayTimer(qTimer,qBtn, activeButtons, 0);
                             player.checkDirectionAndTeleport(player.smallTeleportationAmount);
-
-                            (function () {
-                                var counter = 3,
-                                    intervalID;
-
-                                intervalID = setInterval(function () {
-                                    counter--;
-                                    if (counter > 0) {
-                                        activeButtons[0] = false;
-                                        qTimer.empty();
-                                        qTimer.append("<p>'Q' Delay: " + (counter) + " s</p>");
-                                        qBtn.css({
-                                            'opacity': '0.5'
-                                        });
-                                    }
-                                    if (counter === 0) {
-                                        qTimer.empty();
-                                        clearInterval(counter);
-                                        qBtn.css({
-                                            'opacity': '1'
-                                        });
-                                        qTimer.append("<p>Ready to use</p>");
-                                        activeButtons[0] = true;
-                                        clearTimeout(intervalID);
-                                    }
-                                }, 1000);
-                            })();
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.W) {
                         if(activeButtons[1]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
+                            activateSkillDelayTimer(wTimer,wBtn, activeButtons, 1);
                             player.checkDirectionAndTeleport(player.averageTeleportationAmount);
-
-                            (function () {
-                                var counter = 3,
-                                    intervalID;
-
-                                intervalID = setInterval(function () {
-                                    counter--;
-                                    if (counter > 0) {
-                                        activeButtons[1] = false;
-                                        wTimer.empty();
-                                        wTimer.append("<p>'W' Delay: " + (counter) + " s</p>");
-                                        wBtn.css({
-                                            'opacity': '0.5'
-                                        });
-                                    }
-                                    if (counter === 0) {
-                                        wTimer.empty();
-                                        clearInterval(counter);
-                                        wBtn.css({
-                                            'opacity': '1'
-                                        });
-                                        wTimer.append("<p>Ready to use</p>");
-                                        activeButtons[1] = false;
-                                        clearInterval(intervalID);
-                                    }
-                                }, 1000);
-                            })();
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
                         if(activeButtons[2]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
+                            activateSkillDelayTimer(eTimer,eBtn, activeButtons, 2);
                             player.checkDirectionAndTeleport(player.largeTeleportationAmount);
-
-                            (function () {
-                                var counter = 3,
-                                    intervalID;
-                                intervalID = setInterval(function () {
-                                    counter--;
-                                    if (counter > 0) {
-                                        activeButtons[2] = false;
-                                        eTimer.empty();
-                                        //e.preventDefault();
-                                        eTimer.append("<p>'E' Delay: " + (counter) + " s</p>");
-                                        eBtn.css({
-                                            'opacity': '0.5'
-                                        });
-                                    }
-                                    if (counter === 0) {
-                                        eTimer.empty();
-                                        clearInterval(counter);
-                                        eBtn.css({
-                                            'opacity': '1'
-                                        });
-                                        eTimer.append("<p>Ready to use</p>");
-                                        activeButtons[2] = true;
-                                        clearInterval(intervalID);
-                                    }
-                                }, 1000);
-                            })();
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.A) {
                         if(activeButtons[3]) {
+                            activateSkillDelayTimer(aTimer,aBtn, activeButtons, 3);
                             sprayBulletsOutwardsPlayer();
-
-                            (function () {
-                                var counter = 3,
-                                    intervalID;
-                                intervalID = setInterval(function () {
-                                    counter--;
-                                    if (counter > 0) {
-                                        activeButtons[3] = false;
-                                        aTimer.empty();
-                                        //e.preventDefault();
-                                        aTimer.append("<p>Delay: " + (counter) + " s</p>");
-                                        aBtn.css({
-                                            'opacity': '0.5'
-                                        });
-                                    }
-                                    if (counter === 0) {
-                                        clearInterval(counter);
-                                        aBtn.css({
-                                            'opacity': '1'
-                                        });
-                                        aTimer.append("<p>Ready to use</p>");
-                                        activeButtons[3] = true;
-                                        clearInterval(intervalID);
-                                    }
-                                }, 1000);
-                            })();
                         }
                     }
                 }
+            }
+
+            function activateSkillDelayTimer(buttonTimerDiv, buttonImage, activeButtons, buttonToActivate) {
+                var counter = 2,
+                    intervalID;
+
+                intervalID = setInterval(function () {
+                    counter--;
+                    if (counter > 0) {
+                        activeButtons[buttonToActivate] = false;
+                        buttonTimerDiv.empty();
+                        buttonTimerDiv.append("<p>'W' Delay: " + (counter) + " s</p>");
+                        buttonImage.css({
+                            'opacity': '0.5'
+                        });
+                    }
+                    if (counter === 0) {
+                        buttonTimerDiv.empty();
+                        //clearInterval(counter);
+                        buttonImage.css({
+                            'opacity': '1'
+                        });
+                        buttonTimerDiv.append("<p>Ready to use</p>");
+                        activeButtons[buttonToActivate] = true;
+                        clearInterval(intervalID);
+                    }
+                }, 1000);
             }
 
             function removeEventListeners() {

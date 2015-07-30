@@ -1,16 +1,16 @@
 @font-face {
     font-family: storyfont;
-    src: url("fonts/GoodDog.otf");
+    src: url("../fonts/GoodDog.otf");
 }
 
 @font-face {
     font-family: footerFont;
-    src: url("fonts/ArchitectsDaughter.ttf");
+    src: url("../fonts/ArchitectsDaughter.ttf");
 }
 
 @font-face {
     font-family: headerFontFill;
-    src: url("fonts/AmazDooMLeft.ttf");
+    src: url("../fonts/AmazDooMLeft.ttf");
 }
 
 html, body, div, p, form {
@@ -20,7 +20,7 @@ html, body, div, p, form {
 }
 
 body {
-    background-image: url("images/background-min.jpg");    
+    background-image: url("../images/background-min.jpg");
     width: 100%;
 }
 

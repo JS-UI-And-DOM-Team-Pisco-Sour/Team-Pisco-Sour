@@ -9,7 +9,7 @@ define(['jquery'], function () {
 
         if (keycode === 113) {
             (function () {
-                var counter = 5;
+                var counter = 2;
 
                 setInterval(function () {
                     counter--;

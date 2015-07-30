@@ -94,7 +94,7 @@ window.onload =
                     stage.add(backgroundLayer);
                 };
 
-                backgroundImageObj.src = "assets/images/canvas-bg.jpg";
+                backgroundImageObj.src = "assets/images/ActionScreenBackground.png";
             }
 
             function addEventListeners() {

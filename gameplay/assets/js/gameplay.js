@@ -328,12 +328,12 @@ window.onload =
                             (function () {
                                 var counter = 3,
                                     intervalID;
+
                                 intervalID = setInterval(function () {
                                     counter--;
                                     if (counter > 0) {
                                         activeButtons[0] = false;
                                         qTimer.empty();
-                                        //e.preventDefault();
                                         qTimer.append("<p>'Q' Delay: " + (counter) + " s</p>");
                                         qBtn.css({
                                             'opacity': '0.5'
@@ -360,12 +360,12 @@ window.onload =
                             (function () {
                                 var counter = 3,
                                     intervalID;
+
                                 intervalID = setInterval(function () {
                                     counter--;
                                     if (counter > 0) {
                                         activeButtons[1] = false;
                                         wTimer.empty();
-                                        //e.preventDefault();
                                         wTimer.append("<p>'W' Delay: " + (counter) + " s</p>");
                                         wBtn.css({
                                             'opacity': '0.5'

@@ -403,27 +403,6 @@ window.onload =
 
                         // Update score count
                         score += 1;
-
-                        $("#scoreSpan").text(score);
-
-                        var name = sessionStorage.getItem('heroName');
-                        sessionStorage.playerScore = Number(sessionStorage.playerScore) + 1;
-                        var highestScore = sessionStorage.playerScore;
-                        if (localStorage.highestScore) {
-                            // If player score is greater-than top scorer then
-                            // update its score as a top scorer.
-                            if (highestScore >= localStorage.highestScore) {
-                                setHighScore(name, highestScore);
-                            }
-                        } else {
-                            setHighScore(name, highestScore);
-                        }
-
-                        function setHighScore(name, newScore) {
-                            //save the winner score and name to local storage
-                            localStorage.highestScore = newScore;
-                            localStorage.highScorerName = name;
-                        }
                     }
 
                     if (bulletHasLeftField) {
@@ -533,6 +512,31 @@ window.onload =
                             gameStateHelper.removeEnemy(enemies, i);
                         }
                     }
+
+                    /* UPDATE SCORE - WILL BE REFACTORED */
+
+                    $("#scoreSpan").text(score);
+
+                    var name = sessionStorage.getItem('heroName');
+                    sessionStorage.playerScore = Number(sessionStorage.playerScore) + 1;
+                    var highestScore = sessionStorage.playerScore;
+                    if (localStorage.highestScore) {
+                        // If player score is greater-than top scorer then
+                        // update its score as a top scorer.
+                        if (highestScore >= localStorage.highestScore) {
+                            setHighScore(name, highestScore);
+                        }
+                    } else {
+                        setHighScore(name, highestScore);
+                    }
+
+                    function setHighScore(name, newScore) {
+                        //save the winner score and name to local storage
+                        localStorage.highestScore = newScore;
+                        localStorage.highScorerName = name;
+                    }
+
+                    /* UPDATE SCORE - WILL BE REFACTORED */
 
                     // The right way to set z indices
                     backgroundLayer.moveToTop();

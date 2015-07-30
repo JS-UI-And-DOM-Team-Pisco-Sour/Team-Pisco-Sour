@@ -15,10 +15,11 @@ requirejs.config({
 window.onload =
     requirejs(['globalConstants', 'playerConstants', 'enemyConstants',
             'game-objects/characters/hero', 'game-objects/characters/enemy',
+            'game-objects/bullet',
             'health', 'gameStateHelper', 'buttonTimer',
             'jquery', 'kinetic', 'create'
         ],
-        function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, logHealth, gameStateHelper) {
+        function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, Bullet, logHealth, gameStateHelper) {
             var stage,
                 backgroundLayer,
                 playerLayer,
@@ -366,35 +367,10 @@ window.onload =
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
 
-            function createBullet(gunBarrelX, gunBarrelY, bulletImagePath) {
-                var bulletImageObject = new Image();
-                var bulletKineticImage = new Kinetic.Image({
-                    x: gunBarrelX,
-                    y: gunBarrelY,
-                    image: bulletImageObject,
-                    width: 28,
-                    height: 28,
-                    crop: {
-                        x: 0,
-                        y: 0,
-                        width: 128,
-                        height: 128
-                    }
-                });
-
-                bulletImageObject.onload = function () {
-                    ammoLayer.add(bulletKineticImage); // ammoLayer has now length of 1
-                    stage.add(ammoLayer);
-                };
-
-                bulletImageObject.src = bulletImagePath;
-
-                return bulletKineticImage;
-            }
-
             function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY, bulletImagePath) {
-                var bullet = createBullet(gunBarrelX, gunBarrelY, bulletImagePath);
+                var bullet = new Bullet(gunBarrelX, gunBarrelY, bulletImagePath).kineticImage;
                 ammoLayer.add(bullet);
+                stage.add(ammoLayer);
 
                 var targetX = bulletDestinationX - bullet.getX(),
                     targetY = bulletDestinationY - bullet.getY(),

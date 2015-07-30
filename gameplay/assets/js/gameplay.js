@@ -368,50 +368,8 @@ window.onload =
             }
 
             function shootBullet(gunBarrelX, gunBarrelY, bulletDestinationX, bulletDestinationY, bulletImagePath) {
-                var bullet = new Bullet(gunBarrelX, gunBarrelY, bulletImagePath).kineticImage;
-                ammoLayer.add(bullet);
-                stage.add(ammoLayer);
-
-                var targetX = bulletDestinationX - bullet.getX(),
-                    targetY = bulletDestinationY - bullet.getY(),
-                    distance = Math.sqrt(targetX * targetX + targetY * targetY);
-
-                var velocityX = (targetX / distance) * player.attackSpeed,
-                    velocityY = (targetY / distance) * player.attackSpeed;
-
-                var bulletShotAnimation = new Kinetic.Animation(function (frame) {
-                    bullet.setX(bullet.getX() + velocityX);
-                    bullet.setY(bullet.getY() + velocityY);
-
-                    var deadEnemyIndex = gameStateHelper.getDeadEnemyIndex(enemies, bullet),
-                        bulletHasLeftField = gameStateHelper.bulletLeftField(bullet);
-
-                    if (deadEnemyIndex) {
-                        // The three magic rows that save the whole of the universe. Amin.
-                        bullet.setX(GLOBAL_CONSTANTS.STAGE_WIDTH * 2);
-                        bullet.setY(GLOBAL_CONSTANTS.STAGE_HEIGHT * 2);
-                        bullet.destroy();
-
-                        gameStateHelper.runExplosionAt(enemies[deadEnemyIndex].enemy.getX(), enemies[deadEnemyIndex].enemy.getY(), 0.6, 5, layer);
-                        gameStateHelper.removeEnemy(enemies, deadEnemyIndex);
-
-                        // Lifesteal ability
-                        if (player.health < 1000) {
-                            // Using '-' sign, so that the damage is inverted and the value is actually added to the player's health points
-                            logHealth(-PLAYER_CONSTANTS.HEALTH_INCREASED_ON_ENEMY_HIT, player);
-                        }
-
-                        // Update score count
-                        score += 1;
-                    }
-
-                    if (bulletHasLeftField) {
-                        bullet.destroy();
-                    }
-
-                }, ammoLayer);
-
-                bulletShotAnimation.start();
+                var bullet = new Bullet(gunBarrelX, gunBarrelY, bulletImagePath);
+                bullet.shoot(bulletDestinationX,bulletDestinationY,enemies, player, stage, ammoLayer, layer, score);
             }
 
             function sprayBulletsOutwardsPlayer() {

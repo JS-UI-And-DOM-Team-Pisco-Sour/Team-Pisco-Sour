@@ -528,10 +528,9 @@ window.onload =
 
                         $("#scoreSpan").text(score);
 
-                        var name = sessionStorage.getItem('heroName')
-                        var highestScore = 0;
+                        var name = sessionStorage.getItem('heroName');
                         sessionStorage.playerScore = Number(sessionStorage.playerScore) + 1;
-                        highestScore = sessionStorage.playerScore;
+                        var highestScore = sessionStorage.playerScore;
                         if (localStorage.highestScore) {
                             // If player score is greater-than top scorer then
                             // update its score as a top scorer.

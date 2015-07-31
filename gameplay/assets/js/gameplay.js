@@ -315,8 +315,7 @@ window.onload =
                         eTimer = $("#eTimer"),
                         aTimer = $("#aTimer");
 
-                    if
-                    (keyPressed === GLOBAL_CONSTANTS.KEYS.Q ||
+                    if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.W ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
                     }
@@ -324,31 +323,31 @@ window.onload =
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q) {
                         if (activeButtons[0]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
-                            activateSkillDelayTimer(qTimer, qBtn, activeButtons, 0);
+                            activateSkillDelayTimer(qTimer, qBtn, activeButtons, 0, 'Q');
                             player.checkDirectionAndTeleport(player.smallTeleportationAmount);
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.W) {
                         if (activeButtons[1]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
-                            activateSkillDelayTimer(wTimer, wBtn, activeButtons, 1);
+                            activateSkillDelayTimer(wTimer, wBtn, activeButtons, 1, 'W');
                             player.checkDirectionAndTeleport(player.averageTeleportationAmount);
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
                         if (activeButtons[2]) {
                             gameStateHelper.runPoofAt(player.getCenter().x, player.getCenter().y, 0.4, layer);
-                            activateSkillDelayTimer(eTimer, eBtn, activeButtons, 2);
+                            activateSkillDelayTimer(eTimer, eBtn, activeButtons, 2,'E');
                             player.checkDirectionAndTeleport(player.largeTeleportationAmount);
                         }
                     } else if (keyPressed === GLOBAL_CONSTANTS.KEYS.A) {
                         if (activeButtons[3]) {
-                            activateSkillDelayTimer(aTimer, aBtn, activeButtons, 3);
+                            activateSkillDelayTimer(aTimer, aBtn, activeButtons, 3, 'A');
                             sprayBulletsOutwardsPlayer();
                         }
                     }
                 }
             }
 
-            function activateSkillDelayTimer(buttonTimerDiv, buttonImage, activeButtons, buttonToActivate) {
+            function activateSkillDelayTimer(buttonTimerDiv, buttonImage, activeButtons, buttonToActivate, buttonName) {
                 var counter = 2,
                     intervalID;
 
@@ -357,7 +356,7 @@ window.onload =
                     if (counter > 0) {
                         activeButtons[buttonToActivate] = false;
                         buttonTimerDiv.empty();
-                        buttonTimerDiv.append("<p>'W' Delay: " + (counter) + " s</p>");
+                        buttonTimerDiv.append("<p>" + (buttonName) + " Delay: " + (counter) + " s</p>");
                         buttonImage.css({
                             'opacity': '0.5'
                         });

@@ -104,23 +104,22 @@ window.onload = function () {
                             loopRadius + ' 0 ' + loopRadius + ' ';
                     })
                     .join('');
-
             var animatedText = paper.text(0, 0, teamName)
                 .attr({
                     'font-family': 'logoFont',
-                    'font-size': '25px',
-                    'font-weight': '600',
+                    'font-size': '30px',
                     'textpath': path,
-                    'fill': '#F5F6F7'
+
+                    'fill': '#FFF'
                 })
                 .transform('t' + CONSTANTS.SVG_WIDTH / 2 + ',' + CONSTANTS.SVG_HEIGHT / 2);
+            animatedText.textPath.node.setAttribute('startOffset', 0);
+            function animate() {
+                animatedText.textPath.node.setAttribute('startOffset', +animatedText.textPath.node.getAttribute('startOffset') + 1);
+                requestAnimationFrame(animate);
+            }
 
-            animatedText.textPath.animate({
-                    'startOffset': CONSTANTS.LOOP_OFFSET * CONSTANTS.MAX_NUMBER_OF_LOOPS
-                },
-
-                CONSTANTS.LOOP_TIME * CONSTANTS.MAX_NUMBER_OF_LOOPS, mina.linear);
-
+            animate();
         }
 
         (function () {

@@ -1,4 +1,12 @@
 window.onload = function () {
+    window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame       ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
     var CONSTANTS = {
         SVG_WIDTH: 300,
         SVG_HEIGHT: 300,
@@ -36,8 +44,8 @@ window.onload = function () {
         var logoTextStyle = document.createElement('style');
         logoTextStyle.appendChild(document.createTextNode(
             "@font-face {" +
-                "font-family: 'logoFont';" +
-                "src: url('./th3-machine.ttf');" +
+            "font-family: 'logoFont';" +
+            "src: url('./th3-machine.ttf');" +
             "}"));
 
         document.head.appendChild(logoTextStyle);
@@ -140,22 +148,22 @@ window.onload = function () {
                         loopRadius + ' 0 ' + loopRadius + ' ';
                 })
                 .join('');
-
         var animatedText = paper.text(0, 0, teamName)
             .attr({
                 'font-family': 'logoFont',
                 'font-size': '30px',
                 'textpath': path,
+
                 'fill': '#FFF'
             })
             .transform('t' + CONSTANTS.SVG_WIDTH / 2 + ',' + CONSTANTS.SVG_HEIGHT / 2);
+        animatedText.textPath.node.setAttribute('startOffset', 0);
+        function animate() {
+            animatedText.textPath.node.setAttribute('startOffset', +animatedText.textPath.node.getAttribute('startOffset') + 1);
+            requestAnimationFrame(animate);
+        }
 
-        animatedText.textPath.animate({
-                'startOffset': CONSTANTS.LOOP_OFFSET * CONSTANTS.MAX_NUMBER_OF_LOOPS
-            },
-
-            CONSTANTS.LOOP_TIME * CONSTANTS.MAX_NUMBER_OF_LOOPS, mina.linear);
-
+        animate();
     }
 
     (function () {

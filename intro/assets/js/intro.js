@@ -17,6 +17,6 @@ function storeHeroName(id) {
         sessionStorage.setItem('heroName', input);
     }
 
-    window.location.href = "../gameplay/gameplay.html";
+    window.location.href = "http://localhost:63342/Team-Pisco-Sour/gameplay/gameplay.html";
 }
 

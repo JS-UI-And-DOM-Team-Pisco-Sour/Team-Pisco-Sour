@@ -39,14 +39,6 @@ window.onload =
                 sprayFirePath = 'assets/images/bullet-image.png',
 
                 gameSpeed = 0,
-                qBtn = $('#qButton'),
-                wBtn = $('#wButton'),
-                eBtn = $('#eButton'),
-                aBtn = $("#aButton"),
-                qTimer = $("#qTimer"),
-                wTimer = $("#wTimer"),
-                eTimer = $("#eTimer"),
-                aTimer = $("#aTimer"),
                 activeButtons = [true, true, true, true],
 
                 level = 1;
@@ -313,9 +305,18 @@ window.onload =
                 }
 
                 function onKeyDown(e) {
-                    var keyPressed = e.keyCode ? e.keyCode : e.which;
+                    var keyPressed = e.keyCode ? e.keyCode : e.which,
+                        qBtn = $('#qButton'),
+                        wBtn = $('#wButton'),
+                        eBtn = $('#eButton'),
+                        aBtn = $("#aButton"),
+                        qTimer = $("#qTimer"),
+                        wTimer = $("#wTimer"),
+                        eTimer = $("#eTimer"),
+                        aTimer = $("#aTimer");
 
-                    if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q ||
+                    if
+                    (keyPressed === GLOBAL_CONSTANTS.KEYS.Q ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.W ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
                     }
@@ -583,7 +584,7 @@ window.onload =
                     if (currentFrame % 50 === 0) {
                         layer.destroyChildren();
                     }
-                }, 30 - gameSpeed);
+                }, 1000 / 60 - gameSpeed);
             }
 
             (function () {

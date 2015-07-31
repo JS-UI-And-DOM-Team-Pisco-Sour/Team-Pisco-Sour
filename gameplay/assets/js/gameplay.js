@@ -19,7 +19,7 @@ window.onload =
             'health', 'gameStateHelper',
             'jquery', 'kinetic', 'create'
         ],
-        function(GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, Bullet, logHealth, gameStateHelper) {
+        function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, Bullet, logHealth, gameStateHelper) {
             var stage,
                 backgroundLayer,
                 playerLayer,
@@ -83,7 +83,7 @@ window.onload =
             function loadBackground() {
                 backgroundImageObj = new Image();
 
-                backgroundImageObj.onload = function() {
+                backgroundImageObj.onload = function () {
                     var background = new Kinetic.Image({
                         x: 0,
                         y: 0,
@@ -257,53 +257,53 @@ window.onload =
 
                         switch (player.facingDirection) {
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.LEFT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 22;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 76;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.RIGHT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 130;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 58;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.UP:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 83;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 115;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.DOWN:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 68;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 10;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.UP_LEFT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 31;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 29;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.UP_RIGHT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 115;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 36;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.DOWN_LEFT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 24;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 106;
+                                break;
+                            }
                             case PLAYER_CONSTANTS.FACING_DIRECTIONS.DOWN_RIGHT:
-                                {
-                                    bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
-                                    bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
-                                    break;
-                                }
+                            {
+                                bulletShotAnimationCoords.x = player.kineticImage.getX() + 138;
+                                bulletShotAnimationCoords.y = player.kineticImage.getY() + 108;
+                                break;
+                            }
                         }
 
                         shootBullet(bulletShotAnimationCoords.x, bulletShotAnimationCoords.y, relativeClientX, relativeClientY, ordinaryFirePath);
@@ -317,7 +317,8 @@ window.onload =
 
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q ||
                         keyPressed === GLOBAL_CONSTANTS.KEYS.W ||
-                        keyPressed === GLOBAL_CONSTANTS.KEYS.E) {}
+                        keyPressed === GLOBAL_CONSTANTS.KEYS.E) {
+                    }
 
                     if (keyPressed === GLOBAL_CONSTANTS.KEYS.Q) {
                         if (activeButtons[0]) {
@@ -350,7 +351,7 @@ window.onload =
                 var counter = 2,
                     intervalID;
 
-                intervalID = setInterval(function() {
+                intervalID = setInterval(function () {
                     counter--;
                     if (counter > 0) {
                         activeButtons[buttonToActivate] = false;
@@ -381,7 +382,7 @@ window.onload =
 
             function spawnEnemy(frame) {
                 var creature = new Enemy('assets/images/enemy.png', frame);
-                creature.image.onload = function() {
+                creature.image.onload = function () {
                     var newEnemy = new Kinetic.Image({
                         x: getRandomCoordinate(50, 950 - ENEMY_CONSTANTS.WIDTH),
                         y: getRandomCoordinate(50, 600 - ENEMY_CONSTANTS.HEIGHT),
@@ -466,10 +467,10 @@ window.onload =
                 var name = sessionStorage.getItem('heroName');
                 sessionStorage.setItem('playerScore', player.score);
                 if (localStorage.getItem('highestScore') !== "NaN") {
-                    var highestScore = localStorage.getItem('highestScore');
+                    var highestScore = +localStorage.getItem('highestScore');
                     // If player score is greater-than top scorer then
                     // update its score as a top scorer.
-                    if (sessionStorage.getItem('playerScore') >= highestScore) {
+                    if (+sessionStorage.getItem('playerScore') >= highestScore) {
                         setHighScore(name, sessionStorage.getItem('playerScore'));
                     }
                 } else {
@@ -500,7 +501,7 @@ window.onload =
             }
 
             function run() {
-                var gameLoopControl = setTimeout(function() {
+                var gameLoopControl = setTimeout(function () {
                     var gameLoop = requestAnimationFrame(run);
 
                     // Check if not dead
@@ -518,7 +519,7 @@ window.onload =
                         createjs.Sound.play('bomb');
 
                         // Delay the endscreen show-up
-                        setTimeout(function() {
+                        setTimeout(function () {
                             stage.remove(enemiesLayer);
                             window.location.href = '../termination/termination.html';
                         }, 3000);
@@ -585,7 +586,7 @@ window.onload =
                 }, 30 - gameSpeed);
             }
 
-            (function() {
+            (function () {
                 initialize();
                 run();
             }());

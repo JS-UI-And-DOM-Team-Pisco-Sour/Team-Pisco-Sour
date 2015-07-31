@@ -103,7 +103,7 @@ h1:hover {
 #scores {
     width: 60%;
     padding-left: 2%;
-    border: 1px solid rbg(19, 19, 4);
+    border: 1px solid rgb(19, 19, 4);
     border-radius: 5%;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
@@ -121,6 +121,31 @@ h2 {
     text-shadow: 2px 2px #000;
     color: #F5F6F7;
     padding-left: 5%;
+}
+
+h6{
+    font-family: "storyFont";
+    font-size: 5vw;
+    font-size: 5vh;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px #000;
+    color: #F5F6F7;
+    margin: 0;
+    padding: 0;
+    padding-left: 5%;
+}
+
+p {
+    font-family: "storyFont";
+    font-size: 4vw;
+    font-size: 4vh;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px #000;
+    color: #F5F6F7;
+    padding: 0;
+    padding-left: 5%;
+    margin: 0;
 }
 
 #menu {

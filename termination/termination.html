@@ -2,34 +2,33 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="images/snailien-fav.ico" >
+    <link rel="shortcut icon" href="images/snailien-fav.ico">
     <link rel="stylesheet" type="text/css" href="termination.css">
-    <script src="../termination/termination.js"></script>
-    <script src="../IntroductionScreen/IntroControls.js"></script>
     <title>Snailiens</title>
 </head>
 <body>
-    <div>
-        <h1>Game Over</h1>
+<div>
+    <h1>Game Over</h1>
+</div>
+
+<div id="container">
+
+    <div id="scores">
+        <h2>Recent history</h2>
     </div>
 
-    <div id="container">
-
-        <div id="scores">
-            <h2>Recent history</h2>
-        </div>
-
-        <div id="menu">
-            <form action="../intro/intro.html">
-                <input type="submit" value="PLAY AGAIN" id="playButton" title="Play Snailiens">
-            </form>
-            <form action="https://github.com/JS-UI-And-DOM-Team-Pisco-Sour.html">
-                <input type="submit" value="GitHub Repo">
-            </form>
-        </div>
+    <div id="menu">
+        <form action="../intro/intro.html">
+            <input type="submit" value="PLAY AGAIN" id="playButton" title="Play Snailiens">
+        </form>
+        <form action="https://github.com/JS-UI-And-DOM-Team-Pisco-Sour.html">
+            <input type="submit" value="GitHub Repo">
+        </form>
     </div>
-    <svg id="logo" width="200" height="200"></svg>
-        <script src="animation/snap.svg.js"></script>
-        <script src="animation/logo.js"></script>
+</div>
+<svg id="logo" width="200" height="200"></svg>
+<script src="animation/snap.svg.js"></script>
+<script src="animation/logo.js"></script>
+<script src="termination.js"></script>
 </body>
 </html>

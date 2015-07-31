@@ -1,6 +1,5 @@
-function showHighScores(){
-document.getElementById('high-scores').style.display='block';
-    document.getElementById("currentScore").innerHTML =sessionStorage.getItem('heroName')+'&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;'+sessionStorage.playerScore;
-    document.getElementById("highestScore").innerHTML =localStorage.highScorerName + '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;'+localStorage.highestScore;
-        document.getElementById("GameOver").style.display='none';
-}
+window.onload = function () {
+    var pesho = document.getElementById("scores");
+    pesho.innerHTML += ('<h6>Your score</h6>' + '<p>' + sessionStorage.getItem('heroName') + '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;' + sessionStorage.getItem('playerScore') + '</p>');
+    pesho.innerHTML += ('<h6>Highest score</h6>' + '<p>' + localStorage.getItem('highScorerName') + '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;' + localStorage.getItem('highestScore') + '</p>');
+};

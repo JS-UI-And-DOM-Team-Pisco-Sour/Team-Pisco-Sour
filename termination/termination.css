@@ -254,7 +254,7 @@ p {
 
 #logo {
     float: right;
-    margin-top: 5%;
+    margin-top: 0;
     margin-right: 18%;
     background-color: rgba(1, 8, 26, 0.3);
     border: 1px solid rgb(34, 34, 34);

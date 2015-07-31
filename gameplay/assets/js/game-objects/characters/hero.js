@@ -1,4 +1,4 @@
-define(['../contracts/game-object', 'globalConstants', 'playerConstants'],
+define(['../contracts/game-object', '../../common/global-constants', '../../common/player-constants'],
     function (GameObject, GLOBAL_CONSTANTS, PLAYER_CONSTANTS) {
         var Hero = (function (parent) {
             function isPlayerOutOfBorders(x, y) {

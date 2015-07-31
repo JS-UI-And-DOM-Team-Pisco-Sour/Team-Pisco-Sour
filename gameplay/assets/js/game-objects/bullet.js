@@ -1,4 +1,4 @@
-define(['./contracts/game-object', 'globalConstants', 'playerConstants', '../helpers/game-state-helper', '../health'],
+define(['./contracts/game-object', '../common/global-constants', '../common/player-constants', '../helpers/game-state-helper', '../health'],
     function (GameObject, GLOBAL_CONSTANTS, PLAYER_CONSTANTS, gameStateHelper, logHealth) {
         var Bullet = (function (parent) {
             var Bullet = function (x, y, imagePath) {

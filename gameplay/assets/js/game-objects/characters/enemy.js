@@ -1,4 +1,4 @@
-define(['../contracts/game-object', 'playerConstants', 'enemyConstants'],
+define(['../contracts/game-object', '../../common/player-constants', '../../common/enemy-constants'],
     function (GameObject, PLAYER_CONSTANTS, ENEMY_CONSTANTS) {
         var Enemy = (function (parent) {
             var Enemy = function (imagePath, frame) {

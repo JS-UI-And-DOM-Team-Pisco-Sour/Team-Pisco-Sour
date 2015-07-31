@@ -1,4 +1,4 @@
-define(['jquery'], function() {
+define(['../../../lib/jquery-1.11.3.min'], function() {
     var hBar = $('.health-bar'),
         bar = hBar.find('.bar'),
         hit = hBar.find('.hit'),

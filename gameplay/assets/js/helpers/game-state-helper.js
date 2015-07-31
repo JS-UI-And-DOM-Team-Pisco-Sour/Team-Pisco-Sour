@@ -1,4 +1,4 @@
-define(['globalConstants', 'playerConstants', 'enemyConstants'],
+define(['../common/global-constants', '../common/player-constants', '../common/enemy-constants'],
     function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS) {
         function bulletLeftField(bullet) {
             if (bullet.getX() < 0 - 30 ||

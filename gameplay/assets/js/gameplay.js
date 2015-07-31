@@ -8,16 +8,16 @@ requirejs.config({
         globalConstants: './common/global-constants',
         playerConstants: './common/player-constants',
         enemyConstants: './common/enemy-constants',
-        gameStateHelper: './helpers/game-state-helper',
+        gameStateHelper: './helpers/game-state-helper'
     }
 });
 
 window.onload =
-    requirejs(['globalConstants', 'playerConstants', 'enemyConstants',
+    requirejs(['./common/global-constants', './common/player-constants', './common/enemy-constants',
             'game-objects/characters/hero', 'game-objects/characters/enemy',
             'game-objects/bullet',
-            'health', 'gameStateHelper',
-            'jquery', 'kinetic', 'create'
+            'health', './helpers/game-state-helper',
+            '../../../lib/jquery-1.11.3.min', '../../lib/kinetic-v5.1.0.min', '../../../lib/createjs-2015.05.21.min'
         ],
         function (GLOBAL_CONSTANTS, PLAYER_CONSTANTS, ENEMY_CONSTANTS, Hero, Enemy, Bullet, logHealth, gameStateHelper) {
             var stage,
